@@ -11,10 +11,10 @@ import java.util.Date;
 
 public class SQL {
 
-    private final static String host = "pg";//localhost
+    private final static String host = "localhost";//localhost / pg
     private final static String nameDB = "studs";
-    private final static String managerName = "s336184";//postgres
-    private final static String managerPass = "Di2oaLyDd20js6Ox";//123456
+    private final static String managerName = "postgres";//postgres / s336184
+    private final static String managerPass = "123456";//123456 / Di2oaLyDd20js6Ox
     private final static String linkDB = "jdbc:postgresql://" + host + ":5432/" + nameDB;
 
     public static void main(String[] args) throws ClassNotFoundException, SQLException {

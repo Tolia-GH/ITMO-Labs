@@ -25,10 +25,10 @@ public class Server {
     private final int port;
     private ServerSocket serverSocket;
     private Response response;
-    private final String host = "pg";//localhost
+    private final String host = "localhost";//localhost / pg
     private final String nameDB = "studs";
-    private final String managerName = "s336184";//postgres
-    private final String managerPass = "Di2oaLyDd20js6Ox";//123456
+    private final String managerName = "postgres";//postgres / s336184
+    private final String managerPass = "123456";//123456 / Di2oaLyDd20js6Ox
     private final String linkDB = "jdbc:postgresql://" + host + ":5432/" + nameDB;
 
     /**
