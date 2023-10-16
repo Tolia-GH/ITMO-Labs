@@ -1,6 +1,6 @@
 package Data;
 
-import DataBase.DataBaseStorage;
+import DataBase.DataBaseStorage1;
 import lombok.Data;
 
 import javax.faces.bean.ManagedBean;
@@ -18,7 +18,7 @@ public class Dots implements Serializable {
     private Dot dot = new Dot();
     private List<Dot> dotsList = new ArrayList<>();
     private List<DotsTable> table = new ArrayList<>();
-    private DataBaseStorage storage = new DataBaseStorage();
+    private DataBaseStorage1 storage = new DataBaseStorage1();
 
     public Dots(){ }
 
