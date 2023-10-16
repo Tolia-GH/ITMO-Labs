@@ -9,19 +9,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6a8aa748-c0d4-4302-a70f-834df14b2218" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c1ddd205-d084-45ef-9a76-a23ca63ca0e4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c1ddd205-d084-45ef-9a76-a23ca63ca0e4.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Data/Dots.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Data/Dots.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DataBase/DataBaseStorage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataBase/DataBaseStorage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/resources/JS/clock_drawer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/JS/clock_drawer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Lab3-1.0-SNAPSHOT.war" beforeDir="false" afterPath="$PROJECT_DIR$/target/Lab3-1.0-SNAPSHOT.war" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Lab3-1.0-SNAPSHOT/WEB-INF/classes/Data/Dots.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Lab3-1.0-SNAPSHOT/WEB-INF/classes/Data/Dots.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Lab3-1.0-SNAPSHOT/WEB-INF/classes/DataBase/DataBaseStorage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Lab3-1.0-SNAPSHOT/WEB-INF/classes/DataBase/DataBaseStorage.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Data/Dots.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Data/Dots.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/DataBase/DataBaseStorage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/DataBase/DataBaseStorage.class" afterDir="false" />
-    </list>
+    <list default="true" id="6a8aa748-c0d4-4302-a70f-834df14b2218" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
