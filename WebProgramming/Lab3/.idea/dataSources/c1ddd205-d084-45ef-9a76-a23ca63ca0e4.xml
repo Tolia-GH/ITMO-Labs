@@ -48466,6 +48466,18 @@ false Zulu
       <OwnerName>postgres</OwnerName>
     </routine>
     <routine id="3627" parent="262" name="extract">
+      <Comment>extract field from time</Comment>
+      <ConcurrencyKind>safe</ConcurrencyKind>
+      <Cost>1.0</Cost>
+      <ObjectId>6200</ObjectId>
+      <Rows>0.0</Rows>
+      <StateNumber>1</StateNumber>
+      <Strict>1</Strict>
+      <VolatilityKind>immutable</VolatilityKind>
+      <LanguageName>internal</LanguageName>
+      <OwnerName>postgres</OwnerName>
+    </routine>
+    <routine id="3628" parent="262" name="extract">
       <Comment>extract field from timestamp with time zone</Comment>
       <ConcurrencyKind>safe</ConcurrencyKind>
       <Cost>1.0</Cost>
@@ -48477,23 +48489,11 @@ false Zulu
       <LanguageName>internal</LanguageName>
       <OwnerName>postgres</OwnerName>
     </routine>
-    <routine id="3628" parent="262" name="extract">
+    <routine id="3629" parent="262" name="extract">
       <Comment>extract field from timestamp</Comment>
       <ConcurrencyKind>safe</ConcurrencyKind>
       <Cost>1.0</Cost>
       <ObjectId>6202</ObjectId>
-      <Rows>0.0</Rows>
-      <StateNumber>1</StateNumber>
-      <Strict>1</Strict>
-      <VolatilityKind>immutable</VolatilityKind>
-      <LanguageName>internal</LanguageName>
-      <OwnerName>postgres</OwnerName>
-    </routine>
-    <routine id="3629" parent="262" name="extract">
-      <Comment>extract field from time</Comment>
-      <ConcurrencyKind>safe</ConcurrencyKind>
-      <Cost>1.0</Cost>
-      <ObjectId>6200</ObjectId>
       <Rows>0.0</Rows>
       <StateNumber>1</StateNumber>
       <Strict>1</Strict>
@@ -62519,19 +62519,6 @@ false Zulu
       <OwnerName>postgres</OwnerName>
     </routine>
     <routine id="4791" parent="262" name="overlaps">
-      <ArgumentsDefinition>time without time zone, time without time zone, time without time zone, interval</ArgumentsDefinition>
-      <Comment>intervals overlap?</Comment>
-      <ConcurrencyKind>safe</ConcurrencyKind>
-      <Cost>1.0</Cost>
-      <ObjectId>1310</ObjectId>
-      <ResultsDefinition>boolean</ResultsDefinition>
-      <Rows>0.0</Rows>
-      <StateNumber>142</StateNumber>
-      <VolatilityKind>immutable</VolatilityKind>
-      <LanguageName>sql</LanguageName>
-      <OwnerName>postgres</OwnerName>
-    </routine>
-    <routine id="4792" parent="262" name="overlaps">
       <ArgumentsDefinition>time without time zone, interval, time without time zone, time without time zone</ArgumentsDefinition>
       <Comment>intervals overlap?</Comment>
       <ConcurrencyKind>safe</ConcurrencyKind>
@@ -62544,7 +62531,7 @@ false Zulu
       <LanguageName>sql</LanguageName>
       <OwnerName>postgres</OwnerName>
     </routine>
-    <routine id="4793" parent="262" name="overlaps">
+    <routine id="4792" parent="262" name="overlaps">
       <ArgumentsDefinition>time without time zone, interval, time without time zone, interval</ArgumentsDefinition>
       <Comment>intervals overlap?</Comment>
       <ConcurrencyKind>safe</ConcurrencyKind>
@@ -62553,6 +62540,19 @@ false Zulu
       <ResultsDefinition>boolean</ResultsDefinition>
       <Rows>0.0</Rows>
       <StateNumber>141</StateNumber>
+      <VolatilityKind>immutable</VolatilityKind>
+      <LanguageName>sql</LanguageName>
+      <OwnerName>postgres</OwnerName>
+    </routine>
+    <routine id="4793" parent="262" name="overlaps">
+      <ArgumentsDefinition>time without time zone, time without time zone, time without time zone, interval</ArgumentsDefinition>
+      <Comment>intervals overlap?</Comment>
+      <ConcurrencyKind>safe</ConcurrencyKind>
+      <Cost>1.0</Cost>
+      <ObjectId>1310</ObjectId>
+      <ResultsDefinition>boolean</ResultsDefinition>
+      <Rows>0.0</Rows>
+      <StateNumber>142</StateNumber>
       <VolatilityKind>immutable</VolatilityKind>
       <LanguageName>sql</LanguageName>
       <OwnerName>postgres</OwnerName>
@@ -71456,7 +71456,7 @@ false Zulu
       <Comment>extract portion of string</Comment>
       <ConcurrencyKind>safe</ConcurrencyKind>
       <Cost>1.0</Cost>
-      <ObjectId>877</ObjectId>
+      <ObjectId>883</ObjectId>
       <Rows>0.0</Rows>
       <StateNumber>1</StateNumber>
       <Strict>1</Strict>
@@ -71468,7 +71468,7 @@ false Zulu
       <Comment>extract portion of string</Comment>
       <ConcurrencyKind>safe</ConcurrencyKind>
       <Cost>1.0</Cost>
-      <ObjectId>883</ObjectId>
+      <ObjectId>877</ObjectId>
       <Rows>0.0</Rows>
       <StateNumber>1</StateNumber>
       <Strict>1</Strict>
@@ -71554,7 +71554,7 @@ false Zulu
       <Comment>extract portion of string</Comment>
       <ConcurrencyKind>safe</ConcurrencyKind>
       <Cost>1.0</Cost>
-      <ObjectId>936</ObjectId>
+      <ObjectId>937</ObjectId>
       <Rows>0.0</Rows>
       <StateNumber>1</StateNumber>
       <Strict>1</Strict>
@@ -71566,7 +71566,7 @@ false Zulu
       <Comment>extract portion of string</Comment>
       <ConcurrencyKind>safe</ConcurrencyKind>
       <Cost>1.0</Cost>
-      <ObjectId>937</ObjectId>
+      <ObjectId>936</ObjectId>
       <Rows>0.0</Rows>
       <StateNumber>1</StateNumber>
       <Strict>1</Strict>
@@ -83406,7 +83406,7 @@ false Zulu
       <Position>1</Position>
     </argument>
     <argument id="7298" parent="3627">
-      <DasType>timestamp with time zone|0s</DasType>
+      <DasType>time|0s</DasType>
       <Position>2</Position>
     </argument>
     <argument id="7299" parent="3628">
@@ -83418,7 +83418,7 @@ false Zulu
       <Position>1</Position>
     </argument>
     <argument id="7301" parent="3628">
-      <DasType>timestamp|0s</DasType>
+      <DasType>timestamp with time zone|0s</DasType>
       <Position>2</Position>
     </argument>
     <argument id="7302" parent="3629">
@@ -83430,7 +83430,7 @@ false Zulu
       <Position>1</Position>
     </argument>
     <argument id="7304" parent="3629">
-      <DasType>time|0s</DasType>
+      <DasType>timestamp|0s</DasType>
       <Position>2</Position>
     </argument>
     <argument id="7305" parent="3639">
@@ -85622,7 +85622,7 @@ false Zulu
       <Position>1</Position>
     </argument>
     <argument id="7851" parent="4791">
-      <DasType>time|0s</DasType>
+      <DasType>interval|0s</DasType>
       <Position>2</Position>
     </argument>
     <argument id="7852" parent="4791">
@@ -85630,7 +85630,7 @@ false Zulu
       <Position>3</Position>
     </argument>
     <argument id="7853" parent="4791">
-      <DasType>interval|0s</DasType>
+      <DasType>time|0s</DasType>
       <Position>4</Position>
     </argument>
     <argument id="7854" parent="4792">
@@ -85638,24 +85638,24 @@ false Zulu
       <Position>1</Position>
     </argument>
     <argument id="7855" parent="4792">
-      <DasType>interval|0s</DasType>
-      <Position>2</Position>
-    </argument>
-    <argument id="7856" parent="4792">
       <DasType>time|0s</DasType>
       <Position>3</Position>
     </argument>
-    <argument id="7857" parent="4792">
-      <DasType>time|0s</DasType>
-      <Position>4</Position>
-    </argument>
-    <argument id="7858" parent="4793">
+    <argument id="7856" parent="4793">
       <DasType>time|0s</DasType>
       <Position>1</Position>
     </argument>
-    <argument id="7859" parent="4793">
+    <argument id="7857" parent="4793">
+      <DasType>time|0s</DasType>
+      <Position>2</Position>
+    </argument>
+    <argument id="7858" parent="4793">
       <DasType>time|0s</DasType>
       <Position>3</Position>
+    </argument>
+    <argument id="7859" parent="4793">
+      <DasType>interval|0s</DasType>
+      <Position>4</Position>
     </argument>
     <argument id="7860" parent="4794">
       <DasType>timestamp with time zone|0s</DasType>
@@ -86947,17 +86947,17 @@ false Zulu
       <DasType>text|0s</DasType>
       <Position>1</Position>
     </argument>
-    <argument id="8164" parent="5552">
-      <DasType>integer|0s</DasType>
-      <Position>3</Position>
-    </argument>
-    <argument id="8165" parent="5553">
+    <argument id="8164" parent="5553">
       <ArgumentDirection>R</ArgumentDirection>
       <DasType>text|0s</DasType>
     </argument>
-    <argument id="8166" parent="5553">
+    <argument id="8165" parent="5553">
       <DasType>text|0s</DasType>
       <Position>1</Position>
+    </argument>
+    <argument id="8166" parent="5553">
+      <DasType>integer|0s</DasType>
+      <Position>3</Position>
     </argument>
     <argument id="8167" parent="5556">
       <ArgumentDirection>R</ArgumentDirection>
@@ -87007,17 +87007,17 @@ false Zulu
       <DasType>text|0s</DasType>
       <Position>1</Position>
     </argument>
-    <argument id="8179" parent="5560">
-      <DasType>integer|0s</DasType>
-      <Position>3</Position>
-    </argument>
-    <argument id="8180" parent="5561">
+    <argument id="8179" parent="5561">
       <ArgumentDirection>R</ArgumentDirection>
       <DasType>text|0s</DasType>
     </argument>
-    <argument id="8181" parent="5561">
+    <argument id="8180" parent="5561">
       <DasType>text|0s</DasType>
       <Position>1</Position>
+    </argument>
+    <argument id="8181" parent="5561">
+      <DasType>integer|0s</DasType>
+      <Position>3</Position>
     </argument>
     <argument id="8182" parent="5572">
       <DasType>&quot;char&quot;|0s</DasType>

@@ -30,7 +30,7 @@ function centerDot() {//Center point
     ctx.arc(0, 0, 8, 0, 2 * Math.PI);
     ctx.fill();
     ctx.beginPath();
-    ctx.fillStyle = "gray";
+    ctx.fillStyle = "red";
     ctx.arc(0, 0, 5, 0, 2 * Math.PI);
     ctx.fill();
 }
