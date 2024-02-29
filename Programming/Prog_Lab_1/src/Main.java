@@ -50,7 +50,6 @@ class ThreeArray {
                 else {
                     ans[i][j] = Math.pow(Math.asin(Math.sin(Math.cos(Math.cos(x[j])))) - 1, 3);
                 }
-
             }
         }
     }
