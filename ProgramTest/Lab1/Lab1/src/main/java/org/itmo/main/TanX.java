@@ -1,4 +1,4 @@
-package org.itmo;
+package org.itmo.main;
 
 public class TanX {
     // 计算 n 的阶乘
@@ -18,9 +18,21 @@ public class TanX {
         return (Math.pow(-1, n - 1) * Math.pow(x, (2 * n - 2))) / factorial(2 * n - 2);
     }
 
-    public static void main(String[] args) {
-        double degree = 90;
-        degree = ((degree + 90) % 180) - 90; // -90,90
+    public static double tanX(double degree) {
+        degree = degree % 180;
+
+        if (degree < -90) {
+            degree += 180;// -90,90
+        }
+        if (degree > 90) {
+            degree -= 180;// -90,90
+        }
+
+        System.out.println("degree = " + degree);
+
+        if (degree == 90 || degree == -90) {
+            throw new IllegalArgumentException("The domain of tan(x) is (-90, 90)");
+        }
         double x = Math.toRadians(degree);
         int n = 17;
 
@@ -41,5 +53,7 @@ public class TanX {
         System.out.println("Math.sin(x) = " + Math.sin(x));
         System.out.println("Math.cos(x) = " + Math.cos(x));
         System.out.println("Math.tan(x) = " + Math.tan(x));
+
+        return resTan;
     }
 }

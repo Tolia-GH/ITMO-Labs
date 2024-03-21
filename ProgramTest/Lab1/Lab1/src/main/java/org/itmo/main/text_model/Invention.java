@@ -1,6 +1,6 @@
-package org.itmo.text_model;
+package org.itmo.main.text_model;
 
-public class Behavior {
+public class Invention {
     private String name;
     private String description;
 }
