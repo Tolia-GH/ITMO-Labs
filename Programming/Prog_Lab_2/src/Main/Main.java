@@ -12,4 +12,15 @@ public class Main {
         b.addFoe(p2);
         b.go();
     }
+
+    Student liq = new Student();
+    int a = Student.score;
+}
+
+class Student {
+    static int score;
+
+    String name;
+
+
 }

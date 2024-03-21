@@ -55,3 +55,7 @@ public class Main {
         thirdCharacter.say("As soon as he is out of sight, they will all run away and he will never see them again.");
     }
 }
+
+abstract class Bird {
+
+}

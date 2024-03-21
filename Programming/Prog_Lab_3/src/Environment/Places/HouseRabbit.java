@@ -17,3 +17,4 @@ public class HouseRabbit extends Place {
     }
 
 }
+
