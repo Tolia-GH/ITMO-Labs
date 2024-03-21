@@ -7,8 +7,6 @@ public class Human {
     private Gender gender;
     private ArrayList<Invention> inventions;
     private ArrayList<Behavior> behaviors;
-
     private int IQ;
-
 
 }
