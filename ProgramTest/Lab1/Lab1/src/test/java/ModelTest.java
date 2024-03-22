@@ -154,5 +154,27 @@ public class ModelTest {
             System.out.println("Test done");
             System.out.println();
         }
+
+        @Test
+        @DisplayName("Test for learn()")
+        void testLearn() {
+            System.out.println("Testing learn() of Human");
+
+            Human h = new Human("TestHuman", Gender.NONE, 18);
+            Exception e1 = Assertions.assertThrows(IllegalArgumentException.class, () -> h.learn(null));
+            Assertions.assertEquals("Behavior can't be null", e1.getMessage());
+
+            System.out.println("Test done");
+            System.out.println();
+
+            System.out.println("Testing learn() of Human");
+
+            Dolphin d = new Dolphin("TestDolphin", Gender.NONE, 18);
+            Exception e2 = Assertions.assertThrows(IllegalArgumentException.class, () -> d.learn(null));
+            Assertions.assertEquals("Behavior can't be null", e2.getMessage());
+
+            System.out.println("Test done");
+            System.out.println();
+        }
     }
 }

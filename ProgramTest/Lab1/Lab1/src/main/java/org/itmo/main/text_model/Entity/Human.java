@@ -33,6 +33,9 @@ public class Human extends Animal {
     }
 
     public void learn(Behavior b) {
+        if (b == null) {
+            throw new IllegalArgumentException("Behavior can't be null");
+        }
         Human.behaviors.add(b);
     }
 }

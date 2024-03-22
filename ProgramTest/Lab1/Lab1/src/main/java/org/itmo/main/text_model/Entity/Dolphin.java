@@ -33,6 +33,9 @@ public class Dolphin extends Animal {
     }
 
     public void learn(Behavior b) {
+        if (b == null) {
+            throw new IllegalArgumentException("Behavior can't be null");
+        }
         Dolphin.behaviors.add(b);
     }
 }
