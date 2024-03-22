@@ -7,8 +7,8 @@ import org.itmo.main.text_model.Attributes.Invention;
 import java.util.ArrayList;
 
 public class Human extends Animal {
-    private static ArrayList<Invention> inventions;
-    private static ArrayList<Behavior> behaviors;
+    private static ArrayList<Invention> inventions = new ArrayList<>();
+    private static ArrayList<Behavior> behaviors = new ArrayList<>();
     public Human() {
         super();
     }
@@ -16,5 +16,23 @@ public class Human extends Animal {
         super(name, gender, age);
     }
 
+    public static void setInventions(ArrayList<Invention> inventions) {
+        Human.inventions = inventions;
+    }
 
+    public static void setBehaviors(ArrayList<Behavior> behaviors) {
+        Human.behaviors = behaviors;
+    }
+
+    public void invent(Invention i) {
+        if (i == null) {
+            throw new IllegalArgumentException("Invention can't be null");
+        }
+        i.setInventor(this);
+        Human.inventions.add(i);
+    }
+
+    public void learn(Behavior b) {
+        Human.behaviors.add(b);
+    }
 }

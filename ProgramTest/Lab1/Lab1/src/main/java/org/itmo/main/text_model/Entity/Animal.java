@@ -45,5 +45,4 @@ public abstract class Animal {
         this.gender = gender;
         this.age = age;
     }
-
 }

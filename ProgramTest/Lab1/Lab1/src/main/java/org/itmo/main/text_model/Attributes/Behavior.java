@@ -8,7 +8,7 @@ public class Behavior {
     private String description;
     public void setName(String name) {
         if (name == null) {
-            throw new IllegalArgumentException("Name shouldn't be empty");
+            throw new IllegalArgumentException("Name shouldn't be null");
         }
         this.name = name;
     }
@@ -23,7 +23,7 @@ public class Behavior {
 
     public Behavior(String name) {
         if (name == null) {
-            throw new IllegalArgumentException("Name shouldn't be empty");
+            throw new IllegalArgumentException("Name shouldn't be null");
         }
         this.name = name;
     }

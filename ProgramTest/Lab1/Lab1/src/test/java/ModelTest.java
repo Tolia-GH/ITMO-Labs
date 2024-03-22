@@ -23,6 +23,14 @@ public class ModelTest {
         Behavior play = new Behavior("Play");
         Behavior swim = new Behavior("Swim");
         Behavior jump = new Behavior("Jump");
+
+        h1.invent(wheel);
+        h2.invent(newYork);
+        h3.invent(war);
+
+        d1.learn(play);
+        d2.learn(swim);
+        d3.learn(jump);
     }
 
     @Nested
@@ -56,14 +64,14 @@ public class ModelTest {
 
             System.out.println("Testing constructor of Invention");
             Exception e7 = Assertions.assertThrows(IllegalArgumentException.class, () -> new Invention(null));
-            Assertions.assertEquals("Name shouldn't be empty", e7.getMessage());
+            Assertions.assertEquals("Name shouldn't be null", e7.getMessage());
 
             System.out.println("Test done");
             System.out.println();
 
             System.out.println("Testing constructor of Behavior");
             Exception e8 = Assertions.assertThrows(IllegalArgumentException.class, () -> new Behavior(null));
-            Assertions.assertEquals("Name shouldn't be empty", e8.getMessage());
+            Assertions.assertEquals("Name shouldn't be null", e8.getMessage());
 
             System.out.println("Test done");
             System.out.println();
@@ -102,17 +110,46 @@ public class ModelTest {
 
             System.out.println("Test done");
             System.out.println();
+            System.out.println("Testing setter of Invention");
 
             Invention i = new Invention();
             Exception e7 = Assertions.assertThrows(IllegalArgumentException.class, () -> i.setName(null));
-            Assertions.assertEquals("Name shouldn't be empty", e7.getMessage());
+            Assertions.assertEquals("Name shouldn't be null", e7.getMessage());
+            Exception e8 = Assertions.assertThrows(IllegalArgumentException.class, () -> i.setInventor(null));
+            Assertions.assertEquals("Inventor shouldn't be null", e8.getMessage());
+
+            System.out.println("Test done");
+            System.out.println();
+            System.out.println("Testing setter of Behavior");
+
+            Behavior b = new Behavior();
+            Exception e9 = Assertions.assertThrows(IllegalArgumentException.class, () -> b.setName(null));
+            Assertions.assertEquals("Name shouldn't be null", e9.getMessage());
+
+            System.out.println("Test done");
+            System.out.println();
+        }
+    }
+
+    @Nested
+    class FunctionTest {
+        @Test
+        @DisplayName("Test for invent()")
+        void testInvent() {
+            System.out.println("Testing invent() of Human");
+
+            Human h = new Human("TestHuman", Gender.NONE, 18);
+            Exception e1 = Assertions.assertThrows(IllegalArgumentException.class, () -> h.invent(null));
+            Assertions.assertEquals("Invention can't be null", e1.getMessage());
 
             System.out.println("Test done");
             System.out.println();
 
-            Behavior b = new Behavior();
-            Exception e8 = Assertions.assertThrows(IllegalArgumentException.class, () -> b.setName(null));
-            Assertions.assertEquals("Name shouldn't be empty", e8.getMessage());
+            System.out.println("Testing invent() of Human");
+
+            Dolphin d = new Dolphin("TestDolphin", Gender.NONE, 18);
+            Exception e2 = Assertions.assertThrows(IllegalArgumentException.class, () -> d.invent(null));
+            Assertions.assertEquals("Invention can't be null", e2.getMessage());
 
             System.out.println("Test done");
             System.out.println();
