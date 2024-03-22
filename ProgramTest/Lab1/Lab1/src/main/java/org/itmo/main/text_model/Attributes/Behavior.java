@@ -1,4 +1,4 @@
-package org.itmo.main.text_model;
+package org.itmo.main.text_model.Attributes;
 
 public class Behavior {
     private String name;
