@@ -1,5 +1,6 @@
 package org.itmo.main.text_model.Entity;
 
+import lombok.Getter;
 import org.itmo.main.text_model.Attributes.Behavior;
 import org.itmo.main.text_model.Attributes.Gender;
 import org.itmo.main.text_model.Attributes.Invention;
@@ -7,7 +8,9 @@ import org.itmo.main.text_model.Attributes.Invention;
 import java.util.ArrayList;
 
 public class Human extends Animal {
+    @Getter
     private static ArrayList<Invention> inventions = new ArrayList<>();
+    @Getter
     private static ArrayList<Behavior> behaviors = new ArrayList<>();
     public Human() {
         super();
@@ -37,5 +40,9 @@ public class Human extends Animal {
             throw new IllegalArgumentException("Behavior can't be null");
         }
         Human.behaviors.add(b);
+    }
+
+    public boolean isHumanSmarterThanDolphin() {
+        return Human.inventions.size() > Dolphin.getInventions().size();
     }
 }

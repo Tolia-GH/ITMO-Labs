@@ -177,4 +177,21 @@ public class ModelTest {
             System.out.println();
         }
     }
+
+    @Nested
+    class IntelligenceCompareTest {
+        @Test
+        @DisplayName("Test isHumanSmarterThanDolphin()")
+        void testIsHumanSmarterThanDolphin() {
+            Human h = new Human("TestHuman", Gender.NONE, 18);
+            Assertions.assertTrue(h.isHumanSmarterThanDolphin());
+        }
+
+        @Test
+        @DisplayName("Test isDolphinSmarterThanHuman()")
+        void testIsDolphinSmarterThanHuman() {
+            Dolphin d = new Dolphin("TestDolphin", Gender.NONE, 18);
+            Assertions.assertTrue(d.isDolphinSmarterThanHuman());
+        }
+    }
 }
