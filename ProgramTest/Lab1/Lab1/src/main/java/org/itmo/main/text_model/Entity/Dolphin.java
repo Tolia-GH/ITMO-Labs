@@ -7,13 +7,8 @@ import org.itmo.main.text_model.Attributes.Invention;
 import java.util.ArrayList;
 
 public class Dolphin extends Animal {
-
-    private String name;
-    private Gender gender;
-    private int age;
     private ArrayList<Invention> inventions;
     private ArrayList<Behavior> behaviors;
-    private int IQ;
     public Dolphin() {
         super();
     }

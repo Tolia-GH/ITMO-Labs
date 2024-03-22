@@ -7,12 +7,8 @@ import org.itmo.main.text_model.Attributes.Invention;
 import java.util.ArrayList;
 
 public class Human extends Animal {
-    private String name;
-    private Gender gender;
-    private int age;
     private static ArrayList<Invention> inventions;
     private static ArrayList<Behavior> behaviors;
-    private int IQ;
     public Human() {
         super();
     }

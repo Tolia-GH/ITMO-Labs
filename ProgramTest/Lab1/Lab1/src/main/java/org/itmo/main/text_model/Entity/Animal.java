@@ -1,7 +1,9 @@
 package org.itmo.main.text_model.Entity;
 
+import lombok.Getter;
 import org.itmo.main.text_model.Attributes.Gender;
 
+@Getter
 public abstract class Animal {
     private String name;
     private Gender gender;
@@ -43,4 +45,5 @@ public abstract class Animal {
         this.gender = gender;
         this.age = age;
     }
+
 }
