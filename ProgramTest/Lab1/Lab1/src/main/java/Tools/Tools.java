@@ -3,7 +3,20 @@ package Tools;
 import java.util.Arrays;
 import java.util.Random;
 
-public class RandomArrayGenerator {
+public class Tools {
+
+    public static boolean isSorted(int[] arr) {
+        if (arr.length == 1) {
+            return true;
+        }
+
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i-1] > arr[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public static int[] generateRandomArray(int size, int min, int max) {
         if (size <= 0) {

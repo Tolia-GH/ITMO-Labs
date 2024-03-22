@@ -19,6 +19,10 @@ public class TanX {
     }
 
     public static double tanX(double degree) {
+        if (Double.isInfinite(degree) || Double.isNaN(degree)) {
+            throw new IllegalArgumentException("Value invalid");
+        }
+
         degree = degree % 180;
 
         if (degree < -90) {
@@ -31,7 +35,7 @@ public class TanX {
         System.out.println("degree = " + degree);
 
         if (degree == 90 || degree == -90) {
-            throw new IllegalArgumentException("The domain of tan(x) is (-90, 90)");
+            throw new IllegalArgumentException("Value invalid");
         }
         double x = Math.toRadians(degree);
         int n = 17;
