@@ -1,5 +1,8 @@
 package org.itmo.main;
 
+/**
+ * The type Tan x.
+ */
 public class TanX {
     // 计算 n 的阶乘
     private static int factorial(int n) {
@@ -18,6 +21,12 @@ public class TanX {
         return (Math.pow(-1, n - 1) * Math.pow(x, (2 * n - 2))) / factorial(2 * n - 2);
     }
 
+    /**
+     * Tan x double.
+     *
+     * @param degree the degree
+     * @return the double
+     */
     public static double tanX(double degree) {
         if (Double.isInfinite(degree) || Double.isNaN(degree)) {
             throw new IllegalArgumentException("Value invalid");
