@@ -23,13 +23,16 @@ $$
             SELECT conname AS constraint_name,
                 contype AS constraint_type,
                 conrelid::regclass::text AS table_name,
-                attribute.attname AS column_name,
-                class.relname AS foreign_table,
-                attribute.attname AS foreign_column
-            FROM pg_constraint c
+                a.attname AS column_name,
+                f.relname AS foreign_table,
+                af.attname AS foreign_column
+            FROM
+                pg_constraint c
                 JOIN pg_namespace namespace ON c.connamespace = namespace.oid
-                JOIN pg_class class ON c.conrelid = class.oid
-                JOIN pg_attribute attribute ON attribute.attrelid = class.oid AND attribute.attnum = ANY(c.conkey)
+                JOIN pg_class t ON c.conrelid = t.oid
+                JOIN pg_attribute a ON a.attrelid = t.oid AND a.attnum = ANY(c.conkey)
+                FULL JOIN pg_class f ON c.confrelid = f.oid
+                FULL JOIN pg_attribute af ON af.attrelid = f.oid AND af.attnum = ANY(c.confkey)
             WHERE namespace.nspname = schema AND contype IN ('p', 'f')
         LOOP
             IF constraint_record.constraint_type = 'p' THEN

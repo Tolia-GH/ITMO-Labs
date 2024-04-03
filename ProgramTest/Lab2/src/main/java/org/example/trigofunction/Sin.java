@@ -1,22 +1,36 @@
 package org.example.trigofunction;
 
 import org.example.Function;
+import org.example.tools.MyMath;
 
 public class Sin extends Function {
-    @Override
-    public double getValue(double x, double acc) {
-        return 0;
+
+    private static double initDegree(double degree) {
+        if (Double.isInfinite(degree) || Double.isNaN(degree)) {
+            throw new IllegalArgumentException("Value invalid");
+        }
+
+        degree = degree % 360;
+
+        System.out.println("degree = " + degree);
+
+        return Math.toRadians(degree);
     }
 
-    private static int factorial(int n) {
-        int result = 1;
-        for (int i = 1; i <= n; i++) {
-            result *= i;
+    public static double getValue(double degree) {
+        double x = initDegree(degree);
+        int tn = 17;
+
+        double resSin = 0;
+
+        for (int i = 1; i <= tn; i++) {
+            resSin += taylorSinX(x, i);
         }
-        return result;
+
+        return resSin;
     }
 
     private static double taylorSinX(double x, int n) {
-        return (Math.pow(-1,n-1) * Math.pow(x, (2 * n - 1))) / factorial(2 * n - 1);
+        return Math.pow(-1,n-1) * Math.pow(x, (2 * n - 1)) / MyMath.factorial(2 * n - 1);
     }
 }
