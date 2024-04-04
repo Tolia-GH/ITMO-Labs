@@ -10,17 +10,17 @@ public class FunctionTest {
 
     @Nested
     class BasicFunctionTest {
-        final double accuracy = 0.001;
+        final double accuracy = 0.0000000001;
 
         @ParameterizedTest
         @CsvFileSource(resources = "inputs/degree_range_two_pi.csv")
         void testSin(double x) {
-            System.out.println("Testing for i= " + x);
+            System.out.println("Testing for x= " + x);
             System.out.println("-------------------------");
             double resSinX = Sin.getValue(x);
             double resMathSinX = Math.sin(Math.toRadians(x));
             System.out.println("Taylor sin(x) = " + resSinX);
-            System.out.println("Math.sin(x) = " + resMathSinX);
+            System.out.println("Math.sin(x)   = " + resMathSinX);
             Assertions.assertEquals(resMathSinX, resSinX, accuracy);
             System.out.println();
         }
@@ -33,7 +33,7 @@ public class FunctionTest {
             double resCosX = Cos.getValue(x);
             double resMathCosX = Math.cos(Math.toRadians(x));
             System.out.println("Taylor cos(x) = " + resCosX);
-            System.out.println("Math.cos(x) = " + resMathCosX);
+            System.out.println("Math.cos(x)   = " + resMathCosX);
             Assertions.assertEquals(resMathCosX, resCosX, accuracy);
             System.out.println();
         }
@@ -46,7 +46,7 @@ public class FunctionTest {
             double resTanX = Tan.getValue(x);
             double resMathTanX = Math.tan(Math.toRadians(x));
             System.out.println("Taylor tan(x) = " + resTanX);
-            System.out.println("Math.tan(x) = " + resMathTanX);
+            System.out.println("Math.tan(x)   = " + resMathTanX);
             Assertions.assertEquals(resMathTanX, resTanX, accuracy);
             System.out.println();
         }
@@ -59,7 +59,7 @@ public class FunctionTest {
             double resCotX = Cot.getValue(x);
             double resMathCotX = 1 / Math.tan(Math.toRadians(x));
             System.out.println("Taylor cot(x) = " + resCotX);
-            System.out.println("Math.cot(x) = " + resMathCotX);
+            System.out.println("Math.cot(x)   = " + resMathCotX);
             Assertions.assertEquals(resMathCotX, resCotX, accuracy);
             System.out.println();
         }
@@ -72,7 +72,7 @@ public class FunctionTest {
             double resSecX = Sec.getValue(x);
             double resMathSecX = 1 / Math.cos(Math.toRadians(x));
             System.out.println("Taylor sec(x) = " + resSecX);
-            System.out.println("Math.sec(x) = " + resMathSecX);
+            System.out.println("Math.sec(x)   = " + resMathSecX);
             Assertions.assertEquals(resMathSecX, resSecX, accuracy);
             System.out.println();
         }
@@ -85,7 +85,7 @@ public class FunctionTest {
             double resCscX = Csc.getValue(x);
             double resMathCscX = 1 / Math.sin(Math.toRadians(x));
             System.out.println("Taylor csc(x) = " + resCscX);
-            System.out.println("Math.csc(x) = " + resMathCscX);
+            System.out.println("Math.csc(x)   = " + resMathCscX);
             Assertions.assertEquals(resMathCscX, resCscX, accuracy);
             System.out.println();
         }

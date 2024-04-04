@@ -19,7 +19,7 @@ public class Cos extends Function {
 
     public static double getValue(double degree) {
         double x = initDegree(degree);
-        int tn = 17;
+        int tn = 20;
 
         double resCos = 0;
 
