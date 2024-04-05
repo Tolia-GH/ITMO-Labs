@@ -3,6 +3,8 @@
  * @variant 9319
  */
 
+import org.junit.jupiter.api.BeforeAll;
+import org.tolia.EquationSystem;
 import org.tolia.expression.EquationA;
 import org.tolia.expression.EquationB;
 import org.tolia.function.logfunction.Ln;
@@ -19,6 +21,11 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
+import org.mockito.Mock;
+import org.mockito.Mockito;
+
+import static org.mockito.Mockito.mock;
+
 public class MainTest {
     final double targetAcc = 0.0001;
     final int terms = 1;
@@ -26,21 +33,42 @@ public class MainTest {
     final double testAcc = 0.1;
 
     @Nested
+    class TestWithStub {
+        static Sin sinMock = mock(Sin.class);
+        static Cos cosMock = mock(Cos.class);
+        static Tan tanMock = mock(Tan.class);
+        static Cot cotMock = mock(Cot.class);
+        static Sec secMock = mock(Sec.class);
+        static Csc cscMock = mock(Csc.class);
+
+        @BeforeAll
+        static void init() {
+
+        }
+    }
+
+    @Nested
     class FunctionTest {
         @Nested
         class LegalInputTest {
             @Nested
             class TrigFunctionTest {
+                Sin sin = new Sin();
+                Cos cos = new Cos();
+                Tan tan = new Tan();
+                Cot cot = new Cot();
+                Sec sec = new Sec();
+                Csc csc = new Csc();
                 @ParameterizedTest
                 @CsvFileSource(resources = "inputs/-721~721(2).csv")
                 void testSin(double x) {
                     System.out.println("degree of x= " + x);
                     System.out.println("radian of x= " + Math.toRadians(x));
                     System.out.println("-------------------------");
-                    double resSinX = Sin.getValue(x, targetAcc, terms);
+                    double resSinX = sin.getValue(x, targetAcc, terms);
                     double resMathSinX = Math.sin(Math.toRadians(x));
                     System.out.println("Taylor sin(x) = " + resSinX);
-                    System.out.println("Taylor sin(x) = " + Sin.getTaylorRes(Math.toRadians(x), taylor_terms));
+                    System.out.println("Taylor sin(x) = " + sin.getTaylorRes(Math.toRadians(x), taylor_terms));
                     System.out.println("Math.sin(x)   = " + resMathSinX);
                     Assertions.assertEquals(resMathSinX, resSinX, testAcc);
                     System.out.println();
@@ -52,10 +80,10 @@ public class MainTest {
                     System.out.println("degree of x= " + x);
                     System.out.println("radian of x= " + Math.toRadians(x));
                     System.out.println("-------------------------");
-                    double resCosX = Cos.getValue(x, targetAcc, terms);
+                    double resCosX = cos.getValue(x, targetAcc, terms);
                     double resMathCosX = Math.cos(Math.toRadians(x));
                     System.out.println("Taylor cos(x) = " + resCosX);
-                    System.out.println("Taylor cos(x) = " + Cos.getTaylorRes(Math.toRadians(x), taylor_terms));
+                    System.out.println("Taylor cos(x) = " + cos.getTaylorRes(Math.toRadians(x), taylor_terms));
                     System.out.println("Math.cos(x)   = " + resMathCosX);
                     Assertions.assertEquals(resMathCosX, resCosX, testAcc);
                     System.out.println();
@@ -67,10 +95,10 @@ public class MainTest {
                     System.out.println("degree of x= " + x);
                     System.out.println("radian of x= " + Math.toRadians(x));
                     System.out.println("-------------------------");
-                    double resTanX = Tan.getValue(x, targetAcc, terms);
+                    double resTanX = tan.getValue(x, targetAcc, terms);
                     double resMathTanX = Math.tan(Math.toRadians(x));
                     System.out.println("Taylor tan(x) = " + resTanX);
-                    System.out.println("Taylor tan(x) = " + Tan.getTaylorRes(Math.toRadians(x), taylor_terms));
+                    System.out.println("Taylor tan(x) = " + tan.getTaylorRes(Math.toRadians(x), taylor_terms));
                     System.out.println("Math.tan(x)   = " + resMathTanX);
                     Assertions.assertEquals(resMathTanX, resTanX, testAcc);
                     System.out.println();
@@ -82,10 +110,10 @@ public class MainTest {
                     System.out.println("degree of x= " + x);
                     System.out.println("radian of x= " + Math.toRadians(x));
                     System.out.println("-------------------------");
-                    double resCotX = Cot.getValue(x, targetAcc, terms);
+                    double resCotX = cot.getValue(x, targetAcc, terms);
                     double resMathCotX = 1 / Math.tan(Math.toRadians(x));
                     System.out.println("Taylor cot(x) = " + resCotX);
-                    System.out.println("Taylor cot(x) = " + Cot.getTaylorRes(Math.toRadians(x), taylor_terms));
+                    System.out.println("Taylor cot(x) = " + cot.getTaylorRes(Math.toRadians(x), taylor_terms));
                     System.out.println("Math.cot(x)   = " + resMathCotX);
                     Assertions.assertEquals(resMathCotX, resCotX, testAcc);
                     System.out.println();
@@ -97,10 +125,10 @@ public class MainTest {
                     System.out.println("degree of x= " + x);
                     System.out.println("radian of x= " + Math.toRadians(x));
                     System.out.println("-------------------------");
-                    double resSecX = Sec.getValue(x, targetAcc, terms);
+                    double resSecX = sec.getValue(x, targetAcc, terms);
                     double resMathSecX = 1 / Math.cos(Math.toRadians(x));
                     System.out.println("Taylor sec(x) = " + resSecX);
-                    System.out.println("Taylor sec(x) = " + Sec.getTaylorRes(Math.toRadians(x), taylor_terms));
+                    System.out.println("Taylor sec(x) = " + sec.getTaylorRes(Math.toRadians(x), taylor_terms));
                     System.out.println("Math.sec(x)   = " + resMathSecX);
                     Assertions.assertEquals(resMathSecX, resSecX, testAcc);
                     System.out.println();
@@ -112,10 +140,10 @@ public class MainTest {
                     System.out.println("degree of x= " + x);
                     System.out.println("radian of x= " + Math.toRadians(x));
                     System.out.println("-------------------------");
-                    double resCscX = Csc.getValue(x, targetAcc, terms);
+                    double resCscX = csc.getValue(x, targetAcc, terms);
                     double resMathCscX = 1 / Math.sin(Math.toRadians(x));
                     System.out.println("Taylor csc(x) = " + resCscX);
-                    System.out.println("Taylor csc(x) = " + Csc.getTaylorRes(Math.toRadians(x), taylor_terms));
+                    System.out.println("Taylor csc(x) = " + csc.getTaylorRes(Math.toRadians(x), taylor_terms));
                     System.out.println("Math.csc(x)   = " + resMathCscX);
                     Assertions.assertEquals(resMathCscX, resCscX, testAcc);
                     System.out.println();
@@ -180,19 +208,21 @@ public class MainTest {
     }
 
     @Nested
-    class ExpressionTest {
+    class EquationsTest {
+        EquationA equationA = new EquationA();
+        EquationB equationB= new EquationB();
         @Nested
         class LegalInputTest {
             @Nested
-            class Equation {
+            class EquationTest {
                 @ParameterizedTest
-                @CsvFileSource(resources = "inputs/-721~721(2).csv")
-                void testExpressionA(double x) {
-                    System.out.println("degree of x= " + x);
-                    System.out.println("radian of x= " + Math.toRadians(x));
+                @CsvFileSource(resources = "inputs/-0.01~-2(0.01)~-100(3).csv")
+                void testEquationA(double x) {
+                    System.out.println("radian of x= " + x);
+                    System.out.println("degree of x= " + Math.toDegrees(x));
                     System.out.println("-------------------------");
-                    double resExpressionA = EquationA.getValue(x, targetAcc, terms);
-                    double resMathExpressionA = EquationA.getMathValue(x);
+                    double resExpressionA = equationA.getValue(x, targetAcc, terms);
+                    double resMathExpressionA = equationA.getMathValue(x);
                     System.out.println("Taylor expressionA(x) = " + resExpressionA);
                     System.out.println("Math.expressionA(x)  = " + resMathExpressionA);
                     Assertions.assertEquals(resMathExpressionA, resExpressionA, testAcc);
@@ -201,11 +231,11 @@ public class MainTest {
 
                 @ParameterizedTest
                 @CsvFileSource(resources = "inputs/0.01~2(0.01)~100(3).csv")
-                void testExpressionB(double x) {
+                void testEquationB(double x) {
                     System.out.println("x= " + x);
                     System.out.println("-------------------------");
-                    double resExpressionB = EquationB.getValue(x, targetAcc, terms);
-                    double resMathExpressionB = EquationB.getMathValue(x);
+                    double resExpressionB = equationB.getValue(x, targetAcc, terms);
+                    double resMathExpressionB = equationB.getMathValue(x);
                     System.out.println("Taylor expressionB(x) = " + resExpressionB);
                     System.out.println("Math.expressionB(x)  = " + resMathExpressionB);
                     Assertions.assertEquals(resMathExpressionB, resExpressionB, testAcc);
@@ -214,13 +244,20 @@ public class MainTest {
             }
 
             @Nested
-            class EquationSystem {
-
+            class EquationSystemTest {
+                @ParameterizedTest
+                @CsvFileSource(resources = "inputs/-100~2(3)~-0.01(0.01)~0.01~2(0.01)~100(3).csv")
+                void testEquationSystem(double x) {
+                    System.out.println("x= " + x);
+                    System.out.println("-------------------------");
+                    double resEquationSystem = new EquationSystem().getValue(x, targetAcc, terms);
+                    double resMathEquationSystem = new EquationSystem().getMathValue(x);
+                    System.out.println("Taylor expressionB(x) = " + resEquationSystem);
+                    System.out.println("Math.expressionB(x)  = " + resMathEquationSystem);
+                    Assertions.assertEquals(resMathEquationSystem, resEquationSystem, testAcc);
+                    System.out.println();
+                }
             }
         }
     }
-
-
-
-
 }

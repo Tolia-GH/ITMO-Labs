@@ -17,7 +17,7 @@ public class Cos extends Function {
         return Math.toRadians(degree);
     }
 
-    public static double getValue(double degree, double acc, int terms) {
+    public double getValue(double degree, double acc, int terms) {
         double x = initDegree(degree);
 
         double resLast = 0;
@@ -32,7 +32,8 @@ public class Cos extends Function {
         return res;
     }
 
-    public static double getTaylorRes(double x, int terms) {
+    public double getTaylorRes(double x, int terms) {
+        x = x % (2 * Math.PI);
         double resCos = 0;
         for (int i = 1; i <= terms; i++) {
             resCos += taylorCosX(x, i);

@@ -8,7 +8,7 @@ public class Main {
      * @param args the input arguments
      */
     public static void main(String[] args) {
-        for (double i = 1; i <= 100; i+=3) {
+        for (double i = -2; i <= 0; i+=0.01) {
             System.out.printf("%1.2f\n" , i);
         }
     }

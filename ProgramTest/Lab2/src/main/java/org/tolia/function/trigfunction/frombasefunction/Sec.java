@@ -4,6 +4,8 @@ import org.tolia.function.trigfunction.Cos;
 import org.tolia.function.trigfunction.Sin;
 
 public class Sec {
+    Cos cos = new Cos();
+
     private static double initDegree(double degree) {
         if (Double.isInfinite(degree) || Double.isNaN(degree)) {
             throw new IllegalArgumentException("Value invalid");
@@ -16,7 +18,7 @@ public class Sec {
         return Math.toRadians(degree);
     }
 
-    public static double getValue(double degree, double acc, int terms) {
+    public double getValue(double degree, double acc, int terms) {
         //return Sin.getValue(degree, acc , terms) / Cos.getValue(degree, acc, terms);
 
         double x = initDegree(degree);
@@ -34,7 +36,7 @@ public class Sec {
         return res;
     }
 
-    public static double getTaylorRes(double x, int terms) {
-        return 1 / Cos.getTaylorRes(x, terms);
+    public double getTaylorRes(double x, int terms) {
+        return 1 / cos.getTaylorRes(x, terms);
     }
 }

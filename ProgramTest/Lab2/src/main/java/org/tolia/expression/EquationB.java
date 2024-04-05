@@ -5,7 +5,7 @@ import org.tolia.function.logfunction.frombasefunction.Lg;
 import org.tolia.function.logfunction.frombasefunction.Log;
 
 public class EquationB {
-    public static double expression(double x, int terms) {
+    public double expression(double x, int terms) {
         double res = (
             (
                 (
@@ -47,7 +47,7 @@ public class EquationB {
         return res;
     }
 
-    public static double getMathValue(double x) {
+    public double getMathValue(double x) {
 
         double lnx = Math.log(x);
         double log5x = Math.log(x) / Math.log(5);
@@ -85,7 +85,7 @@ public class EquationB {
         );
     }
 
-    public static double getValue(double x, double acc, int terms) {
+    public double getValue(double x, double acc, int terms) {
         double resLast = 0;
         double res = expression(x, terms);
 

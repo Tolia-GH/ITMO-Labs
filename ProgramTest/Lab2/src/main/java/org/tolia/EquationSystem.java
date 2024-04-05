@@ -1,22 +1,31 @@
 package org.tolia;
 
+import lombok.AllArgsConstructor;
 import org.tolia.expression.EquationA;
 import org.tolia.expression.EquationB;
 
+@AllArgsConstructor
 public class EquationSystem {
-    public static double getValue(double x, double acc, int terms) {
+    EquationA equationA;
+    EquationB equationB;
+
+    public EquationSystem(){
+        equationB = new EquationB();
+        equationA = new EquationA();
+    }
+    public double getValue(double x, double acc, int terms) {
         if (x <= 0) {
-            return EquationA.getValue(x, acc, terms);
+            return equationA.getValue(x, acc, terms);
         } else {
-            return EquationB.getValue(x, acc, terms);
+            return equationB.getValue(x, acc, terms);
         }
     }
 
-    public static double getMathValue(double x) {
+    public double getMathValue(double x) {
         if (x <= 0) {
-            return EquationA.getMathValue(x);
+            return equationA.getMathValue(x);
         } else {
-            return EquationB.getMathValue(x);
+            return equationB.getMathValue(x);
         }
     }
 }

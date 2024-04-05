@@ -1,5 +1,6 @@
 package org.tolia.expression;
 
+import lombok.AllArgsConstructor;
 import org.tolia.Function;
 import org.tolia.function.trigfunction.Cos;
 import org.tolia.function.trigfunction.Sin;
@@ -11,31 +12,47 @@ import org.tolia.function.trigfunction.frombasefunction.Tan;
 /**
  * The type Complex function A.
  */
+@AllArgsConstructor
 public class EquationA extends Function {
+    Sin sin;
+    Cos cos;
+    Tan tan;
+    Cot cot;
+    Sec sec;
+    Csc csc;
 
-    private static double expression(double x, int terms) {
+    public EquationA(){
+        sin = new Sin();
+        cos = new Cos();
+        tan = new Tan();
+        cot = new Cot();
+        sec = new Sec();
+        csc = new Csc();
+    }
+
+    private double expression(double x, int terms) {
 
         double res = (
             (
                 (
                     (
                         (
-                            Tan.getTaylorRes(x, terms) - Csc.getTaylorRes(x, terms)
-                        ) / Cos.getTaylorRes(x, terms)
-                    ) / Sin.getTaylorRes(x, terms)
+                            tan.getTaylorRes(x, terms) - csc.getTaylorRes(x, terms)
+                        ) / cos.getTaylorRes(x, terms)
+                    ) / sin.getTaylorRes(x, terms)
                 ) +
                 (
-                    Cot.getTaylorRes(x, terms) -
-                    (Csc.getTaylorRes(x, terms) - Csc.getTaylorRes(x, terms))
+                    cot.getTaylorRes(x, terms) -
+                    (csc.getTaylorRes(x, terms) - csc.getTaylorRes(x, terms))
                 )
             ) /
-            Sec.getTaylorRes(x, terms)
+            sec.getTaylorRes(x, terms)
         );
         System.out.printf("%s = %-3d, %s = %.20f\n","terms", terms, "res", res);
         return res;
     }
 
-    public static double getMathValue(double x) {
+    public double getMathValue(double x) {
 
         return (
             (
@@ -60,7 +77,7 @@ public class EquationA extends Function {
      * @param x the x
      * @return the value
      */
-    public static double getValue(double x, double acc, int terms) {
+    public double getValue(double x, double acc, int terms) {
         double resLast = 0;
         double res = expression(x, terms);
 
