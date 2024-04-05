@@ -4,7 +4,7 @@ public class Ln {
     private static double init(double x) {
         return x;
     }
-    public static double getValue(double x, double acc, int terms) {
+    public double getValue(double x, double acc, int terms) {
 
         x = init(x);
 
@@ -20,7 +20,7 @@ public class Ln {
         return res;
     }
 
-    public static double getTaylorRes(double x, int terms) {
+    public double getTaylorRes(double x, int terms) {
         double resLn = 0;
         for (int i = 1; i <= terms; i++) {
             resLn += taylorLnX(x, i);
@@ -29,7 +29,7 @@ public class Ln {
         return resLn;
     }
 
-    private static double taylorLnX(double x, int n) {
+    private double taylorLnX(double x, int n) {
         double z = (x - 1) / (x + 1);
         return  (2 * Math.pow(z, 2 * n - 1)) / (2 * n - 1);
     }

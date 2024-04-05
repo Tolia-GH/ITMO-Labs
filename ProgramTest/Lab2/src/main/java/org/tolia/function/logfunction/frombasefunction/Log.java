@@ -6,11 +6,12 @@ import org.tolia.function.logfunction.Ln;
  * The type Log.
  */
 public class Log {
+    Ln ln = new Ln();
     private static double init(double base, double x) {
         return x;
     }
 
-    public static double getValue(double base, double x, double acc, int terms) {
+    public double getValue(double base, double x, double acc, int terms) {
 
         x = init(base, x);
 
@@ -26,7 +27,7 @@ public class Log {
         return res;
     }
 
-    public static double getTaylorRes(double base, double x, int terms) {
-        return Ln.getTaylorRes(x, terms) / Ln.getTaylorRes(base, terms);
+    public double getTaylorRes(double base, double x, int terms) {
+        return ln.getTaylorRes(x, terms) / ln.getTaylorRes(base, terms);
     }
 }

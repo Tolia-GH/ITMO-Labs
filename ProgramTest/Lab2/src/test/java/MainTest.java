@@ -152,12 +152,15 @@ public class MainTest {
 
             @Nested
             class LogFunctionTest {
+                Ln ln = new Ln();
+                Log log = new Log();
+                Lg lg = new Lg();
                 @ParameterizedTest
                 @CsvFileSource(resources = "inputs/0.01~2(0.01)~100(3).csv")
                 void testLn(double x) {
                     System.out.println("Testing for x= " + x);
                     System.out.println("-------------------------");
-                    double resLn = Ln.getValue(x, targetAcc, terms);
+                    double resLn = ln.getValue(x, targetAcc, terms);
                     double resMathLn = Math.log(x);
                     System.out.println("Taylor ln(x) = " + resLn);
                     System.out.println("Math.ln(x)  = " + resMathLn);
@@ -170,7 +173,7 @@ public class MainTest {
                 void testLog2(double x) {
                     System.out.println("Testing for x= " + x);
                     System.out.println("-------------------------");
-                    double resLog2 = Log.getValue(2, x, targetAcc, terms);
+                    double resLog2 = log.getValue(2, x, targetAcc, terms);
                     double resMathLog2 = Math.log(x) / Math.log(2);
                     System.out.println("Taylor log2(x) = " + resLog2);
                     System.out.println("Math.log2(x)  = " + resMathLog2);
@@ -183,7 +186,7 @@ public class MainTest {
                 void testLog3(double x) {
                     System.out.println("Testing for x= " + x);
                     System.out.println("-------------------------");
-                    double resLog3 = Log.getValue(3, x, targetAcc, terms);
+                    double resLog3 = log.getValue(3, x, targetAcc, terms);
                     double resMathLog3 = Math.log(x) / Math.log(3);
                     System.out.println("Taylor log3(x) = " + resLog3);
                     System.out.println("Math.log3(x)  = " + resMathLog3);
@@ -196,7 +199,7 @@ public class MainTest {
                 void testLg(double x) {
                     System.out.println("Testing for x= " + x);
                     System.out.println("-------------------------");
-                    double resLg = Lg.getValue(x, targetAcc, terms);
+                    double resLg = lg.getValue(x, targetAcc, terms);
                     double resMathLg = Math.log10(x);
                     System.out.println("Taylor lg(x) = " + resLg);
                     System.out.println("Math.lg(x)  = " + resMathLg);

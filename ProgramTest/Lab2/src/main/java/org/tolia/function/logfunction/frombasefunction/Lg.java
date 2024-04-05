@@ -3,11 +3,12 @@ package org.tolia.function.logfunction.frombasefunction;
 import org.tolia.function.logfunction.Ln;
 
 public class Lg {
+    Ln ln = new Ln();
     private static double init(double x) {
         return x;
     }
 
-    public static double getValue(double x, double acc, int terms) {
+    public double getValue(double x, double acc, int terms) {
         x = init(x);
 
         double resLast = 0;
@@ -22,7 +23,7 @@ public class Lg {
         return res;
     }
 
-    public static double getTaylorRes(double x, int terms) {
-        return Ln.getTaylorRes(x, terms) / Ln.getTaylorRes(10, terms);
+    public double getTaylorRes(double x, int terms) {
+        return ln.getTaylorRes(x, terms) / ln.getTaylorRes(10, terms);
     }
 }

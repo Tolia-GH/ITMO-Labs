@@ -1,42 +1,54 @@
 package org.tolia.expression;
 
+import lombok.AllArgsConstructor;
 import org.tolia.function.logfunction.Ln;
 import org.tolia.function.logfunction.frombasefunction.Lg;
 import org.tolia.function.logfunction.frombasefunction.Log;
 
+@AllArgsConstructor
 public class EquationB {
+    Ln ln;
+    Log log;
+    Lg lg;
+
+    public EquationB() {
+        ln = new Ln();
+        log = new Log();
+        lg = new Lg();
+    }
     public double expression(double x, int terms) {
+
         double res = (
             (
                 (
                     (
                         (
                             (
-                                Ln.getTaylorRes(x, terms) * Ln.getTaylorRes(x, terms)
-                            ) - Ln.getTaylorRes(x, terms)
+                                ln.getTaylorRes(x, terms) * ln.getTaylorRes(x, terms)
+                            ) - ln.getTaylorRes(x, terms)
                         ) -
                         (
-                            Math.pow(Ln.getTaylorRes(x, terms), 2)
+                            Math.pow(ln.getTaylorRes(x, terms), 2)
                         )
                     ) *
                     (
                         (
-                            Log.getTaylorRes(5, x, terms) + Lg.getTaylorRes(x, terms)
-                        ) - Log.getTaylorRes(2, x, terms)
+                            log.getTaylorRes(5, x, terms) + lg.getTaylorRes(x, terms)
+                        ) - log.getTaylorRes(2, x, terms)
                     )
                 ) /
                 (
                     (
-                        Log.getTaylorRes(3, x, terms) * Log.getTaylorRes(5, x, terms)
+                        log.getTaylorRes(3, x, terms) * log.getTaylorRes(5, x, terms)
                     ) *
                     (
                         (
-                            Math.pow(Log.getTaylorRes(2, x, terms), 2)
+                            Math.pow(log.getTaylorRes(2, x, terms), 2)
                         ) /
                         (
-                            Log.getTaylorRes(2, x, terms) +
+                            log.getTaylorRes(2, x, terms) +
                             (
-                                Lg.getTaylorRes(x, terms) - Lg.getTaylorRes(x, terms)
+                                lg.getTaylorRes(x, terms) - lg.getTaylorRes(x, terms)
                             )
                         )
                     )
