@@ -1,5 +1,5 @@
 package org.example;
 
-public abstract class Function {
+public class Function {
 
 }

@@ -17,21 +17,21 @@ public class ComplexFunctionA extends Function {
      * @param degree the degree
      * @return the value
      */
-    public static double getValue(double degree) {
+    public static double getValue(double degree, double acc, int terms) {
         return (
             (
                 (
                     (
                         (
-                            Tan.getValue(degree) - Csc.getValue(degree)
-                        ) / Cos.getValue(degree)
-                    ) / Sin.getValue(degree)
+                            Tan.getValue(degree, acc, terms) - Csc.getValue(degree, acc, terms)
+                        ) / Cos.getValue(degree, acc, terms)
+                    ) / Sin.getValue(degree, acc, terms)
                 ) +
                 (
-                    Cot.getValue(degree) - (Csc.getValue(degree) - Csc.getValue(degree))
+                    Cot.getValue(degree, acc, terms) - (Csc.getValue(degree, acc, terms) - Csc.getValue(degree, acc, terms))
                 )
             ) /
-            Sec.getValue(degree)
+            Sec.getValue(degree, acc, terms)
         );
     }
 }

@@ -17,13 +17,24 @@ public class Cos extends Function {
         return Math.toRadians(degree);
     }
 
-    public static double getValue(double degree) {
+    public static double getValue(double degree, double acc, int terms) {
         double x = initDegree(degree);
-        int tn = 20;
 
+        double resLast = 0;
+        double res = getTaylorRes(x, terms);
+
+        while (Math.abs(res - resLast) > acc) {
+            terms++;
+            resLast = res;
+            res = getTaylorRes(x, terms);
+        }
+        System.out.println("Taylor terms = " + terms);
+        return res;
+    }
+
+    public static double getTaylorRes(double x, int terms) {
         double resCos = 0;
-
-        for (int i = 1; i <= tn; i++) {
+        for (int i = 1; i <= terms; i++) {
             resCos += taylorCosX(x, i);
         }
 
