@@ -1,9 +1,9 @@
-package org.example.trigofunction;
+package org.tolia.function.trigfunction;
 
-import org.example.Function;
-import org.example.tools.MyMath;
+import org.tolia.Function;
+import org.tolia.tools.MyMath;
 
-public class Cos extends Function {
+public class Sin extends Function {
 
     private static double initDegree(double degree) {
         if (Double.isInfinite(degree) || Double.isNaN(degree)) {
@@ -12,7 +12,7 @@ public class Cos extends Function {
 
         degree = degree % 360;
 
-        System.out.println("degree = " + degree);
+        //System.out.println("degree = " + degree);
 
         return Math.toRadians(degree);
     }
@@ -28,21 +28,20 @@ public class Cos extends Function {
             resLast = res;
             res = getTaylorRes(x, terms);
         }
-        System.out.println("Taylor terms = " + terms);
+        System.out.println("Sin Taylor terms = " + terms);
         return res;
     }
 
     public static double getTaylorRes(double x, int terms) {
-        double resCos = 0;
+        double resSin = 0;
         for (int i = 1; i <= terms; i++) {
-            resCos += taylorCosX(x, i);
+            resSin += taylorSinX(x, i);
         }
 
-        return resCos;
+        return resSin;
     }
 
-    private static double taylorCosX(double x, int n) {
-        return (Math.pow(-1, n - 1) * Math.pow(x, (2 * n - 2))) / MyMath.factorial(2 * n - 2);
+    private static double taylorSinX(double x, int n) {
+        return Math.pow(-1,n-1) * Math.pow(x, (2 * n - 1)) / MyMath.factorial(2 * n - 1);
     }
 }
-

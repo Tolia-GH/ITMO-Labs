@@ -1,4 +1,4 @@
-package org.example.tools;
+package org.tolia.tools;
 
 public class MyMath {
     public static double factorial(int n) {

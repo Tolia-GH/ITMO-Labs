@@ -1,6 +1,6 @@
-package org.example.logfunction.frombasefunction;
+package org.tolia.function.logfunction.frombasefunction;
 
-import org.example.logfunction.Ln;
+import org.tolia.function.logfunction.Ln;
 
 /**
  * The type Log.
@@ -15,14 +15,18 @@ public class Log {
         x = init(base, x);
 
         double resLast = 0;
-        double res = Ln.getTaylorRes(x, terms) / Ln.getTaylorRes(base, terms);
+        double res = getTaylorRes(base, x, terms);
 
         while (Math.abs(res - resLast) > acc) {
             terms++;
             resLast = res;
-            res = Ln.getTaylorRes(x, terms) / Ln.getTaylorRes(base, terms);
+            res = getTaylorRes(base, x, terms);
         }
         System.out.println("Taylor terms = " + terms);
         return res;
+    }
+
+    public static double getTaylorRes(double base, double x, int terms) {
+        return Ln.getTaylorRes(x, terms) / Ln.getTaylorRes(base, terms);
     }
 }

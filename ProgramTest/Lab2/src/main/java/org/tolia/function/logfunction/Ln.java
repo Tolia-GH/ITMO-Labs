@@ -1,6 +1,4 @@
-package org.example.logfunction;
-
-import org.example.tools.MyMath;
+package org.tolia.function.logfunction;
 
 public class Ln {
     private static double init(double x) {
@@ -33,7 +31,6 @@ public class Ln {
 
     private static double taylorLnX(double x, int n) {
         double z = (x - 1) / (x + 1);
-        double res = (2 * Math.pow(z, 2 * n - 1)) / (2 * n - 1);
-        return res;
+        return  (2 * Math.pow(z, 2 * n - 1)) / (2 * n - 1);
     }
 }

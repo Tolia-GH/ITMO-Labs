@@ -1,4 +1,4 @@
-package org.example;
+package org.tolia;
 
 public class Function {
 

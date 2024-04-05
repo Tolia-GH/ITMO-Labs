@@ -1,10 +1,9 @@
-package org.example.trigofunction.frombasefunction;
+package org.tolia.function.trigfunction.frombasefunction;
 
-import org.example.trigofunction.Cos;
-import org.example.trigofunction.Sin;
+import org.tolia.function.trigfunction.Cos;
+import org.tolia.function.trigfunction.Sin;
 
-public class Cot {
-
+public class Csc {
     private static double initDegree(double degree) {
         if (Double.isInfinite(degree) || Double.isNaN(degree)) {
             throw new IllegalArgumentException("Value invalid");
@@ -12,7 +11,7 @@ public class Cot {
 
         degree = degree % 360;
 
-        System.out.println("degree = " + degree);
+        //System.out.println("degree = " + degree);
 
         return Math.toRadians(degree);
     }
@@ -21,17 +20,21 @@ public class Cot {
         //return Sin.getValue(degree, acc , terms) / Cos.getValue(degree, acc, terms);
 
         double x = initDegree(degree);
-        System.out.println("Radian = " + x);
+        //System.out.println("Radian = " + x);
 
         double resLast = 0;
-        double res = Cos.getTaylorRes(x , terms) / Sin.getTaylorRes(x, terms);
+        double res = getTaylorRes(x, terms);
 
         while (Math.abs(res - resLast) > acc) {
             terms++;
             resLast = res;
-            res = Cos.getTaylorRes(x , terms) / Sin.getTaylorRes(x, terms);
+            res = getTaylorRes(x, terms);
         }
-        System.out.println("Taylor terms = " + terms);
+        System.out.println("Csc Taylor terms = " + terms);
         return res;
+    }
+
+    public static double getTaylorRes(double x, int terms) {
+        return 1 / Sin.getTaylorRes(x, terms);
     }
 }
