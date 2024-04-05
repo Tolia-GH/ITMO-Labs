@@ -11,10 +11,9 @@ import org.tolia.function.trigfunction.frombasefunction.Tan;
 /**
  * The type Complex function A.
  */
-public class ExpressionA extends Function {
+public class EquationA extends Function {
 
-    private static double expression(double degree, int terms) {
-        double x = Math.toRadians(degree);
+    private static double expression(double x, int terms) {
 
         double res = (
             (
@@ -36,8 +35,7 @@ public class ExpressionA extends Function {
         return res;
     }
 
-    public static double getMathValue(double degree) {
-        double x = Math.toRadians(degree);
+    public static double getMathValue(double x) {
 
         return (
             (
@@ -59,17 +57,17 @@ public class ExpressionA extends Function {
     /**
      * Gets value.
      *
-     * @param degree the degree
+     * @param x the x
      * @return the value
      */
-    public static double getValue(double degree, double acc, int terms) {
+    public static double getValue(double x, double acc, int terms) {
         double resLast = 0;
-        double res = expression(degree, terms);
+        double res = expression(x, terms);
 
         while (Math.abs(res - resLast) > acc) {
             terms++;
             resLast = res;
-            res = expression(degree, terms);
+            res = expression(x, terms);
         }
         System.out.println("E Taylor terms = " + terms);
         return res;

@@ -4,7 +4,7 @@ import org.tolia.function.logfunction.Ln;
 import org.tolia.function.logfunction.frombasefunction.Lg;
 import org.tolia.function.logfunction.frombasefunction.Log;
 
-public class ExpressionB {
+public class EquationB {
     public static double expression(double x, int terms) {
         double res = (
             (

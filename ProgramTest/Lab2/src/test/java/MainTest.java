@@ -3,8 +3,8 @@
  * @variant 9319
  */
 
-import org.tolia.expression.ExpressionA;
-import org.tolia.expression.ExpressionB;
+import org.tolia.expression.EquationA;
+import org.tolia.expression.EquationB;
 import org.tolia.function.logfunction.Ln;
 import org.tolia.function.logfunction.frombasefunction.Lg;
 import org.tolia.function.logfunction.frombasefunction.Log;
@@ -32,7 +32,7 @@ public class MainTest {
             @Nested
             class TrigFunctionTest {
                 @ParameterizedTest
-                @CsvFileSource(resources = "inputs/degree_range_two_pi.csv")
+                @CsvFileSource(resources = "inputs/-721~721(2).csv")
                 void testSin(double x) {
                     System.out.println("degree of x= " + x);
                     System.out.println("radian of x= " + Math.toRadians(x));
@@ -47,7 +47,7 @@ public class MainTest {
                 }
 
                 @ParameterizedTest
-                @CsvFileSource(resources = "inputs/degree_range_two_pi.csv")
+                @CsvFileSource(resources = "inputs/-721~721(2).csv")
                 void testCos(double x) {
                     System.out.println("degree of x= " + x);
                     System.out.println("radian of x= " + Math.toRadians(x));
@@ -62,7 +62,7 @@ public class MainTest {
                 }
 
                 @ParameterizedTest
-                @CsvFileSource(resources = "inputs/degree_range_two_pi.csv")
+                @CsvFileSource(resources = "inputs/-721~721(2).csv")
                 void testTan(double x) {
                     System.out.println("degree of x= " + x);
                     System.out.println("radian of x= " + Math.toRadians(x));
@@ -77,7 +77,7 @@ public class MainTest {
                 }
 
                 @ParameterizedTest
-                @CsvFileSource(resources = "inputs/degree_range_two_pi.csv")
+                @CsvFileSource(resources = "inputs/-721~721(2).csv")
                 void testCot(double x) {
                     System.out.println("degree of x= " + x);
                     System.out.println("radian of x= " + Math.toRadians(x));
@@ -92,7 +92,7 @@ public class MainTest {
                 }
 
                 @ParameterizedTest
-                @CsvFileSource(resources = "inputs/degree_range_two_pi.csv")
+                @CsvFileSource(resources = "inputs/-721~721(2).csv")
                 void testSec(double x) {
                     System.out.println("degree of x= " + x);
                     System.out.println("radian of x= " + Math.toRadians(x));
@@ -107,7 +107,7 @@ public class MainTest {
                 }
 
                 @ParameterizedTest
-                @CsvFileSource(resources = "inputs/degree_range_two_pi.csv")
+                @CsvFileSource(resources = "inputs/-721~721(2).csv")
                 void testCsc(double x) {
                     System.out.println("degree of x= " + x);
                     System.out.println("radian of x= " + Math.toRadians(x));
@@ -125,7 +125,7 @@ public class MainTest {
             @Nested
             class LogFunctionTest {
                 @ParameterizedTest
-                @CsvFileSource(resources = "inputs/number_from_zero_to_hundred.csv")
+                @CsvFileSource(resources = "inputs/0.01~2(0.01)~100(3).csv")
                 void testLn(double x) {
                     System.out.println("Testing for x= " + x);
                     System.out.println("-------------------------");
@@ -138,7 +138,7 @@ public class MainTest {
                 }
 
                 @ParameterizedTest
-                @CsvFileSource(resources = "inputs/number_from_zero_to_hundred.csv")
+                @CsvFileSource(resources = "inputs/0.01~2(0.01)~100(3).csv")
                 void testLog2(double x) {
                     System.out.println("Testing for x= " + x);
                     System.out.println("-------------------------");
@@ -151,7 +151,7 @@ public class MainTest {
                 }
 
                 @ParameterizedTest
-                @CsvFileSource(resources = "inputs/number_from_zero_to_hundred.csv")
+                @CsvFileSource(resources = "inputs/0.01~2(0.01)~100(3).csv")
                 void testLog3(double x) {
                     System.out.println("Testing for x= " + x);
                     System.out.println("-------------------------");
@@ -164,7 +164,7 @@ public class MainTest {
                 }
 
                 @ParameterizedTest
-                @CsvFileSource(resources = "inputs/number_from_zero_to_hundred.csv")
+                @CsvFileSource(resources = "inputs/0.01~2(0.01)~100(3).csv")
                 void testLg(double x) {
                     System.out.println("Testing for x= " + x);
                     System.out.println("-------------------------");
@@ -184,15 +184,15 @@ public class MainTest {
         @Nested
         class LegalInputTest {
             @Nested
-            class ExpressionATest {
+            class Equation {
                 @ParameterizedTest
-                @CsvFileSource(resources = "inputs/degree_range_two_pi.csv")
+                @CsvFileSource(resources = "inputs/-721~721(2).csv")
                 void testExpressionA(double x) {
                     System.out.println("degree of x= " + x);
                     System.out.println("radian of x= " + Math.toRadians(x));
                     System.out.println("-------------------------");
-                    double resExpressionA = ExpressionA.getValue(x, targetAcc, terms);
-                    double resMathExpressionA = ExpressionA.getMathValue(x);
+                    double resExpressionA = EquationA.getValue(x, targetAcc, terms);
+                    double resMathExpressionA = EquationA.getMathValue(x);
                     System.out.println("Taylor expressionA(x) = " + resExpressionA);
                     System.out.println("Math.expressionA(x)  = " + resMathExpressionA);
                     Assertions.assertEquals(resMathExpressionA, resExpressionA, testAcc);
@@ -200,17 +200,22 @@ public class MainTest {
                 }
 
                 @ParameterizedTest
-                @CsvFileSource(resources = "inputs/number_from_zero_to_hundred.csv")
+                @CsvFileSource(resources = "inputs/0.01~2(0.01)~100(3).csv")
                 void testExpressionB(double x) {
                     System.out.println("x= " + x);
                     System.out.println("-------------------------");
-                    double resExpressionB = ExpressionB.getValue(x, targetAcc, terms);
-                    double resMathExpressionB = ExpressionB.getMathValue(x);
+                    double resExpressionB = EquationB.getValue(x, targetAcc, terms);
+                    double resMathExpressionB = EquationB.getMathValue(x);
                     System.out.println("Taylor expressionB(x) = " + resExpressionB);
                     System.out.println("Math.expressionB(x)  = " + resMathExpressionB);
                     Assertions.assertEquals(resMathExpressionB, resExpressionB, testAcc);
                     System.out.println();
                 }
+            }
+
+            @Nested
+            class EquationSystem {
+
             }
         }
     }
