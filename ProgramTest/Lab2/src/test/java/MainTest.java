@@ -202,7 +202,7 @@ public class MainTest {
                 @ParameterizedTest
                 @CsvFileSource(resources = "inputs/number_from_zero_to_hundred.csv")
                 void testExpressionB(double x) {
-                    System.out.println("degree of x= " + x);
+                    System.out.println("x= " + x);
                     System.out.println("-------------------------");
                     double resExpressionB = ExpressionB.getValue(x, targetAcc, terms);
                     double resMathExpressionB = ExpressionB.getMathValue(x);

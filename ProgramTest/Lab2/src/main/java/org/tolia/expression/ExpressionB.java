@@ -6,7 +6,7 @@ import org.tolia.function.logfunction.frombasefunction.Log;
 
 public class ExpressionB {
     public static double expression(double x, int terms) {
-        return (
+        double res = (
             (
                 (
                     (
@@ -43,10 +43,11 @@ public class ExpressionB {
                 )
             )
         );
+        System.out.printf("%s = %-3d, %s = %.20f\n","terms", terms, "res", res);
+        return res;
     }
 
-    public static double getMathValue(double degree) {
-        double x = Math.toRadians(degree);
+    public static double getMathValue(double x) {
 
         double lnx = Math.log(x);
         double log5x = Math.log(x) / Math.log(5);
@@ -82,7 +83,6 @@ public class ExpressionB {
                 )
             )
         );
-
     }
 
     public static double getValue(double x, double acc, int terms) {
