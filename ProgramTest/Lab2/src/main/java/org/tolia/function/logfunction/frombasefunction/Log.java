@@ -1,13 +1,14 @@
 package org.tolia.function.logfunction.frombasefunction;
 
+import org.tolia.Function;
 import org.tolia.function.logfunction.Ln;
 
 /**
  * The type Log.
  */
-public class Log {
+public class Log extends Function {
     Ln ln = new Ln();
-    private static double init(double base, double x) {
+    public double init(double base, double x) {
         return x;
     }
 

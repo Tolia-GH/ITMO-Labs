@@ -1,10 +1,11 @@
 package org.tolia.function.logfunction.frombasefunction;
 
+import org.tolia.Function;
 import org.tolia.function.logfunction.Ln;
 
-public class Lg {
+public class Lg extends Function {
     Ln ln = new Ln();
-    private static double init(double x) {
+    public double init(double x) {
         return x;
     }
 

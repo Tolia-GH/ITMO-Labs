@@ -5,20 +5,20 @@ import org.tolia.tools.MyMath;
 
 public class Cos extends Function {
 
-    private static double initDegree(double degree) {
-        if (Double.isInfinite(degree) || Double.isNaN(degree)) {
+    public double initDegree(double x) {
+        if (Double.isInfinite(x) || Double.isNaN(x)) {
             throw new IllegalArgumentException("Value invalid");
         }
 
-        degree = degree % 360;
+        return x % (2 * Math.PI);
 
-        //System.out.println("degree = " + degree);
+        //System.out.println("x = " + x);
 
-        return Math.toRadians(degree);
+        //return Math.toRadians(x);
     }
 
-    public double getValue(double degree, double acc, int terms) {
-        double x = initDegree(degree);
+    public double getValue(double x, double acc, int terms) {
+        x = initDegree(x);
 
         double resLast = 0;
         double res = getTaylorRes(x, terms);
@@ -42,7 +42,7 @@ public class Cos extends Function {
         return resCos;
     }
 
-    private static double taylorCosX(double x, int n) {
+    public double taylorCosX(double x, int n) {
         return (Math.pow(-1, n - 1) * Math.pow(x, (2 * n - 2))) / MyMath.factorial(2 * n - 2);
     }
 }

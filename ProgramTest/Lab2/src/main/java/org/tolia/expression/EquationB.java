@@ -1,12 +1,13 @@
 package org.tolia.expression;
 
 import lombok.AllArgsConstructor;
+import org.tolia.Function;
 import org.tolia.function.logfunction.Ln;
 import org.tolia.function.logfunction.frombasefunction.Lg;
 import org.tolia.function.logfunction.frombasefunction.Log;
 
-@AllArgsConstructor
-public class EquationB {
+
+public class EquationB extends Function {
     Ln ln;
     Log log;
     Lg lg;
@@ -15,6 +16,11 @@ public class EquationB {
         ln = new Ln();
         log = new Log();
         lg = new Lg();
+    }
+    public EquationB(Ln ln, Log log, Lg lg) {
+        this.ln = ln;
+        this.log = log;
+        this.lg = lg;
     }
     public double expression(double x, int terms) {
 

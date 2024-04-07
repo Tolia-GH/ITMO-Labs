@@ -1,26 +1,27 @@
 package org.tolia.function.trigfunction.frombasefunction;
 
+import org.tolia.Function;
 import org.tolia.function.trigfunction.Cos;
 import org.tolia.function.trigfunction.Sin;
 
-public class Csc {
+public class Csc extends Function {
     Sin sin = new Sin();
-    private static double initDegree(double degree) {
-        if (Double.isInfinite(degree) || Double.isNaN(degree)) {
+    public double initDegree(double x) {
+        if (Double.isInfinite(x) || Double.isNaN(x)) {
             throw new IllegalArgumentException("Value invalid");
         }
 
-        degree = degree % 360;
+        return x % (2 * Math.PI);
 
-        //System.out.println("degree = " + degree);
+        //System.out.println("x = " + x);
 
-        return Math.toRadians(degree);
+        //return Math.toRadians(x);
     }
 
-    public double getValue(double degree, double acc, int terms) {
+    public double getValue(double x, double acc, int terms) {
         //return Sin.getValue(degree, acc , terms) / Cos.getValue(degree, acc, terms);
 
-        double x = initDegree(degree);
+        x = initDegree(x);
         //System.out.println("Radian = " + x);
 
         double resLast = 0;

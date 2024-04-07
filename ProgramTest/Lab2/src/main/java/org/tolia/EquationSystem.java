@@ -4,14 +4,19 @@ import lombok.AllArgsConstructor;
 import org.tolia.expression.EquationA;
 import org.tolia.expression.EquationB;
 
-@AllArgsConstructor
+
 public class EquationSystem {
     EquationA equationA;
     EquationB equationB;
 
     public EquationSystem(){
-        equationB = new EquationB();
         equationA = new EquationA();
+        equationB = new EquationB();
+    }
+
+    public EquationSystem(EquationA a, EquationB b){
+        this.equationA = a;
+        this.equationB = b;
     }
     public double getValue(double x, double acc, int terms) {
         if (x <= 0) {

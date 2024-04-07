@@ -12,7 +12,7 @@ import org.tolia.function.trigfunction.frombasefunction.Tan;
 /**
  * The type Complex function A.
  */
-@AllArgsConstructor
+
 public class EquationA extends Function {
     Sin sin;
     Cos cos;
@@ -29,6 +29,16 @@ public class EquationA extends Function {
         sec = new Sec();
         csc = new Csc();
     }
+
+    public EquationA(Sin sin, Cos cos, Tan tan, Cot cot, Sec sec, Csc csc){
+        this.sin = sin;
+        this.cos = cos;
+        this.tan = tan;
+        this.cot = cot;
+        this.sec = sec;
+        this.csc = csc;
+    }
+
 
     private double expression(double x, int terms) {
 

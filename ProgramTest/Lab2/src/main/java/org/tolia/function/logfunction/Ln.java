@@ -1,7 +1,9 @@
 package org.tolia.function.logfunction;
 
-public class Ln {
-    private static double init(double x) {
+import org.tolia.Function;
+
+public class Ln extends Function {
+    public double init(double x) {
         return x;
     }
     public double getValue(double x, double acc, int terms) {
@@ -29,7 +31,7 @@ public class Ln {
         return resLn;
     }
 
-    private double taylorLnX(double x, int n) {
+    public double taylorLnX(double x, int n) {
         double z = (x - 1) / (x + 1);
         return  (2 * Math.pow(z, 2 * n - 1)) / (2 * n - 1);
     }

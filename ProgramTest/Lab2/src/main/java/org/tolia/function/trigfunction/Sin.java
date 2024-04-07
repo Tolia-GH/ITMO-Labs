@@ -5,20 +5,16 @@ import org.tolia.tools.MyMath;
 
 public class Sin extends Function {
 
-    private static double initDegree(double degree) {
-        if (Double.isInfinite(degree) || Double.isNaN(degree)) {
+    public double initDegree(double x) {
+        if (Double.isInfinite(x) || Double.isNaN(x)) {
             throw new IllegalArgumentException("Value invalid");
         }
 
-        degree = degree % 360;
-
-        //System.out.println("degree = " + degree);
-
-        return Math.toRadians(degree);
+        return x % (2 * Math.PI);
     }
 
-    public double getValue(double degree, double acc, int terms) {
-        double x = initDegree(degree);
+    public double getValue(double x, double acc, int terms) {
+        x = initDegree(x);
 
         double resLast = 0;
         double res = getTaylorRes(x, terms);
@@ -42,7 +38,7 @@ public class Sin extends Function {
         return resSin;
     }
 
-    private static double taylorSinX(double x, int n) {
+    public double taylorSinX(double x, int n) {
         return Math.pow(-1,n-1) * Math.pow(x, (2 * n - 1)) / MyMath.factorial(2 * n - 1);
     }
 }
