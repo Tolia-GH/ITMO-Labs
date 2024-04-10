@@ -1,23 +1,32 @@
 package org.itmo.main;
 
+/**
+ * The type Tan x.
+ */
 public class TanX {
     // 计算 n 的阶乘
-    private static int factorial(int n) {
+    private static double factorial(int n) {
         int result = 1;
-        for (int i = 1; i <= n; i++) {
+        for (int i = 2; i <= n; i++) {
             result *= i;
         }
         return result;
     }
 
     private static double taylorSinX(double x, int n) {
-        return (Math.pow(-1,n-1) * Math.pow(x, (2 * n - 1))) / factorial(2 * n - 1);
+        return Math.pow(-1,n-1) * Math.pow(x, (2 * n - 1)) / factorial(2 * n - 1);
     }
 
     private static double taylorCosX(double x, int n) {
-        return (Math.pow(-1, n - 1) * Math.pow(x, (2 * n - 2))) / factorial(2 * n - 2);
+        return Math.pow(-1, n - 1) * Math.pow(x, (2 * n - 2)) / factorial(2 * n - 2);
     }
 
+    /**
+     * Tan x double.
+     *
+     * @param degree the degree
+     * @return the double
+     */
     public static double tanX(double degree) {
         if (Double.isInfinite(degree) || Double.isNaN(degree)) {
             throw new IllegalArgumentException("Value invalid");
