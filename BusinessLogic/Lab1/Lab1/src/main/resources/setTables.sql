@@ -1,0 +1,33 @@
+create table if not exists users(
+    id serial not null primary key,
+    username varchar(32) not null,
+    password varchar(256) not null,
+    favourite_id int references favourites(id)
+);
+
+create table if not exists admins(
+     id serial not null primary key,
+     username varchar(32) not null,
+     password varchar(256) not null
+);
+
+create table if not exists movies(
+    id serial not null primary key,
+    name varchar(256) not null,
+    description text not null,
+    rating float not null,
+    rateCount int not null,
+    review int references reviews(id)
+);
+
+create table if not exists reviews(
+     id serial not null primary key,
+     movie_id int references movies(id),
+     author int references users(id),
+     content text not null
+);
+
+create table if not exists favourites(
+     id serial not null primary key,
+     movie_id int references movies(id)
+);
