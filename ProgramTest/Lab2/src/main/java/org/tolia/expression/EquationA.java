@@ -40,7 +40,7 @@ public class EquationA extends Function {
     }
 
 
-    private double expression(double x, int terms) {
+    public double expression(double x, int terms) {
 
         double res = (
             (

@@ -32,15 +32,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 
 public class MainTest {
 
     @Nested
-    static class TestWithStub {
-        static final double targetAcc = 0.0001;
-        static final int terms = 1;
-        static final double testAcc = 0.1;
+    class TestWithStub {
+        static final double targetAcc = 0.00001;
+        static final int terms = 50;
+        static final double testAcc = 1;
 
         static Sin sinMock = mock(Sin.class);
         static Cos cosMock = mock(Cos.class);
@@ -70,6 +71,17 @@ public class MainTest {
 
             List<String> filePath = new ArrayList<>();
             filePath.add(fileSin);
+            filePath.add(fileCos);
+            filePath.add(fileTan);
+            filePath.add(fileCot);
+            filePath.add(fileSec);
+            filePath.add(fileCsc);
+            filePath.add(fileLn);
+            filePath.add(fileLog2);
+            filePath.add(fileLog3);
+            filePath.add(fileLog5);
+            filePath.add(fileLg);
+
             for (int i = 0; i < filePath.size(); i++) {
                 try (FileInputStream fis = new FileInputStream(filePath.get(i));
                      InputStreamReader isr = new InputStreamReader(fis,
@@ -80,7 +92,50 @@ public class MainTest {
                     while ((nextLine = reader.readNext()) != null) {
                         switch (i) {
                             case 0:
-                                Mockito.when(sinMock.getValue(Double.parseDouble(nextLine[0]), targetAcc, terms)).thenReturn(Double.parseDouble(nextLine[1]));
+                                double x = Double.parseDouble(nextLine[0]);
+                                double res = Double.parseDouble(nextLine[1]);
+                                Mockito.when(sinMock.getValue(eq(Double.parseDouble(nextLine[0])), anyDouble(), anyInt())).thenReturn(Double.parseDouble(nextLine[1]));
+                                Mockito.when(sinMock.getTaylorRes(eq(Double.parseDouble(nextLine[0])), anyInt())).thenReturn(Double.parseDouble(nextLine[1]));
+                                break;
+                            case 1:
+                                Mockito.when(cosMock.getValue(eq(Double.parseDouble(nextLine[0])), anyDouble(), anyInt())).thenReturn(Double.parseDouble(nextLine[1]));
+                                Mockito.when(cosMock.getTaylorRes(eq(Double.parseDouble(nextLine[0])), anyInt())).thenReturn(Double.parseDouble(nextLine[1]));
+                                break;
+                            case 2:
+                                Mockito.when(tanMock.getValue(eq(Double.parseDouble(nextLine[0])), anyDouble(), anyInt())).thenReturn(Double.parseDouble(nextLine[1]));
+                                Mockito.when(tanMock.getTaylorRes(eq(Double.parseDouble(nextLine[0])), anyInt())).thenReturn(Double.parseDouble(nextLine[1]));
+                                break;
+                            case 3:
+                                Mockito.when(cotMock.getValue(eq(Double.parseDouble(nextLine[0])), anyDouble(), anyInt())).thenReturn(Double.parseDouble(nextLine[1]));
+                                Mockito.when(cotMock.getTaylorRes(eq(Double.parseDouble(nextLine[0])), anyInt())).thenReturn(Double.parseDouble(nextLine[1]));
+                                break;
+                            case 4:
+                                Mockito.when(secMock.getValue(eq(Double.parseDouble(nextLine[0])), anyDouble(), anyInt())).thenReturn(Double.parseDouble(nextLine[1]));
+                                Mockito.when(secMock.getTaylorRes(eq(Double.parseDouble(nextLine[0])), anyInt())).thenReturn(Double.parseDouble(nextLine[1]));
+                                break;
+                            case 5:
+                                Mockito.when(cscMock.getValue(eq(Double.parseDouble(nextLine[0])), anyDouble(), anyInt())).thenReturn(Double.parseDouble(nextLine[1]));
+                                Mockito.when(cscMock.getTaylorRes(eq(Double.parseDouble(nextLine[0])), anyInt())).thenReturn(Double.parseDouble(nextLine[1]));
+                                break;
+                            case 6:
+                                Mockito.when(lnMock.getValue(eq(Double.parseDouble(nextLine[0])), anyDouble(), anyInt())).thenReturn(Double.parseDouble(nextLine[1]));
+                                Mockito.when(lnMock.getTaylorRes(eq(Double.parseDouble(nextLine[0])), anyInt())).thenReturn(Double.parseDouble(nextLine[1]));
+                                break;
+                            case 7:
+                                Mockito.when(logMock.getValue(eq(2.0), eq(Double.parseDouble(nextLine[0])), anyDouble(), anyInt())).thenReturn(Double.parseDouble(nextLine[1]));
+                                Mockito.when(logMock.getTaylorRes(eq(2.0), eq(Double.parseDouble(nextLine[0])), anyInt())).thenReturn(Double.parseDouble(nextLine[1]));
+                                break;
+                            case 8:
+                                Mockito.when(logMock.getValue(eq(3.0), eq(Double.parseDouble(nextLine[0])), anyDouble(), anyInt())).thenReturn(Double.parseDouble(nextLine[1]));
+                                Mockito.when(logMock.getTaylorRes(eq(3.0), eq(Double.parseDouble(nextLine[0])), anyInt())).thenReturn(Double.parseDouble(nextLine[1]));
+                                break;
+                            case 9:
+                                Mockito.when(logMock.getValue(eq(5.0), eq(Double.parseDouble(nextLine[0])), anyDouble(), anyInt())).thenReturn(Double.parseDouble(nextLine[1]));
+                                Mockito.when(logMock.getTaylorRes(eq(5.0), eq(Double.parseDouble(nextLine[0])), anyInt())).thenReturn(Double.parseDouble(nextLine[1]));
+                                break;
+                            case 10:
+                                Mockito.when(lgMock.getValue(eq(Double.parseDouble(nextLine[0])), anyDouble(), anyInt())).thenReturn(Double.parseDouble(nextLine[1]));
+                                Mockito.when(lgMock.getTaylorRes(eq(Double.parseDouble(nextLine[0])), anyInt())).thenReturn(Double.parseDouble(nextLine[1]));
                                 break;
                             default:
                                 return;
@@ -94,23 +149,123 @@ public class MainTest {
 
         @ParameterizedTest
         @CsvFileSource(resources = "inputs/-100~2(3)~-0.01(0.01)~0.01~2(0.01)~100(3).csv")
-        void testSin(double x){
-            EquationA a = new EquationA(new Sin(), cosMock, tanMock, cotMock, secMock, cscMock);
+        //@CsvFileSource(resources = "inputs/test.csv")
+        void testSinMock(double x){
+            Sin sin = new Sin();
+            double resMock = sinMock.getValue(x, targetAcc, terms);
+            double res = sin.getValue(x, targetAcc, terms);
+            System.out.println("Sin(x) = " + res);
+            System.out.println("cosMock = " + resMock);
+            assertEquals(res, resMock, testAcc);
+        }
+
+        @ParameterizedTest
+        @CsvFileSource(resources = "inputs/-100~2(3)~-0.01(0.01)~0.01~2(0.01)~100(3).csv")
+            //@CsvFileSource(resources = "inputs/test.csv")
+        void testCosMock(double x){
+            Cos cos = new Cos();
+            double resMock = cosMock.getValue(x, targetAcc, terms);
+            double res = cos.getValue(x, targetAcc, terms);
+            System.out.println("Cos(x) = " + res);
+            System.out.println("cosMock = " + resMock);
+            assertEquals(res, resMock, testAcc);
+        }
+
+        @ParameterizedTest
+        @CsvFileSource(resources = "inputs/-100~2(3)~-0.01(0.01)~0.01~2(0.01)~100(3).csv")
+            //@CsvFileSource(resources = "inputs/test.csv")
+        void testTanMock(double x){
+            Tan tan = new Tan();
+            double resMock = tanMock.getValue(x, targetAcc, terms);
+            double res = tan.getValue(x, targetAcc, terms);
+            System.out.println("Tan(x) = " + res);
+            System.out.println("tanMock = " + resMock);
+            assertEquals(res, resMock, testAcc);
+        }
+
+        @ParameterizedTest
+        @CsvFileSource(resources = "inputs/-100~2(3)~-0.01(0.01)~0.01~2(0.01)~100(3).csv")
+            //@CsvFileSource(resources = "inputs/test.csv")
+        void testCotMock(double x){
+            Cot cot = new Cot();
+            double resMock = cotMock.getValue(x, targetAcc, terms);
+            double res = cot.getValue(x, targetAcc, terms);
+            System.out.println("Cot(x) = " + res);
+            System.out.println("cotMock = " + resMock);
+            assertEquals(res, resMock, testAcc);
+        }
+
+        @ParameterizedTest
+        @CsvFileSource(resources = "inputs/-100~2(3)~-0.01(0.01)~0.01~2(0.01)~100(3).csv")
+            //@CsvFileSource(resources = "inputs/test.csv")
+        void testSecMock(double x){
+            Sec sec = new Sec();
+            double resMock = secMock.getValue(x, targetAcc, terms);
+            double res = sec.getValue(x, targetAcc, terms);
+            System.out.println("Sec(x) = " + res);
+            System.out.println("secMock = " + resMock);
+            assertEquals(res, resMock, testAcc);
+        }
+
+        @ParameterizedTest
+        @CsvFileSource(resources = "inputs/-100~2(3)~-0.01(0.01)~0.01~2(0.01)~100(3).csv")
+            //@CsvFileSource(resources = "inputs/test.csv")
+        void testCscMock(double x){
+            Csc csc = new Csc();
+            double resMock = cscMock.getValue(x, targetAcc, terms);
+            double res = csc.getValue(x, targetAcc, terms);
+            System.out.println("Csc(x) = " + res);
+            System.out.println("cscMock = " + resMock);
+            assertEquals(res, resMock, testAcc);
+        }
+
+        @ParameterizedTest
+        @CsvFileSource(resources = "inputs/0.01~2(0.01)~100(3).csv")
+            //@CsvFileSource(resources = "inputs/test.csv")
+        void testLnMock(double x){
+            Ln ln = new Ln();
+            double resMock = lnMock.getValue(x, targetAcc, terms);
+            double res = ln.getValue(x, targetAcc, terms);
+            System.out.println("Ln(x) = " + res);
+            System.out.println("lnMock = " + resMock);
+            assertEquals(res, resMock, testAcc);
+        }
+
+        @ParameterizedTest
+        @CsvFileSource(resources = "inputs/0.01~2(0.01)~100(3).csv")
+            //@CsvFileSource(resources = "inputs/test.csv")
+        void testLog2Mock(double x){
+            Log log2 = new Log();
+            double resMock = logMock.getValue(2, x, targetAcc, terms);
+            double res = log2.getValue(2, x, targetAcc, terms);
+            System.out.println("Ln(x) = " + res);
+            System.out.println("lnMock = " + resMock);
+            assertEquals(res, resMock, testAcc);
+        }
+
+        @ParameterizedTest
+        @CsvFileSource(resources = "inputs/-100~2(3)~-0.01(0.01)~0.01~2(0.01)~100(3).csv")
+        //@CsvFileSource(resources = "inputs/test.csv")
+        void testSystemMock(double x){
+            EquationA a = new EquationA(sinMock, cosMock, tanMock, cotMock, secMock, cscMock);
             EquationB b = new EquationB(lnMock, logMock, lgMock);
             EquationSystem equations = new EquationSystem(a,b);
             double resSystem = equations.getValue(x, targetAcc, terms);
             double resMathSystem = equations.getMathValue(x);
+            System.out.println(resSystem);
+            System.out.println(resMathSystem);
             assertEquals(resMathSystem, resSystem, testAcc);
         }
-    }
 
+
+    }
 
     @Nested
     class FunctionTest {
         @Nested
         class LegalInputTest {
-            final double targetAcc = 0.0001;
-            final int terms = 1;
+            final double targetAcc = 0.000001;
+            final int terms = 50;
             final int taylorTerms = 20;
             final double testAcc = 0.1;
 

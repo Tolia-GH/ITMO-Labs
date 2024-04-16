@@ -17,7 +17,14 @@ create table if not exists movies(
     description text not null,
     rating float not null,
     rateCount int not null,
-    review int references reviews(id)
+    review int references reviews(id),
+    ticket_id int references tickets(id)
+);
+
+create table if not exists tickets(
+    id serial not null primary key,
+    amount int not null,
+    price float not null
 );
 
 create table if not exists reviews(
@@ -31,3 +38,10 @@ create table if not exists favourites(
      id serial not null primary key,
      movie_id int references movies(id)
 );
+
+create table if not exists orders(
+    id serial not null primary key,
+    user_id int references users(id),
+    ticket_id int references tickets(id),
+    is_paid boolean default false not null
+)
