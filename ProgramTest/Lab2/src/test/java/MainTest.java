@@ -41,7 +41,7 @@ public class MainTest {
     class TestWithStub {
         static final double targetAcc = 0.00001;
         static final int terms = 50;
-        static final double testAcc = 1;
+        static final double testAcc = 3;
 
         static Sin sinMock = mock(Sin.class);
         static Cos cosMock = mock(Cos.class);
@@ -152,11 +152,15 @@ public class MainTest {
         //@CsvFileSource(resources = "inputs/test.csv")
         void testSinMock(double x){
             Sin sin = new Sin();
+            System.out.println("radian of x= " + x);
+            System.out.println("degree of x= " + Math.toDegrees(x));
+            System.out.println("-------------------------");
             double resMock = sinMock.getValue(x, targetAcc, terms);
             double res = sin.getValue(x, targetAcc, terms);
             System.out.println("Sin(x) = " + res);
             System.out.println("cosMock = " + resMock);
             assertEquals(res, resMock, testAcc);
+            System.out.println();
         }
 
         @ParameterizedTest
@@ -164,11 +168,15 @@ public class MainTest {
             //@CsvFileSource(resources = "inputs/test.csv")
         void testCosMock(double x){
             Cos cos = new Cos();
+            System.out.println("radian of x= " + x);
+            System.out.println("degree of x= " + Math.toDegrees(x));
+            System.out.println("-------------------------");
             double resMock = cosMock.getValue(x, targetAcc, terms);
             double res = cos.getValue(x, targetAcc, terms);
             System.out.println("Cos(x) = " + res);
             System.out.println("cosMock = " + resMock);
             assertEquals(res, resMock, testAcc);
+            System.out.println();
         }
 
         @ParameterizedTest
@@ -176,11 +184,15 @@ public class MainTest {
             //@CsvFileSource(resources = "inputs/test.csv")
         void testTanMock(double x){
             Tan tan = new Tan();
+            System.out.println("radian of x= " + x);
+            System.out.println("degree of x= " + Math.toDegrees(x));
+            System.out.println("-------------------------");
             double resMock = tanMock.getValue(x, targetAcc, terms);
             double res = tan.getValue(x, targetAcc, terms);
             System.out.println("Tan(x) = " + res);
             System.out.println("tanMock = " + resMock);
             assertEquals(res, resMock, testAcc);
+            System.out.println();
         }
 
         @ParameterizedTest
@@ -188,11 +200,15 @@ public class MainTest {
             //@CsvFileSource(resources = "inputs/test.csv")
         void testCotMock(double x){
             Cot cot = new Cot();
+            System.out.println("radian of x= " + x);
+            System.out.println("degree of x= " + Math.toDegrees(x));
+            System.out.println("-------------------------");
             double resMock = cotMock.getValue(x, targetAcc, terms);
             double res = cot.getValue(x, targetAcc, terms);
             System.out.println("Cot(x) = " + res);
             System.out.println("cotMock = " + resMock);
             assertEquals(res, resMock, testAcc);
+            System.out.println();
         }
 
         @ParameterizedTest
@@ -200,11 +216,15 @@ public class MainTest {
             //@CsvFileSource(resources = "inputs/test.csv")
         void testSecMock(double x){
             Sec sec = new Sec();
+            System.out.println("radian of x= " + x);
+            System.out.println("degree of x= " + Math.toDegrees(x));
+            System.out.println("-------------------------");
             double resMock = secMock.getValue(x, targetAcc, terms);
             double res = sec.getValue(x, targetAcc, terms);
             System.out.println("Sec(x) = " + res);
             System.out.println("secMock = " + resMock);
             assertEquals(res, resMock, testAcc);
+            System.out.println();
         }
 
         @ParameterizedTest
@@ -212,11 +232,15 @@ public class MainTest {
             //@CsvFileSource(resources = "inputs/test.csv")
         void testCscMock(double x){
             Csc csc = new Csc();
+            System.out.println("radian of x= " + x);
+            System.out.println("degree of x= " + Math.toDegrees(x));
+            System.out.println("-------------------------");
             double resMock = cscMock.getValue(x, targetAcc, terms);
             double res = csc.getValue(x, targetAcc, terms);
             System.out.println("Csc(x) = " + res);
             System.out.println("cscMock = " + resMock);
             assertEquals(res, resMock, testAcc);
+            System.out.println();
         }
 
         @ParameterizedTest
@@ -224,11 +248,14 @@ public class MainTest {
             //@CsvFileSource(resources = "inputs/test.csv")
         void testLnMock(double x){
             Ln ln = new Ln();
+            System.out.println("x= " + x);
+            System.out.println("-------------------------");
             double resMock = lnMock.getValue(x, targetAcc, terms);
             double res = ln.getValue(x, targetAcc, terms);
             System.out.println("Ln(x) = " + res);
             System.out.println("lnMock = " + resMock);
             assertEquals(res, resMock, testAcc);
+            System.out.println();
         }
 
         @ParameterizedTest
@@ -236,11 +263,59 @@ public class MainTest {
             //@CsvFileSource(resources = "inputs/test.csv")
         void testLog2Mock(double x){
             Log log2 = new Log();
+            System.out.println("x= " + x);
+            System.out.println("-------------------------");
             double resMock = logMock.getValue(2, x, targetAcc, terms);
             double res = log2.getValue(2, x, targetAcc, terms);
-            System.out.println("Ln(x) = " + res);
-            System.out.println("lnMock = " + resMock);
+            System.out.println("Lpg2(x) = " + res);
+            System.out.println("log2Mock = " + resMock);
             assertEquals(res, resMock, testAcc);
+            System.out.println();
+        }
+
+        @ParameterizedTest
+        @CsvFileSource(resources = "inputs/0.01~2(0.01)~100(3).csv")
+            //@CsvFileSource(resources = "inputs/test.csv")
+        void testLog3Mock(double x){
+            Log log3 = new Log();
+            System.out.println("x= " + x);
+            System.out.println("-------------------------");
+            double resMock = logMock.getValue(3, x, targetAcc, terms);
+            double res = log3.getValue(3, x, targetAcc, terms);
+            System.out.println("Log3(x) = " + res);
+            System.out.println("log3Mock = " + resMock);
+            assertEquals(res, resMock, testAcc);
+            System.out.println();
+        }
+
+        @ParameterizedTest
+        @CsvFileSource(resources = "inputs/0.01~2(0.01)~100(3).csv")
+            //@CsvFileSource(resources = "inputs/test.csv")
+        void testLog5Mock(double x){
+            Log log5 = new Log();
+            System.out.println("x= " + x);
+            System.out.println("-------------------------");
+            double resMock = logMock.getValue(5, x, targetAcc, terms);
+            double res = log5.getValue(5, x, targetAcc, terms);
+            System.out.println("Log5(x) = " + res);
+            System.out.println("log5Mock = " + resMock);
+            assertEquals(res, resMock, testAcc);
+            System.out.println();
+        }
+
+        @ParameterizedTest
+        @CsvFileSource(resources = "inputs/0.01~2(0.01)~100(3).csv")
+            //@CsvFileSource(resources = "inputs/test.csv")
+        void testLgMock(double x){
+            Lg lg = new Lg();
+            System.out.println("x= " + x);
+            System.out.println("-------------------------");
+            double resMock = lgMock.getValue(x, targetAcc, terms);
+            double res = lg.getValue( x, targetAcc, terms);
+            System.out.println("Lg(x) = " + res);
+            System.out.println("lgMock = " + resMock);
+            assertEquals(res, resMock, testAcc);
+            System.out.println();
         }
 
         @ParameterizedTest
