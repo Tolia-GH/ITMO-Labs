@@ -7,14 +7,14 @@ public class Sin extends Function {
 
     public double initDegree(double x) {
         if (Double.isInfinite(x) || Double.isNaN(x)) {
-            throw new IllegalArgumentException("Value invalid");
+            return Double.NaN;
         }
 
         return x % (2 * Math.PI);
     }
 
     public double getValue(double x, double acc, int terms) {
-        x = initDegree(x);
+
 
         double resLast = 0;
         double res = getTaylorRes(x, terms);
@@ -24,11 +24,14 @@ public class Sin extends Function {
             resLast = res;
             res = getTaylorRes(x, terms);
         }
+
         System.out.println("Sin Taylor terms = " + terms);
         return res;
     }
 
     public double getTaylorRes(double x, int terms) {
+        x = initDegree(x);
+
         x = x % (2 * Math.PI);
         double resSin = 0;
         for (int i = 1; i <= terms; i++) {

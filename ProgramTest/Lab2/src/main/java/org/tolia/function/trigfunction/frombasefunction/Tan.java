@@ -10,10 +10,16 @@ public class Tan extends Function {
 
     public double initDegree(double x) {
         if (Double.isInfinite(x) || Double.isNaN(x)) {
-            throw new IllegalArgumentException("Value invalid");
+            return Double.NaN;
         }
 
-        return x % (2 * Math.PI);
+        x = x % (Math.PI);
+
+        if (x == Math.PI / 2 || x == - Math.PI / 2) {
+            return Double.NaN;
+        }
+
+        return x;
 
         //System.out.println("degree = " + degree);
 
@@ -23,7 +29,7 @@ public class Tan extends Function {
     public double getValue(double x, double acc, int terms) {
         //return Sin.getValue(degree, acc , terms) / Cos.getValue(degree, acc, terms);
 
-        x = initDegree(x);
+
         //System.out.println("Radian = " + x);
 
         double resLast = 0;
@@ -39,6 +45,7 @@ public class Tan extends Function {
     }
 
     public double getTaylorRes(double x, int terms) {
+        x = initDegree(x);
         return sin.getTaylorRes(x , terms) / cos.getTaylorRes(x, terms);
     }
 }

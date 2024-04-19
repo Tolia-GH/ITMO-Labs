@@ -9,10 +9,16 @@ public class Sec extends Function {
 
     public double initDegree(double x) {
         if (Double.isInfinite(x) || Double.isNaN(x)) {
-            throw new IllegalArgumentException("Value invalid");
+            return Double.NaN;
         }
 
-        return x % (2 * Math.PI);
+        x = x % (2 * Math.PI);
+
+        if (x == Math.PI / 2 || x == - Math.PI / 2 || x == 3 * Math.PI / 2 || x == -3 * Math.PI / 2) {
+            return Double.NaN;
+        }
+
+        return x;
 
         //System.out.println("x = " + x);
 
@@ -22,7 +28,7 @@ public class Sec extends Function {
     public double getValue(double x, double acc, int terms) {
         //return Sin.getValue(degree, acc , terms) / Cos.getValue(degree, acc, terms);
 
-        x = initDegree(x);
+
         //System.out.println("Radian = " + x);
 
         double resLast = 0;
@@ -38,6 +44,7 @@ public class Sec extends Function {
     }
 
     public double getTaylorRes(double x, int terms) {
+        x = initDegree(x);
         return 1 / cos.getTaylorRes(x, terms);
     }
 }

@@ -7,7 +7,7 @@ public class Cos extends Function {
 
     public double initDegree(double x) {
         if (Double.isInfinite(x) || Double.isNaN(x)) {
-            throw new IllegalArgumentException("Value invalid");
+            return Double.NaN;
         }
 
         return x % (2 * Math.PI);
@@ -18,7 +18,7 @@ public class Cos extends Function {
     }
 
     public double getValue(double x, double acc, int terms) {
-        x = initDegree(x);
+
 
         double resLast = 0;
         double res = getTaylorRes(x, terms);
@@ -33,6 +33,8 @@ public class Cos extends Function {
     }
 
     public double getTaylorRes(double x, int terms) {
+        x = initDegree(x);
+
         x = x % (2 * Math.PI);
         double resCos = 0;
         for (int i = 1; i <= terms; i++) {
