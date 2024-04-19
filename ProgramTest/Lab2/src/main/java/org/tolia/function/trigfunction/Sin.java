@@ -7,7 +7,7 @@ public class Sin extends Function {
 
     public double initDegree(double x) {
         if (Double.isInfinite(x) || Double.isNaN(x)) {
-            return Double.NaN;
+            throw  new IllegalArgumentException("Value Invalid");
         }
 
         return x % (2 * Math.PI);

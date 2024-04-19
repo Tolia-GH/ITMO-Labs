@@ -4,11 +4,12 @@ import org.tolia.Function;
 
 public class Ln extends Function {
     public double init(double x) {
+        if (Double.isInfinite(x) || Double.isNaN(x) || x <= 0) {
+            throw  new IllegalArgumentException("Value Invalid");
+        }
         return x;
     }
     public double getValue(double x, double acc, int terms) {
-
-        x = init(x);
 
         double resLast = 0;
         double res = getTaylorRes(x, terms);
@@ -23,6 +24,7 @@ public class Ln extends Function {
     }
 
     public double getTaylorRes(double x, int terms) {
+        x = init(x);
         double resLn = 0;
         for (int i = 1; i <= terms; i++) {
             resLn += taylorLnX(x, i);

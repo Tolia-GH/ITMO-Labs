@@ -22,7 +22,15 @@ public class EquationB extends Function {
         this.log = log;
         this.lg = lg;
     }
+    public double init(double x) {
+        if (Double.isInfinite(x) || Double.isNaN(x) || x <= 0 || x == 1) {
+            throw  new IllegalArgumentException("Value Invalid");
+        }
+
+        return x;
+    }
     public double expression(double x, int terms) {
+        x = init(x);
 
         double res = (
             (

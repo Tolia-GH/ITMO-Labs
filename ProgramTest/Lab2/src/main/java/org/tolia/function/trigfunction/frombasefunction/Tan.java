@@ -10,20 +10,16 @@ public class Tan extends Function {
 
     public double initDegree(double x) {
         if (Double.isInfinite(x) || Double.isNaN(x)) {
-            return Double.NaN;
+            throw  new IllegalArgumentException("Value Invalid");
         }
 
         x = x % (Math.PI);
 
         if (x == Math.PI / 2 || x == - Math.PI / 2) {
-            return Double.NaN;
+            throw  new IllegalArgumentException("Value Invalid");
         }
 
         return x;
-
-        //System.out.println("degree = " + degree);
-
-        //return Math.toRadians(x);
     }
 
     public double getValue(double x, double acc, int terms) {

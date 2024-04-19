@@ -10,7 +10,7 @@ public class Lg extends Function {
     }
 
     public double getValue(double x, double acc, int terms) {
-        x = init(x);
+
 
         double resLast = 0;
         double res = getTaylorRes(x, terms);
@@ -25,6 +25,7 @@ public class Lg extends Function {
     }
 
     public double getTaylorRes(double x, int terms) {
+        x = init(x);
         return ln.getTaylorRes(x, terms) / ln.getTaylorRes(10, terms);
     }
 }

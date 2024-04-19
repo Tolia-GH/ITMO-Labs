@@ -53,7 +53,7 @@ public class CsvGenerator {
     }
 
     @ParameterizedTest
-    @CsvFileSource(resources = "inputs/-100~2(3)~-0.01(0.01)~0.01~2(0.01)~100(3).csv")
+    @CsvFileSource(resources = "inputs/-100~2(3)~-0.01(0.01)~0.01~0.99~1.00~2(0.01)~100(3).csv")
     void generateSin(double x) {
         Sin sin = new Sin();
         try {
@@ -64,7 +64,7 @@ public class CsvGenerator {
     }
 
     @ParameterizedTest
-    @CsvFileSource(resources = "inputs/-100~2(3)~-0.01(0.01)~0.01~2(0.01)~100(3).csv")
+    @CsvFileSource(resources = "inputs/-100~2(3)~-0.01(0.01)~0.01~0.99~1.00~2(0.01)~100(3).csv")
     void generateCos(double x) {
         Cos cos = new Cos();
         try {
@@ -75,7 +75,7 @@ public class CsvGenerator {
     }
 
     @ParameterizedTest
-    @CsvFileSource(resources = "inputs/-100~2(3)~-0.01(0.01)~0.01~2(0.01)~100(3).csv")
+    @CsvFileSource(resources = "inputs/-100~2(3)~-0.01(0.01)~0.01~0.99~1.00~2(0.01)~100(3).csv")
     void generateTan(double x) {
         Tan tan = new Tan();
         try {
@@ -86,7 +86,7 @@ public class CsvGenerator {
     }
 
     @ParameterizedTest
-    @CsvFileSource(resources = "inputs/-100~2(3)~-0.01(0.01)~0.01~2(0.01)~100(3).csv")
+    @CsvFileSource(resources = "inputs/-100~2(3)~-0.01(0.01)~0.01~0.99~1.00~2(0.01)~100(3).csv")
     void generateCot(double x) {
         Cot cot = new Cot();
         try {
@@ -97,7 +97,7 @@ public class CsvGenerator {
     }
 
     @ParameterizedTest
-    @CsvFileSource(resources = "inputs/-100~2(3)~-0.01(0.01)~0.01~2(0.01)~100(3).csv")
+    @CsvFileSource(resources = "inputs/-100~2(3)~-0.01(0.01)~0.01~0.99~1.00~2(0.01)~100(3).csv")
     void generateSec(double x) {
         Sec sec = new Sec();
         try {
@@ -108,7 +108,7 @@ public class CsvGenerator {
     }
 
     @ParameterizedTest
-    @CsvFileSource(resources = "inputs/-100~2(3)~-0.01(0.01)~0.01~2(0.01)~100(3).csv")
+    @CsvFileSource(resources = "inputs/-100~2(3)~-0.01(0.01)~0.01~0.99~1.00~2(0.01)~100(3).csv")
     void generateCsc(double x) {
         Csc csc = new Csc();
         try {

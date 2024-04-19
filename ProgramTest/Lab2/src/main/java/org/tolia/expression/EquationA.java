@@ -39,8 +39,19 @@ public class EquationA extends Function {
         this.csc = csc;
     }
 
+    public double init(double x) {
+        if (Double.isInfinite(x) || Double.isNaN(x) || x == 0) {
+            throw  new IllegalArgumentException("Value Invalid");
+        }
 
+        if (x % (Math.PI) == Math.PI / 2 || x % (Math.PI) == - Math.PI / 2) {
+            throw  new IllegalArgumentException("Value Invalid");
+        }
+
+        return x;
+    }
     public double expression(double x, int terms) {
+        x = init(x);
 
         double res = (
             (

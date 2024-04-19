@@ -10,13 +10,13 @@ public class Cot extends Function {
 
     public double initDegree(double x) {
         if (Double.isInfinite(x) || Double.isNaN(x)) {
-            return Double.NaN;
+            throw  new IllegalArgumentException("Value Invalid");
         }
 
         x = x % (Math.PI);
 
         if (x == Math.PI / 2 || x == - Math.PI / 2) {
-            return Double.NaN;
+            throw  new IllegalArgumentException("Value Invalid");
         }
 
         return x;

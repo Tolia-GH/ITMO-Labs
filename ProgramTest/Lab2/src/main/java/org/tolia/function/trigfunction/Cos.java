@@ -7,14 +7,10 @@ public class Cos extends Function {
 
     public double initDegree(double x) {
         if (Double.isInfinite(x) || Double.isNaN(x)) {
-            return Double.NaN;
+            throw  new IllegalArgumentException("Value Invalid");
         }
 
         return x % (2 * Math.PI);
-
-        //System.out.println("x = " + x);
-
-        //return Math.toRadians(x);
     }
 
     public double getValue(double x, double acc, int terms) {

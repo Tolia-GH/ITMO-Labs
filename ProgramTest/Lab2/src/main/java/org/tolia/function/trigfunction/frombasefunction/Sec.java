@@ -9,13 +9,13 @@ public class Sec extends Function {
 
     public double initDegree(double x) {
         if (Double.isInfinite(x) || Double.isNaN(x)) {
-            return Double.NaN;
+            throw  new IllegalArgumentException("Value Invalid");
         }
 
         x = x % (2 * Math.PI);
 
         if (x == Math.PI / 2 || x == - Math.PI / 2 || x == 3 * Math.PI / 2 || x == -3 * Math.PI / 2) {
-            return Double.NaN;
+            throw  new IllegalArgumentException("Value Invalid");
         }
 
         return x;

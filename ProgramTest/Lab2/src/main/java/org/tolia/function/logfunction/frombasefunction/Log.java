@@ -14,7 +14,7 @@ public class Log extends Function {
 
     public double getValue(double base, double x, double acc, int terms) {
 
-        x = init(base, x);
+
 
         double resLast = 0;
         double res = getTaylorRes(base, x, terms);
@@ -29,6 +29,7 @@ public class Log extends Function {
     }
 
     public double getTaylorRes(double base, double x, int terms) {
+        x = init(base, x);
         return ln.getTaylorRes(x, terms) / ln.getTaylorRes(base, terms);
     }
 }
