@@ -14,7 +14,10 @@ CREATE TYPE GENDER AS ENUM ('MALE','FEMALE');
 CREATE TABLE IF NOT EXISTS family(
     id SERIAL PRIMARY KEY NOT NULL,
     name VARCHAR(64) NOT NULL,
-    info TEXT NOT NULL
+    codeA INT,
+    codeB INT,
+    info TEXT NOT NULL,
+    PRIMARY KEY (codeA, codeB)
 );
 
 CREATE TABLE IF NOT EXISTS "user"(
@@ -140,7 +143,9 @@ CREATE TABLE IF NOT EXISTS list_user_house(
 
 CREATE TABLE IF NOT EXISTS list_user_family(
     id SERIAL NOT NULL PRIMARY KEY,
-    user_id INT REFERENCES "user"(id),
-    family_id INT REFERENCES house(id),
-    UNIQUE (user_id, family_id)
+    user_id INT NOT NULL ,
+    family_id INT NOT NULL ,
+    family_code INT NOT NULL,
+    FOREIGN KEY (family_id, family_code) REFERENCES family(codeA, codeB)
+
 );
