@@ -1,4 +1,8 @@
 package com.blps.lab1.databaseJPA;
 
-public interface TicketsRepo {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface TicketsRepo extends JpaRepository<TicketsJPA, Integer> {
 }
