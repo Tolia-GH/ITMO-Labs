@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "movies", schema = "BusinessLogic")
+@Table(name = "movies", schema = "business_logic")
 public class MoviesJPA {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,10 +16,6 @@ public class MoviesJPA {
     private String description;
     @Column(name = "rating")
     private Float rating;
-    @Column(name = "rateCount")
+    @Column(name = "ratecount")
     private Integer rateCount;
-    @Column(name = "review_id")
-    private Integer reviewId;
-    @Column(name = "ticket_id")
-    private Integer ticketId;
 }

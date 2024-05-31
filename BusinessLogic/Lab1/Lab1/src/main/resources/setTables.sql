@@ -4,22 +4,10 @@ create table if not exists admins(
     password varchar(256) not null
 );
 
-create table if not exists tickets(
-    id serial not null primary key,
-    amount int not null,
-    price float not null
-);
-
 create table if not exists users(
     id serial not null primary key,
     username varchar(32) not null,
     password varchar(256) not null
-);
-
-create table if not exists reviews(
-    id serial not null primary key,
-    author_id int references users(id),
-    content text not null
 );
 
 create table if not exists movies(
@@ -27,9 +15,21 @@ create table if not exists movies(
     name varchar(256) not null,
     description text not null,
     rating float not null,
-    rateCount int not null,
-    review_id int references reviews(id),
-    ticket_id int references tickets(id)
+    rateCount int not null
+);
+
+create table if not exists tickets(
+    id serial not null primary key,
+    movie_id int references movies(id),
+    amount int not null,
+    price float not null
+);
+
+create table if not exists reviews(
+    id serial not null primary key,
+    author_id int references users(id),
+    movie_id int references movies(id),
+    content text not null
 );
 
 create table if not exists favourites(

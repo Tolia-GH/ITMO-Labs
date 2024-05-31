@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "favourites", schema = "BusinessLogic")
+@Table(name = "favourites", schema = "business_logic")
 public class FavouritesJPA {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

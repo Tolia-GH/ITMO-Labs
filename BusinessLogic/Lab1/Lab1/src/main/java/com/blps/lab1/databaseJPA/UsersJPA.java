@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "users", schema = "BusinessLogic")
+@Table(name = "users", schema = "business_logic")
 public class UsersJPA {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,4 +14,6 @@ public class UsersJPA {
     private String username;
     @Column(name = "password")
     private String password;
+    @Column(name = "role")
+    private Role role;
 }
