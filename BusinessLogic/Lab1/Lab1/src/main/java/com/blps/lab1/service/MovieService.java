@@ -1,10 +1,7 @@
 package com.blps.lab1.service;
 
 import com.blps.lab1.databaseJPA.*;
-import jakarta.servlet.http.HttpServletRequest;
-import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +17,10 @@ public class MovieService {
     private ReviewsRepo reviewsRepo;
     @Autowired
     private FavouritesRepo favouritesRepo;
+    @Autowired
+    private TicketsRepo ticketsRepo;
+    @Autowired
+    private OrdersRepo ordersRepo;
 
     public List<MoviesJPA> getAllMovies() {
         return moviesRepo.findAll();
@@ -43,8 +44,6 @@ public class MovieService {
     }
 
     public FavouritesJPA addToFavourites(Integer movieID, AccountsJPA account) {
-
-
         FavouritesJPA newFavourite = new FavouritesJPA();
         newFavourite.setMovie_id(movieID);
         newFavourite.setUser_id(account.getId());
@@ -52,12 +51,13 @@ public class MovieService {
     }
 
     public List<ReviewsJPA> getReviewsByMovieID(Integer movieID) {
-        return reviewsRepo.findByMovieId(movieID);
+        return reviewsRepo.findByMovieID(movieID);
     }
 
-    public ReviewsJPA addReviewToMovie(Integer movieID, HttpServletRequest request) {
+    public ReviewsJPA addReviewToMovie(Integer movieID, ReviewsJPA review) {
         ReviewsJPA newReview = new ReviewsJPA();
-        newReview.setContent(request.getParameter("content"));
+        newReview.setContent(review.getContent());
+        newReview.setAuthor_id(review.getAuthor_id());
         newReview.setMovie_id(movieID);
         return reviewsRepo.save(newReview);
     }
@@ -68,6 +68,30 @@ public class MovieService {
     }
 
     public FavouritesJPA findFavouritesByMovieId(Integer movieID) {
-        return favouritesRepo.findByMovieId(movieID);
+        return favouritesRepo.findByMovieID(movieID);
+    }
+
+    public List<TicketsJPA> getTicketsByMovieID(Integer movieID) {
+        return ticketsRepo.findByMovieID(movieID);
+    }
+
+    public TicketsJPA addTicketToMovie(Integer movieID, TicketsJPA ticket) {
+        TicketsJPA newTicket = new TicketsJPA();
+        newTicket.setMovie_id(movieID);
+        newTicket.setAmount(ticket.getAmount());
+        newTicket.setPrice(ticket.getPrice());
+        return ticketsRepo.save(newTicket);
+    }
+
+    public void buyTicket(Integer movieID, OrdersJPA order) {
+        OrdersJPA newOrder = new OrdersJPA();
+        newOrder.setUser_id(order.getUser_id());
+        newOrder.setTicket_id(order.getTicket_id());
+        newOrder.setIs_paid(false);
+        ordersRepo.save(newOrder);
+    }
+
+    public void payOrder(Integer orderID) {
+
     }
 }

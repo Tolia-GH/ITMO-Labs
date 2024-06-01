@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface ReviewsRepo extends JpaRepository<ReviewsJPA, Integer>{
 
     @Query(value = "select A from ReviewsJPA A where A.movie_id = ?1")
-    List<ReviewsJPA> findByMovieId(Integer movieID);
+    List<ReviewsJPA> findByMovieID(Integer movieID);
 }

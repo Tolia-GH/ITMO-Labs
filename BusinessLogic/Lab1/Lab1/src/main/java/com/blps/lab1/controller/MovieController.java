@@ -1,12 +1,8 @@
 package com.blps.lab1.controller;
 
-import com.blps.lab1.databaseJPA.AccountsJPA;
-import com.blps.lab1.databaseJPA.FavouritesJPA;
-import com.blps.lab1.databaseJPA.MoviesJPA;
-import com.blps.lab1.databaseJPA.ReviewsJPA;
+import com.blps.lab1.databaseJPA.*;
 import com.blps.lab1.service.MovieService;
-import jakarta.servlet.http.HttpServletRequest;
-import org.apache.coyote.Request;
+import com.blps.lab1.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +15,11 @@ import java.util.List;
 public class MovieController {
     @Autowired
     private MovieService movieService;
+
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private OrdersRepo ordersRepo;
 
     @GetMapping
     public List<MoviesJPA> getAllMovies() {
@@ -56,27 +57,35 @@ public class MovieController {
     }
 
     @PostMapping("/{movieID}/review")
-    public ReviewsJPA addReview(@PathVariable Integer movieID, @RequestBody HttpServletRequest request) {
-        return movieService.addReviewToMovie(movieID, request);
+    public ReviewsJPA addReview(@PathVariable Integer movieID, @RequestBody ReviewsJPA review) {
+        return movieService.addReviewToMovie(movieID, review);
     }
 
     @DeleteMapping("/{movieID}/review/{reviewID}")
-    public void deleteReview(@PathVariable Integer movieID, @PathVariable Integer reviewID) {
+    public ResponseEntity<?> deleteReview(@PathVariable Integer movieID, @PathVariable Integer reviewID) {
         movieService.deleteReview(reviewID);
+        return ResponseEntity.ok("Review deleted");
     }
 
     @PostMapping("/{movieID}/ticket")
-    public ResponseEntity<?> addTicket(@PathVariable Integer movieID) {
-        return ResponseEntity.ok("");
+    public TicketsJPA addTicket(@PathVariable Integer movieID, @RequestBody TicketsJPA ticket) {
+        return movieService.addTicketToMovie(movieID, ticket);
     }
 
     @GetMapping("/{movieID}/ticket")
-    public ResponseEntity<?> getTickets(@PathVariable Integer movieID) {
-        return ResponseEntity.ok("");
+    public List<TicketsJPA> getTickets(@PathVariable Integer movieID) {
+        return movieService.getTicketsByMovieID(movieID);
     }
 
     @PostMapping("/{movieID}/ticket/buy")
-    public ResponseEntity<?> buyTicket(@PathVariable Integer movieID) {
-        return ResponseEntity.ok("");
+    public ResponseEntity<?> buyTicket(@PathVariable Integer movieID, @RequestBody OrdersJPA order) {
+        movieService.buyTicket(movieID, order);
+        return ResponseEntity.ok("Ticket wait for payment");
+    }
+
+    @PutMapping("/{movieID}/ticket/payment/{orderID}")
+    public ResponseEntity<?> payTicket(@PathVariable Integer movieID, @PathVariable Integer orderID) {
+        orderService.payOrder(orderID);
+        return ResponseEntity.ok("Ticket is paid!");
     }
 }
