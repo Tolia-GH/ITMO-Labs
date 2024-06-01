@@ -5,7 +5,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FavouritesRepo extends JpaRepository<FavouritesJPA, Integer> {
-    @Query(value = "select A from FavouritesJPA A where A.movie_id = ?1")
-    FavouritesJPA findByMovieId(Integer movieID);
+public interface AccountsRepo extends JpaRepository<AccountsJPA, Integer> {
+
+    @Query(value = "select A from AccountsJPA A where A.email = ?1")
+    AccountsJPA findByEmail(String email);
 }

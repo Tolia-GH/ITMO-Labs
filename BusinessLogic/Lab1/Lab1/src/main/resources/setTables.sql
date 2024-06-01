@@ -1,14 +1,11 @@
-create table if not exists admins(
+create table if not exists accounts(
     id serial not null primary key,
     username varchar(32) not null,
-    password varchar(256) not null
+    password varchar(256) not null,
+    email varchar(256) not null,
+    role TEXT not null
 );
 
-create table if not exists users(
-    id serial not null primary key,
-    username varchar(32) not null,
-    password varchar(256) not null
-);
 
 create table if not exists movies(
     id serial not null primary key,
@@ -27,20 +24,20 @@ create table if not exists tickets(
 
 create table if not exists reviews(
     id serial not null primary key,
-    author_id int references users(id),
+    author_id int references accounts(id),
     movie_id int references movies(id),
     content text not null
 );
 
 create table if not exists favourites(
     id serial not null primary key,
-    user_id int references users(id),
+    user_id int references accounts(id),
     movie_id int references movies(id)
 );
 
 create table if not exists orders(
     id serial not null primary key,
-    user_id int references users(id),
+    user_id int references accounts(id),
     ticket_id int references tickets(id),
     is_paid boolean default false not null
 );

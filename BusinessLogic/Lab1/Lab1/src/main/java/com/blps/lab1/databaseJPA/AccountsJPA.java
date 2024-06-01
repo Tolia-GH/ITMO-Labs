@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "users", schema = "business_logic")
-public class UsersJPA {
+@Table(name = "accounts", schema = "business_logic")
+public class AccountsJPA {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -14,6 +14,8 @@ public class UsersJPA {
     private String username;
     @Column(name = "password")
     private String password;
-    @Column(name = "role")
+    @Column(name = "email")
+    private String email;
+    @Enumerated(EnumType.STRING)
     private Role role;
 }
