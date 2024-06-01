@@ -50,17 +50,17 @@ public class MovieController {
         }
     }
 
-    @GetMapping("/{movieID}/reviews")
+    @GetMapping("/{movieID}/review")
     public List<ReviewsJPA> getReviews(@PathVariable Integer movieID) {
         return movieService.getReviewsByMovieID(movieID);
     }
 
-    @PostMapping("/{movieID}/reviews")
+    @PostMapping("/{movieID}/review")
     public ReviewsJPA addReview(@PathVariable Integer movieID, @RequestBody HttpServletRequest request) {
         return movieService.addReviewToMovie(movieID, request);
     }
 
-    @DeleteMapping("/{movieID}/reviews/{reviewID}")
+    @DeleteMapping("/{movieID}/review/{reviewID}")
     public void deleteReview(@PathVariable Integer movieID, @PathVariable Integer reviewID) {
         movieService.deleteReview(reviewID);
     }
