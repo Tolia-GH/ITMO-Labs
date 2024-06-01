@@ -6,6 +6,7 @@ import com.blps.lab1.databaseJPA.TicketsRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -31,6 +32,10 @@ public class OrderService {
 
     public List<OrdersJPA> getAllOrders() {
         return ordersRepo.findAll();
+    }
+
+    public Optional<OrdersJPA> getOrderByID(Integer id) {
+        return ordersRepo.findById(id);
     }
 
     public List<OrdersJPA> getAllOrdersByAccountID(Integer accountID) {

@@ -1,6 +1,7 @@
 package com.blps.lab1.controller;
 
 import com.blps.lab1.databaseJPA.*;
+import com.blps.lab1.service.AccountsService;
 import com.blps.lab1.service.MovieService;
 import com.blps.lab1.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/movie")
@@ -18,8 +20,9 @@ public class MovieController {
 
     @Autowired
     private OrderService orderService;
+
     @Autowired
-    private OrdersRepo ordersRepo;
+    AccountsService accountsService;
 
     @GetMapping
     public List<MoviesJPA> getAllMovies() {
@@ -43,11 +46,21 @@ public class MovieController {
 
     @PostMapping("/{movieID}")
     public ResponseEntity<?> addToFavourites(@PathVariable Integer movieID, @RequestBody AccountsJPA account) {
+        Optional<MoviesJPA> movie = movieService.getMovie(movieID);
+        Optional<AccountsJPA> accountFound = accountsService.findAccountByID(account.getId());
         FavouritesJPA favouriteFound = movieService.findFavouritesByMovieIdAndAccountID(movieID, account.getId());
-        if (favouriteFound == null) {
-            return ResponseEntity.ok(movieService.addToFavourites(movieID, account));
-        } else {
+
+        System.out.println(movie);
+        if (favouriteFound != null && movie.isPresent() && accountFound.isPresent()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie Already Added to Favourites!");
+
+        } else if (movie.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie does not exists!");
+        } else if (accountFound.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Account does not exists!");
+        }else {
+            return ResponseEntity.ok(movieService.addToFavourites(movieID, account));
+
         }
     }
 
@@ -68,23 +81,39 @@ public class MovieController {
     }
 
     @PostMapping("/{movieID}/ticket")
-    public TicketsJPA addTicket(@PathVariable Integer movieID, @RequestBody TicketsJPA ticket) {
-        return movieService.addTicketToMovie(movieID, ticket);
+    public ResponseEntity<?> addTicket(@PathVariable Integer movieID, @RequestBody TicketsJPA ticket) {
+        Optional<TicketsJPA> ticketFound = movieService.getTicketByMovieID(movieID);
+        if (ticketFound.isPresent()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ticket of this movie already exists");
+        }
+        return ResponseEntity.ok(movieService.addTicketToMovie(movieID, ticket));
     }
 
-    @GetMapping("/{movieID}/ticket")
-    public List<TicketsJPA> getTickets(@PathVariable Integer movieID) {
-        return movieService.getTicketsByMovieID(movieID);
+    @GetMapping("/ticket")
+    public List<TicketsJPA> getTickets() {
+        return movieService.getTickets();
     }
 
     @PostMapping("/{movieID}/ticket/buy")
     public ResponseEntity<?> buyTicket(@PathVariable Integer movieID, @RequestBody OrdersJPA order) {
-        movieService.buyTicket(movieID, order);
-        return ResponseEntity.ok("Ticket wait for payment");
+        Optional<AccountsJPA> account = accountsService.findAccountByID(order.getUser_id());
+        Optional<TicketsJPA> ticket = movieService.getTicketByMovieID(movieID);
+        if (account.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Account does not exists!");
+        } else if (ticket.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ticket does not exists!");
+        } else {
+            movieService.buyTicket(ticket.get().getId(), order);
+            return ResponseEntity.ok("Ticket wait for payment");
+        }
     }
 
     @PutMapping("/{movieID}/ticket/payment/{orderID}")
     public ResponseEntity<?> payTicket(@PathVariable Integer movieID, @PathVariable Integer orderID) {
+        Optional<OrdersJPA> orderFound = orderService.getOrderByID(orderID);
+        if (orderFound.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Order not found!");
+        }
         orderService.payOrder(orderID);
         return ResponseEntity.ok("Ticket is paid!");
     }

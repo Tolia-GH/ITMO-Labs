@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AccountsService {
@@ -18,6 +19,9 @@ public class AccountsService {
         return accountsRepo.findAll();
     }
 
+    public Optional<AccountsJPA> findAccountByID(Integer id) {
+        return accountsRepo.findById(id);
+    }
     public AccountsJPA findAccountByEmail(String email) {
         return accountsRepo.findByEmail(email);
     }

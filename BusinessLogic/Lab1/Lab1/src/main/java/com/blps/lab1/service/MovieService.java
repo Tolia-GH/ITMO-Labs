@@ -71,7 +71,7 @@ public class MovieService {
         return favouritesRepo.findByMovieIDAndUser_id(movieID, accountID);
     }
 
-    public List<TicketsJPA> getTicketsByMovieID(Integer movieID) {
+    public Optional<TicketsJPA> getTicketByMovieID(Integer movieID) {
         return ticketsRepo.findByMovieID(movieID);
     }
 
@@ -83,15 +83,15 @@ public class MovieService {
         return ticketsRepo.save(newTicket);
     }
 
-    public void buyTicket(Integer movieID, OrdersJPA order) {
+    public void buyTicket(Integer ticketID, OrdersJPA order) {
         OrdersJPA newOrder = new OrdersJPA();
         newOrder.setUser_id(order.getUser_id());
-        newOrder.setTicket_id(order.getTicket_id());
+        newOrder.setTicket_id(ticketID);
         newOrder.setIs_paid(false);
         ordersRepo.save(newOrder);
     }
 
-    public void payOrder(Integer orderID) {
-
+    public List<TicketsJPA> getTickets() {
+        return ticketsRepo.findAll();
     }
 }
