@@ -67,8 +67,8 @@ public class MovieService {
         reviewsRepo.deleteById(reviewID);
     }
 
-    public FavouritesJPA findFavouritesByMovieId(Integer movieID) {
-        return favouritesRepo.findByMovieID(movieID);
+    public FavouritesJPA findFavouritesByMovieIdAndAccountID(Integer movieID, Integer accountID) {
+        return favouritesRepo.findByMovieIDAndUser_id(movieID, accountID);
     }
 
     public List<TicketsJPA> getTicketsByMovieID(Integer movieID) {

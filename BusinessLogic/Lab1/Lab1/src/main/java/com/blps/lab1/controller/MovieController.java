@@ -43,7 +43,7 @@ public class MovieController {
 
     @PostMapping("/{movieID}")
     public ResponseEntity<?> addToFavourites(@PathVariable Integer movieID, @RequestBody AccountsJPA account) {
-        FavouritesJPA favouriteFound = movieService.findFavouritesByMovieId(movieID);
+        FavouritesJPA favouriteFound = movieService.findFavouritesByMovieIdAndAccountID(movieID, account.getId());
         if (favouriteFound == null) {
             return ResponseEntity.ok(movieService.addToFavourites(movieID, account));
         } else {

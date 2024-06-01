@@ -1,23 +1,25 @@
 package com.blps.lab1.controller;
 
 import com.blps.lab1.databaseJPA.AccountsJPA;
+import com.blps.lab1.databaseJPA.FavouritesJPA;
 import com.blps.lab1.databaseJPA.MoviesJPA;
+import com.blps.lab1.databaseJPA.OrdersJPA;
 import com.blps.lab1.service.AccountsService;
+import com.blps.lab1.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/account")
+@RequestMapping("")
 public class AccountsController {
     @Autowired
     private AccountsService accountsService;
 
-    @GetMapping
+    @GetMapping("/account")
     public List<AccountsJPA> getAllAccounts() {
         return accountsService.findAllAccounts();
     }
@@ -43,18 +45,27 @@ public class AccountsController {
         }
     }
 
+    @GetMapping("/account/{accountID}/favourites")
+    public List<FavouritesJPA> getFavouriteMovies(@PathVariable Integer accountID) {
+        return accountsService.getFavouritesByAccountID(accountID);
+    }
+
+    @Autowired
+    private OrderService orderService;
+
     @GetMapping("/order")
-    public ResponseEntity<?> getAllOrders() {
-        return ResponseEntity.ok("");
+    public List<OrdersJPA> getAllOrders() {
+        return orderService.getAllOrders();
     }
 
-    @PostMapping("/order/{orderID}")
-    public ResponseEntity<?> payOrder(@PathVariable Integer orderID) {
-        return ResponseEntity.ok("");
+    @GetMapping("/account/{accountID}/order")
+    public List<OrdersJPA> getAllOrdersByAccountID(@PathVariable Integer accountID) {
+        return orderService.getAllOrdersByAccountID(accountID);
     }
 
-    @GetMapping("/favourite")
-    public List<MoviesJPA> getFavouriteMovies() {
-        return new ArrayList<>();
+    @PutMapping("/account/{accountID}/order/{orderID}/payment")
+    public ResponseEntity<?> payTicket(@PathVariable Integer accountID, @PathVariable Integer orderID) {
+        orderService.payOrder(orderID);
+        return ResponseEntity.ok("Ticket is paid!");
     }
 }

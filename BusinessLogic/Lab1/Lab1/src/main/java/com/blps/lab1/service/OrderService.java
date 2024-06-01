@@ -32,4 +32,8 @@ public class OrderService {
     public List<OrdersJPA> getAllOrders() {
         return ordersRepo.findAll();
     }
+
+    public List<OrdersJPA> getAllOrdersByAccountID(Integer accountID) {
+        return ordersRepo.findAllByAccountId(accountID);
+    }
 }
