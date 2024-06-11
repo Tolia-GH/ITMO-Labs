@@ -34,7 +34,7 @@
 
 ## Цель работы
 
-на выделенном узле создать и сконфигурировать новый кластер БД Postgres, саму БД, табличные пространства и новую роль, а также произвести наполнение базы в соответствии с заданием. Отчёт по работе должен содержать все команды по настройке, скрипты, а также измененные строки конфигурационных файлов.
+На выделенном узле создать и сконфигурировать новый кластер БД Postgres, саму БД, табличные пространства и новую роль, а также произвести наполнение базы в соответствии с заданием. Отчёт по работе должен содержать все команды по настройке, скрипты, а также измененные строки конфигурационных файлов.
 
 Способ подключения к узлу из сети Интернет через helios:
 ```sh
@@ -60,12 +60,15 @@ ssh -J s336184@helios.cs.ifmo.ru:2222 postgres2@pg117
 
 ```sh
 [postgres2@pg117 ~]$ export PGDATA=$HOME/ewe49
+[postgres2@pg117 ~]$ export PGWAL=$HOME/svq55
 [postgres2@pg117 ~]$ export LANG=ru_RU.KOI8-R
 ```
 
 ```sh
 [postgres2@pg117 ~]$ echo $PGDATA
 /var/db/postgres2/ewe49
+[postgres2@pg117 ~]$ echo $PGWAL
+
 [postgres2@pg117 ~]$ echo $LANG
 ru_RU.KOI8-R
 ```
@@ -126,45 +129,41 @@ initdb: предупреждение: включение метода аутен
 
 ```conf
 # Connection Settings
-listen_addresses = '*'          
-port = 9806                     
-
+listen_addresses = '*'       # 监听所有IP地址，允许从任意IP地址连接到数据库服务器。
+port = 9806                  # 数据库服务器使用的端口号，设定为9806。
+                 
 # Resource Consumption
-max_connections = 100           
-shared_buffers = 3GB            
-temp_buffers = 16MB             
-work_mem = 16MB                 
-
+max_connections = 100        # 最大连接数，设置为100。
+shared_buffers = 3GB         # 共享缓冲区大小，通常为总内存的25%，这里设置为3GB。
+temp_buffers = 128MB         # 每个会话的临时缓冲区大小，设置为128MB。
+work_mem = 64MB              # 每个排序操作使用的内存大小，设置为64MB。
+effective_cache_size = 9GB   # 数据库运行时操作系统的缓存大小估计，通常为总内存的75%，这里设置为9GB。
+        
 # Checkpoints
-checkpoint_timeout = 10min      
-
-# Memory
-effective_cache_size = 9GB      
+checkpoint_timeout = 10min   # 检查点的时间间隔，设置为15分钟。
 
 # Write-Ahead Logging (WAL)
-fsync = on                      
-commit_delay = 0                
+fsync = on                   # 确保数据在写入磁盘前被同步，保证数据一致性。
+commit_delay = 0             # 提交事务后延迟写入磁盘的时间，设置为0表示不延迟。
+wal_level = replica          # WAL记录的详细级别，设置为replica，以便支持复制。             
 
-# WAL Directory
-wal_level = replica             
-archive_mode = on               
-archive_command = 'cp %p $HOME/svq55/%f'  
 ```
 > 问题：这里题目要求的是 WAL file，但是我用的是 archived file
 ```sh
 # Logging
-logging_collector = on
-log_destination = 'csvlog'      
-log_directory = 'log'           
-log_filename = 'postgresql-%Y-%m-%d_%H%M%S.log'  
+logging_collector = on       # 启用日志收集器，将日志写入文件。
+log_destination = 'csvlog'   # 日志输出格式为CSV。
+log_directory = 'log'        # 日志文件的存储目录。
+log_filename = 'postgresql-%Y-%m-%d_%H%M%S.log'  # 日志文件的命名格式。
 log_truncate_on_rotation = on   
-log_rotation_age = 1d           
-log_rotation_size = 0           
-log_statement = 'none'          
-log_duration = on               
-log_connections = on            
-log_disconnections = on         
-log_min_messages = error        
+log_rotation_age = 1d        # 日志文件的轮转时间，设置为每天轮转一次。
+log_rotation_size = 0        # 日志文件的最大大小，达到该大小时进行轮转。
+log_statement = 'none'       # 记录的SQL语句类型，这里设置为不记录任何语句。
+log_duration = on            # 记录每个命令的执行时间。
+log_connections = on         # 记录每次新的连接。
+log_disconnections = on      # 记录每次断开连接。
+log_min_messages = error     # 最小的日志记录级别，设置为记录错误信息。
+log_error_verbosity = default  # 错误日志的详细程度，设置为默认值。
 ```
 
 ```conf
