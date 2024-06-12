@@ -2,7 +2,6 @@ package com.blps.lab1.controller;
 
 import com.blps.lab1.databaseJPA.AccountsJPA;
 import com.blps.lab1.databaseJPA.FavouritesJPA;
-import com.blps.lab1.databaseJPA.MoviesJPA;
 import com.blps.lab1.databaseJPA.OrdersJPA;
 import com.blps.lab1.service.AccountsService;
 import com.blps.lab1.service.OrderService;
@@ -27,7 +26,9 @@ public class AccountsController {
     @PostMapping("/signIn")
     public ResponseEntity<?> login(@RequestBody AccountsJPA account) {
         AccountsJPA accountFound = accountsService.findAccountByEmail(account.getEmail());
-        if (accountFound.getPassword().equals(account.getPassword())) {
+        if (accountFound == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Account not found!");
+        } else if (accountFound.getPassword().equals(account.getPassword())) {
             return ResponseEntity.ok("Successful Login!");
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email or Password Wrong!");

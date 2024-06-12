@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.blps</groupId>
-    <artifactId>Lab1</artifactId>
+    <artifactId>Lab</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>Lab1</name>
