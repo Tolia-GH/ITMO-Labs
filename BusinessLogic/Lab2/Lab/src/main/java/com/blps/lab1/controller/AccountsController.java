@@ -24,7 +24,7 @@ public class AccountsController {
     }
 
     @PostMapping("/signIn")
-    public ResponseEntity<?> login(@RequestBody AccountsJPA account) {
+    public ResponseEntity<?> signIn(@RequestBody AccountsJPA account) {
         AccountsJPA accountFound = accountsService.findAccountByEmail(account.getEmail());
         if (accountFound == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Account not found!");

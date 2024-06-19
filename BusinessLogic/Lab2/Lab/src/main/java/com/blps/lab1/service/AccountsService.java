@@ -1,7 +1,11 @@
 package com.blps.lab1.service;
 
-import com.blps.lab1.databaseJPA.*;
+import com.blps.lab1.databaseJPA.AccountsJPA;
+import com.blps.lab1.databaseJPA.AccountsRepo;
+import com.blps.lab1.databaseJPA.FavouritesJPA;
+import com.blps.lab1.databaseJPA.FavouritesRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -15,6 +19,8 @@ public class AccountsService {
     @Autowired
     private FavouritesRepo favouritesRepo;
 
+    private BCryptPasswordEncoder passwordEncoder;
+
     public List<AccountsJPA> findAllAccounts() {
         return accountsRepo.findAll();
     }
@@ -23,14 +29,16 @@ public class AccountsService {
         return accountsRepo.findById(id);
     }
     public AccountsJPA findAccountByEmail(String email) {
-        return accountsRepo.findByEmail(email);
+        return accountsRepo.findByEmail(email).orElse(null);
     }
 
-    public AccountsJPA addAccount(@RequestBody AccountsJPA account) {
+    public void addAccount(@RequestBody AccountsJPA account) {
         System.out.println(account.getId());
         System.out.println(account.getUsername());
         System.out.println(account.getPassword());
-        return accountsRepo.save(account);
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
+        System.out.println(account.getPassword());
+        accountsRepo.save(account);
     }
 
     public List<FavouritesJPA> getFavouritesByAccountID(Integer accountID) {
