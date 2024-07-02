@@ -39,8 +39,9 @@ public class MovieService {
         return moviesRepo.save(movie);
     }
 
-    public void deleteMovie(Integer movieID) {
+    public String deleteMovie(Integer movieID) {
         moviesRepo.deleteById(movieID);
+        return "Movie deleted!";
     }
 
     public FavouritesJPA addToFavourites(Integer movieID, AccountsJPA account) {
@@ -93,5 +94,9 @@ public class MovieService {
 
     public List<TicketsJPA> getTickets() {
         return ticketsRepo.findAll();
+    }
+
+    public Optional<ReviewsJPA> getReviewByID(Integer reviewID) {
+        return reviewsRepo.findById(reviewID);
     }
 }

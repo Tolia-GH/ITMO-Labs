@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,8 @@ public class MovieController {
 
     @Autowired
     AccountsService accountsService;
+    @Autowired
+    private ReviewsRepo reviewsRepo;
 
     @GetMapping
     public List<MoviesJPA> getAllMovies() {
@@ -35,13 +38,23 @@ public class MovieController {
     }
 
     @DeleteMapping("/{movieID}")
-    public void deleteMovieByID(@PathVariable Integer movieID) {
-        movieService.deleteMovie(movieID);
+    public ResponseEntity<?> deleteMovieByID(@PathVariable Integer movieID) {
+        Optional<MoviesJPA> moviesJPA =movieService.getMovie(movieID);
+        if (moviesJPA.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie not found");
+        } else {
+            return ResponseEntity.ok(movieService.deleteMovie(movieID));
+        }
     }
 
     @GetMapping("/{movieID}")
     public ResponseEntity<?> getMovieByID(@PathVariable Integer movieID) {
-        return ResponseEntity.ok(movieService.getMovie(movieID));
+        Optional<MoviesJPA> moviesJPA =movieService.getMovie(movieID);
+        if (moviesJPA.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie not found");
+        } else {
+            return ResponseEntity.ok(movieService.getMovie(movieID));
+        }
     }
 
     @PostMapping("/{movieID}")
@@ -53,20 +66,23 @@ public class MovieController {
         System.out.println(movie);
         if (favouriteFound != null && movie.isPresent() && accountFound.isPresent()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie Already Added to Favourites!");
-
         } else if (movie.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie does not exists!");
         } else if (accountFound.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Account does not exists!");
-        }else {
+        } else {
             return ResponseEntity.ok(movieService.addToFavourites(movieID, account));
-
         }
     }
 
     @GetMapping("/{movieID}/review")
     public List<ReviewsJPA> getReviews(@PathVariable Integer movieID) {
-        return movieService.getReviewsByMovieID(movieID);
+        Optional<MoviesJPA> moviesJPA =movieService.getMovie(movieID);
+        if (moviesJPA.isEmpty()) {
+            return null;
+        } else {
+            return movieService.getReviewsByMovieID(movieID);
+        }
     }
 
     @PostMapping("/{movieID}/review")
@@ -76,8 +92,16 @@ public class MovieController {
 
     @DeleteMapping("/{movieID}/review/{reviewID}")
     public ResponseEntity<?> deleteReview(@PathVariable Integer movieID, @PathVariable Integer reviewID) {
-        movieService.deleteReview(reviewID);
-        return ResponseEntity.ok("Review deleted");
+        Optional<MoviesJPA> movieFound = movieService.getMovie(movieID);
+        Optional<ReviewsJPA> reviewFound = movieService.getReviewByID(reviewID);
+        if (movieFound.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie not found!");
+        } else if (reviewFound.isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Review not found!");
+        } else {
+            movieService.deleteReview(reviewID);
+            return ResponseEntity.ok("Review deleted");
+        }
     }
 
     @PostMapping("/{movieID}/ticket")
