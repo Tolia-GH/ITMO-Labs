@@ -1,5 +1,6 @@
 package com.blps.lab1.utils;
 
+import com.blps.lab1.service.AccountsDetail;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -39,6 +40,11 @@ public class JwtUtil {
         return claims.getSubject();
     }
 
+    public String extractEmail(String token) {
+        Claims claims = extractAllClaims(token);
+        return claims.get("email", String.class);
+    }
+
     // 提取过期时间
     public Date extractExpiration(String token) {
         Claims claims = extractAllClaims(token);
@@ -54,13 +60,15 @@ public class JwtUtil {
     // 生成令牌
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("email", ((AccountsDetail) userDetails).getEmail()); // put email info from accountsDetail into token
+        claims.put("role", userDetails.getAuthorities().iterator().next().getAuthority());
         return createToken(claims, userDetails.getUsername());
     }
 
     // 创建令牌
     private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
-                .setClaims(claims)
+                .setClaims(claims) // email and role will be set here
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + ExpirationTimeMs))

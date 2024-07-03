@@ -7,6 +7,7 @@ import com.blps.lab1.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.html.Option;
@@ -26,7 +27,6 @@ public class MovieController {
     AccountsService accountsService;
     @Autowired
     private ReviewsRepo reviewsRepo;
-
     @GetMapping
     public List<MoviesJPA> getAllMovies() {
         return movieService.getAllMovies();

@@ -1,6 +1,7 @@
 package com.blps.lab1.service;
 
 import com.blps.lab1.databaseJPA.AccountsJPA;
+import com.blps.lab1.databaseJPA.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

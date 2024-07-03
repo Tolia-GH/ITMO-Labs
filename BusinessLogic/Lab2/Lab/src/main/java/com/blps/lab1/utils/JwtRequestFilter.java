@@ -29,21 +29,25 @@ public class JwtRequestFilter extends OncePerRequestFilter { // OncePerRequestFi
 
         String username = null;
         String jwt = null;
-
         String email = null;
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) { // to check whether the Http request header starts with "Bearer ", which is a standard format of JWT
             jwt = authHeader.substring(7); // Take substring after 'Bearer '(7 symbols) and get jwt
             username = jwtUtil.extractUsername(jwt); // from jwt get username
+            email = jwtUtil.extractEmail(jwt); // from jwt get email
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) { // when username is not null and there is no authentication info in Security context
-            UserDetails userDetails = this.accountsDetailService.loadUserByUsername(username); // load user's detail info by using accountsDetailService
+            UserDetails userDetails = this.accountsDetailService.loadUserByUsername(email); // load user's detail info by using accountsDetailService
 
             if (jwtUtil.validateToken(jwt, userDetails)) { // check whether JWT token is expired, if not, make user authenticated
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        userDetails, null, userDetails.getAuthorities()
+                );
+                usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request)
+                );
+
+                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
         }
 
