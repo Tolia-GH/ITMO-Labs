@@ -29,7 +29,7 @@ public class AccountsDetail implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() { // get authorities from permissions
         if (authorities == null) {// more efficient by making this judgement
             authorities = permissions.stream()
-                    .map(permission -> new SimpleGrantedAuthority("ROLE_" + permission))
+                    .map(permission -> new SimpleGrantedAuthority("ROLE_" + permission)) // necessary to put prefix 'ROLE_' when using @PreAuthorize("hasRole('ROLE_XX')")
                     .collect(Collectors.toList());
         }
 
