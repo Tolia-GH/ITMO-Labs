@@ -1,6 +1,7 @@
 package com.blps.lab1.service;
 
-import com.blps.lab1.databaseJPA.*;
+import com.blps.lab1.databaseJPA.Objects.*;
+import com.blps.lab1.databaseJPA.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;

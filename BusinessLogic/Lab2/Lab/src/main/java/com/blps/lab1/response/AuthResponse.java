@@ -1,12 +1,10 @@
 package com.blps.lab1.response;
 
-import lombok.Getter;
+import lombok.*;
 
 @Getter
-public class AuthResponse {
-    private String jwt;
-
-    public AuthResponse (String jwt) {
-        this.jwt = jwt;
-    }
+@Setter
+@AllArgsConstructor
+public class AuthResponse { // Response for Authentication
+    private String jwt; // to store JWT token
 }

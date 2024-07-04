@@ -1,5 +1,6 @@
-package com.blps.lab1.databaseJPA;
+package com.blps.lab1.databaseJPA.Repositories;
 
+import com.blps.lab1.databaseJPA.Objects.AccountsJPA;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

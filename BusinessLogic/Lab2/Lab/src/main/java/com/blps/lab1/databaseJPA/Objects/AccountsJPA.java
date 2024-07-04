@@ -1,5 +1,6 @@
-package com.blps.lab1.databaseJPA;
+package com.blps.lab1.databaseJPA.Objects;
 
+import com.blps.lab1.databaseJPA.Role;
 import lombok.Data;
 
 import javax.persistence.*;

@@ -1,8 +1,8 @@
 package com.blps.lab1.service;
 
-import com.blps.lab1.databaseJPA.OrdersJPA;
-import com.blps.lab1.databaseJPA.OrdersRepo;
-import com.blps.lab1.databaseJPA.TicketsRepo;
+import com.blps.lab1.databaseJPA.Objects.OrdersJPA;
+import com.blps.lab1.databaseJPA.Repositories.OrdersRepo;
+import com.blps.lab1.databaseJPA.Repositories.TicketsRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

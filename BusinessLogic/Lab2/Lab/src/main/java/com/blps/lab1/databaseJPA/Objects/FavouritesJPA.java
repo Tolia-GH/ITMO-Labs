@@ -1,4 +1,4 @@
-package com.blps.lab1.databaseJPA;
+package com.blps.lab1.databaseJPA.Objects;
 
 import lombok.Data;
 

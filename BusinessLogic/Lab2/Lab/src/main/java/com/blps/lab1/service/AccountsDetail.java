@@ -1,14 +1,12 @@
 package com.blps.lab1.service;
 
-import com.blps.lab1.databaseJPA.AccountsJPA;
-import com.blps.lab1.databaseJPA.Role;
+import com.blps.lab1.databaseJPA.Objects.AccountsJPA;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 

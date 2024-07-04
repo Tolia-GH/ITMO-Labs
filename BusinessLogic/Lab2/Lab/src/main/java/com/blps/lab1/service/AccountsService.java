@@ -1,9 +1,9 @@
 package com.blps.lab1.service;
 
-import com.blps.lab1.databaseJPA.AccountsJPA;
-import com.blps.lab1.databaseJPA.AccountsRepo;
-import com.blps.lab1.databaseJPA.FavouritesJPA;
-import com.blps.lab1.databaseJPA.FavouritesRepo;
+import com.blps.lab1.databaseJPA.Objects.AccountsJPA;
+import com.blps.lab1.databaseJPA.Repositories.AccountsRepo;
+import com.blps.lab1.databaseJPA.Objects.FavouritesJPA;
+import com.blps.lab1.databaseJPA.Repositories.FavouritesRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
 package com.blps.lab1.controller;
 
-import com.blps.lab1.databaseJPA.AccountsJPA;
-import com.blps.lab1.databaseJPA.AccountsRepo;
+import com.blps.lab1.databaseJPA.Objects.AccountsJPA;
+import com.blps.lab1.databaseJPA.Repositories.AccountsRepo;
 import com.blps.lab1.requests.AuthRequest;
 import com.blps.lab1.response.AuthResponse;
 import com.blps.lab1.service.AccountsDetailService;
@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
