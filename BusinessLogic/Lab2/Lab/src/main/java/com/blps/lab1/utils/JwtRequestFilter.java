@@ -41,12 +41,12 @@ public class JwtRequestFilter extends OncePerRequestFilter { // OncePerRequestFi
             role = jwtUtil.extractRole(jwt); // from jwt get role
         }
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) { // when username is not null and there is no authentication info in Security context
+        if (username != null && role != null && SecurityContextHolder.getContext().getAuthentication() == null) { // when username and role is not null and there is no authentication info in Security context
             UserDetails userDetails = this.accountsDetailService.loadUserByUsername(email); // load user's detail info by using accountsDetailService
 
             if (jwtUtil.validateToken(jwt, userDetails)) { // check whether JWT token is expired, if not, make user authenticated
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, Collections.singletonList(new SimpleGrantedAuthority(role))
+                        userDetails, null, userDetails.getAuthorities()
                 );
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request)
                 );

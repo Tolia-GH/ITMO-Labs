@@ -20,7 +20,7 @@ public class AccountsController {
     private AccountsService accountsService;
 
     @GetMapping("/account")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<AccountsJPA> getAllAccounts() {
         return accountsService.findAllAccounts();
     }
@@ -49,7 +49,7 @@ public class AccountsController {
 //    }
 
     @GetMapping("/account/{accountID}/favourites")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public List<FavouritesJPA> getFavouriteMovies(@PathVariable Integer accountID) {
         return accountsService.getFavouritesByAccountID(accountID);
     }
@@ -58,19 +58,19 @@ public class AccountsController {
     private OrderService orderService;
 
     @GetMapping("/order")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<OrdersJPA> getAllOrders() {
         return orderService.getAllOrders();
     }
 
     @GetMapping("/account/{accountID}/order")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<OrdersJPA> getAllOrdersByAccountID(@PathVariable Integer accountID) {
         return orderService.getAllOrdersByAccountID(accountID);
     }
 
     @PutMapping("/account/{accountID}/order/{orderID}/payment")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> payTicket(@PathVariable Integer accountID, @PathVariable Integer orderID) {
         orderService.payOrder(orderID);
         return ResponseEntity.ok("Ticket is paid!");

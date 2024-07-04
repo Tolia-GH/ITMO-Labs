@@ -38,8 +38,8 @@ public class AuthController {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
             );
-            final UserDetails userDetails = accountsDetailService.loadUserByUsername(authRequest.getEmail());
-            final String jwt = jwtUtil.generateToken(userDetails);
+            final UserDetails userDetails = accountsDetailService.loadUserByUsername(authRequest.getEmail()); // use email to load user
+            final String jwt = jwtUtil.generateToken(userDetails); // generate Jwt
             return ResponseEntity.ok(new AuthResponse(jwt));
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email or Password Error!");
