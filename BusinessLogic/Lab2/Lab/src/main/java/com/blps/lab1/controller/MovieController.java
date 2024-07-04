@@ -25,19 +25,21 @@ public class MovieController {
 
     @Autowired
     AccountsService accountsService;
-    @Autowired
-    private ReviewsRepo reviewsRepo;
+
     @GetMapping
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public List<MoviesJPA> getAllMovies() {
         return movieService.getAllMovies();
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public MoviesJPA addMovie(@RequestBody MoviesJPA movie) {
         return movieService.addMovie(movie);
     }
 
     @DeleteMapping("/{movieID}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteMovieByID(@PathVariable Integer movieID) {
         Optional<MoviesJPA> moviesJPA =movieService.getMovie(movieID);
         if (moviesJPA.isEmpty()) {
@@ -48,6 +50,7 @@ public class MovieController {
     }
 
     @GetMapping("/{movieID}")
+    @PreAuthorize("hasRole('ADMIN' or hasRole('USER'))")
     public ResponseEntity<?> getMovieByID(@PathVariable Integer movieID) {
         Optional<MoviesJPA> moviesJPA =movieService.getMovie(movieID);
         if (moviesJPA.isEmpty()) {
@@ -58,6 +61,7 @@ public class MovieController {
     }
 
     @PostMapping("/{movieID}")
+    @PreAuthorize("hasRole('USER' or hasRole('ADMIN'))")
     public ResponseEntity<?> addToFavourites(@PathVariable Integer movieID, @RequestBody AccountsJPA account) {
         Optional<MoviesJPA> movie = movieService.getMovie(movieID);
         Optional<AccountsJPA> accountFound = accountsService.findAccountByID(account.getId());
@@ -76,6 +80,7 @@ public class MovieController {
     }
 
     @GetMapping("/{movieID}/review")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public List<ReviewsJPA> getReviews(@PathVariable Integer movieID) {
         Optional<MoviesJPA> moviesJPA =movieService.getMovie(movieID);
         if (moviesJPA.isEmpty()) {
@@ -86,11 +91,13 @@ public class MovieController {
     }
 
     @PostMapping("/{movieID}/review")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ReviewsJPA addReview(@PathVariable Integer movieID, @RequestBody ReviewsJPA review) {
         return movieService.addReviewToMovie(movieID, review);
     }
 
     @DeleteMapping("/{movieID}/review/{reviewID}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> deleteReview(@PathVariable Integer movieID, @PathVariable Integer reviewID) {
         Optional<MoviesJPA> movieFound = movieService.getMovie(movieID);
         Optional<ReviewsJPA> reviewFound = movieService.getReviewByID(reviewID);
@@ -105,6 +112,7 @@ public class MovieController {
     }
 
     @PostMapping("/{movieID}/ticket")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> addTicket(@PathVariable Integer movieID, @RequestBody TicketsJPA ticket) {
         Optional<TicketsJPA> ticketFound = movieService.getTicketByMovieID(movieID);
         if (ticketFound.isPresent()) {
@@ -114,11 +122,13 @@ public class MovieController {
     }
 
     @GetMapping("/ticket")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public List<TicketsJPA> getTickets() {
         return movieService.getTickets();
     }
 
     @PostMapping("/{movieID}/ticket/buy")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> buyTicket(@PathVariable Integer movieID, @RequestBody OrdersJPA order) {
         Optional<AccountsJPA> account = accountsService.findAccountByID(order.getUser_id());
         Optional<TicketsJPA> ticket = movieService.getTicketByMovieID(movieID);
@@ -133,6 +143,7 @@ public class MovieController {
     }
 
     @PutMapping("/{movieID}/ticket/payment/{orderID}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> payTicket(@PathVariable Integer movieID, @PathVariable Integer orderID) {
         Optional<OrdersJPA> orderFound = orderService.getOrderByID(orderID);
         if (orderFound.isEmpty()) {

@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,12 +34,16 @@ public class AuthController {
 
     @PostMapping("/signIn")
     public ResponseEntity<?> signIn(@RequestBody AuthRequest authRequest) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
-        );
-        final UserDetails userDetails = accountsDetailService.loadUserByUsername(authRequest.getEmail());
-        final String jwt = jwtUtil.generateToken(userDetails);
-        return ResponseEntity.ok(new AuthResponse(jwt));
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
+            );
+            final UserDetails userDetails = accountsDetailService.loadUserByUsername(authRequest.getEmail());
+            final String jwt = jwtUtil.generateToken(userDetails);
+            return ResponseEntity.ok(new AuthResponse(jwt));
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email or Password Error!");
+        }
     }
 
     @PostMapping("/signUp")

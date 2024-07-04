@@ -45,6 +45,11 @@ public class JwtUtil {
         return claims.get("email", String.class);
     }
 
+    public String extractRole(String token) {
+        Claims claims = extractAllClaims(token);
+        return claims.get("role", String.class);
+    }
+
     // 提取过期时间
     public Date extractExpiration(String token) {
         Claims claims = extractAllClaims(token);
@@ -81,5 +86,7 @@ public class JwtUtil {
         String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
+
+
 
 }
