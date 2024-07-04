@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true) // Necessary to enable annotation '@PreAuthorize' here
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AccountsDetailService accountsDetailService;

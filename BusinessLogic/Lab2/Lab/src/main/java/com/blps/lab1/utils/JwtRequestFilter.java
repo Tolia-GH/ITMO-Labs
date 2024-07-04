@@ -38,7 +38,7 @@ public class JwtRequestFilter extends OncePerRequestFilter { // OncePerRequestFi
             jwt = authHeader.substring(7); // Take substring after 'Bearer '(7 symbols) and get jwt
             username = jwtUtil.extractUsername(jwt); // from jwt get username
             email = jwtUtil.extractEmail(jwt); // from jwt get email
-            role = jwtUtil.extractRole(jwt);
+            role = jwtUtil.extractRole(jwt); // from jwt get role
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) { // when username is not null and there is no authentication info in Security context

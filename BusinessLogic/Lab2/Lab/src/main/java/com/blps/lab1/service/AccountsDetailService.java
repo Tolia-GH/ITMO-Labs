@@ -18,6 +18,7 @@ public class AccountsDetailService implements UserDetailsService {
         AccountsJPA account = accountsRepo.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
+        
         return new AccountsDetail(account);
     }
 }
