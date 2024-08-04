@@ -3,16 +3,10 @@ import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.core.IsNot.not;
-
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 import java.util.*;
 
 public class MainTest {
@@ -28,6 +22,7 @@ public class MainTest {
         vars = new HashMap<String, Object>();
 
         setWindowSize(1920, 1080);
+        setWebSite("https://dfiles.ru/");
     }
 
     @After
@@ -39,15 +34,16 @@ public class MainTest {
         driver.manage().window().setSize(new Dimension(width, height));
     }
 
-
+    public void setWebSite(String url) {
+        driver.get(url);
+    }
 
     /**
      * Test for opening news page
      */
     @Test
     public void getNews() {
-        driver.get("https://dfiles.ru/");
-        driver.findElement(By.xpath("/html/body/div[2]/header/div[1]/div[3]/ul/li[1]")).click();
+        driver.findElement(By.xpath("//li[1]")).click();
     }
 
     /**
@@ -55,25 +51,39 @@ public class MainTest {
      */
     @Test
     public void getArticles() {
-        driver.get("https://dfiles.ru/");
-        driver.findElement(By.xpath("/html/body/div[2]/header/div[1]/div[3]/ul/li[2]")).click();
+        driver.findElement(By.xpath("//li[2]")).click();
+    }
+
+    /**
+     * Test for opening smartphones rating page
+     */
+    @Test
+    public void getRatingOfPhones() {
+        {
+            WebElement element = driver.findElement(By.xpath("//li[3]"));
+            Actions builder = new Actions(driver);
+            builder.moveToElement(element).perform();
+        }
+        {
+            WebElement element = driver.findElement(By.xpath("//a[contains(text(),\'Рейтинги смартфонов\')]"));
+            Actions builder = new Actions(driver);
+            builder.moveToElement(element).perform();
+        }
+        driver.findElement(By.xpath("//a[contains(text(),\'Сравнение смартфонов\')]")).click();
     }
 
     @Test
-    public void getRatingOfPhones() {
-        driver.get("https://dfiles.ru/");
-
+    public void getRatingOfProcessors() {
         {
-            WebElement element = driver.findElement(By.xpath("/html/body/div[2]/header/div[1]/div[3]/ul/li[3]/a"));
+            WebElement element = driver.findElement(By.xpath("//li[3]"));
             Actions builder = new Actions(driver);
             builder.moveToElement(element).perform();
         }
-
         {
-            WebElement element = driver.findElement(By.cssSelector("#top-menu > #menu-item-219010 > a"));
+            WebElement element = driver.findElement(By.xpath("//a[contains(text(),\'Рейтинги смартфонов\')]"));
             Actions builder = new Actions(driver);
             builder.moveToElement(element).perform();
         }
-        driver.findElement(By.cssSelector("#top-menu > #menu-item-219010 #menu-item-215653 > a")).click();
+        driver.findElement(By.xpath("//a[contains(text(),\'Мобильные процессоры\')]")).click();
     }
 }
