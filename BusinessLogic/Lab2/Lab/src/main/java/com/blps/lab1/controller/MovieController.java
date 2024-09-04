@@ -38,9 +38,9 @@ public class MovieController {
     }
 
     @DeleteMapping("/{movieID}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> deleteMovieByID(@PathVariable Integer movieID) {
-        Optional<MoviesJPA> moviesJPA =movieService.getMovie(movieID);
+        Optional<MoviesJPA> moviesJPA = movieService.getMovie(movieID);
         if (moviesJPA.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie not found");
         } else {
@@ -49,9 +49,9 @@ public class MovieController {
     }
 
     @GetMapping("/{movieID}")
-    @PreAuthorize("hasRole('ROLE_ADMIN' or hasRole('ROLE_USER'))")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> getMovieByID(@PathVariable Integer movieID) {
-        Optional<MoviesJPA> moviesJPA =movieService.getMovie(movieID);
+        Optional<MoviesJPA> moviesJPA = movieService.getMovie(movieID);
         if (moviesJPA.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie not found");
         } else {
@@ -60,7 +60,7 @@ public class MovieController {
     }
 
     @PostMapping("/{movieID}")
-    @PreAuthorize("hasRole('ROLE_USER' or hasRole('ROLE_ADMIN'))")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> addToFavourites(@PathVariable Integer movieID, @RequestBody AccountsJPA account) {
         Optional<MoviesJPA> movie = movieService.getMovie(movieID);
         Optional<AccountsJPA> accountFound = accountsService.findAccountByID(account.getId());
