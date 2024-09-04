@@ -28,8 +28,8 @@ public class AccountsService {
     public Optional<AccountsJPA> findAccountByID(Integer id) {
         return accountsRepo.findById(id);
     }
-    public AccountsJPA findAccountByEmail(String email) {
-        return accountsRepo.findByEmail(email).orElse(null);
+    public Optional<AccountsJPA> findAccountByEmail(String email) {
+        return accountsRepo.findByEmail(email);
     }
 
     public void addAccount(@RequestBody AccountsJPA account) {

@@ -4,12 +4,14 @@ import com.blps.lab1.databaseJPA.Objects.*;
 import com.blps.lab1.service.AccountsService;
 import com.blps.lab1.service.MovieService;
 import com.blps.lab1.service.OrderService;
+import com.blps.lab1.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +26,8 @@ public class MovieController {
 
     @Autowired
     AccountsService accountsService;
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
@@ -61,20 +65,35 @@ public class MovieController {
 
     @PostMapping("/{movieID}")
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> addToFavourites(@PathVariable Integer movieID, @RequestBody AccountsJPA account) {
+    public ResponseEntity<?> addToFavourites(@PathVariable Integer movieID, HttpServletRequest request) {
         Optional<MoviesJPA> movie = movieService.getMovie(movieID);
-        Optional<AccountsJPA> accountFound = accountsService.findAccountByID(account.getId());
-        FavouritesJPA favouriteFound = movieService.findFavouritesByMovieIdAndAccountID(movieID, account.getId());
 
-        System.out.println(movie);
-        if (favouriteFound != null && movie.isPresent() && accountFound.isPresent()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie Already Added to Favourites!");
-        } else if (movie.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie does not exists!");
-        } else if (accountFound.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Account does not exists!");
-        } else {
-            return ResponseEntity.ok(movieService.addToFavourites(movieID, account));
+        String authorizationHeader = request.getHeader("Authorization");
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Authorization header");
         }
+
+        String jwtToken = authorizationHeader.substring(7);
+        String email = jwtUtil.extractEmail(jwtToken);
+
+        System.out.println(email);
+
+        Optional<AccountsJPA> accountFound = accountsService.findAccountByEmail(email);
+
+        if (accountFound.isPresent()) {
+            FavouritesJPA favouriteFound = movieService.findFavouritesByMovieIdAndAccountID(movieID, accountFound.get().getId());
+
+            System.out.println(movie);
+            if (favouriteFound != null && movie.isPresent()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie Already Added to Favourites!");
+            } else if (movie.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie does not exists!");
+            } else {
+                return ResponseEntity.ok(movieService.addToFavourites(movieID, accountFound.get()));
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Account Not Found");
+        }
+
     }
 }
