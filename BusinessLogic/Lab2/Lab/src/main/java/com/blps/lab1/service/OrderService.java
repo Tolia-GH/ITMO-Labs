@@ -5,6 +5,7 @@ import com.blps.lab1.databaseJPA.Repositories.OrdersRepo;
 import com.blps.lab1.databaseJPA.Repositories.TicketsRepo;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +20,8 @@ public class OrderService {
         this.ordersRepo = ordersRepo;
         this.ticketsRepo = ticketsRepo;
     }
+
+    @Transactional
     public void payOrder(Integer orderID) {
         ordersRepo.findById(orderID).map(order -> {
             order.setIs_paid(true);
