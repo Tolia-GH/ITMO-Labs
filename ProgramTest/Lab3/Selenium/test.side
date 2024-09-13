@@ -1,0 +1,160 @@
+{
+  "id": "11beef4f-d027-4d2a-a832-a0774f8b6788",
+  "version": "2.0",
+  "name": "ProgramTestLab3",
+  "url": "https://dfiles.ru",
+  "tests": [{
+    "id": "1f6ce31f-fc37-4014-b746-560955ee9df9",
+    "name": "comment",
+    "commands": [{
+      "id": "3cde8719-7a3e-4704-b559-67e30dcbcade",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "995633f6-35d7-4be7-9fc5-1e4a62cf62c6",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1147x1435",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c6a372c9-0d01-4311-8999-ecf308b293fc",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Емкость батареи Galaxy S25 Ultra может вас разочаровать",
+      "targets": [
+        ["linkText=Емкость батареи Galaxy S25 Ultra может вас разочаровать", "linkText"],
+        ["css=.w-animate--started:nth-child(1) > .post-card__body a", "css:finder"],
+        ["xpath=//a[contains(text(),'Емкость батареи Galaxy S25 Ultra может вас разочаровать')]", "xpath:link"],
+        ["xpath=//main[@id='main']/div/div[2]/div/div[2]/div/span/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, 'https://dfiles.ru/emkost-batarei-galaxy-s25-ultra-mozhet-vas-razocharovat/')])[2]", "xpath:href"],
+        ["xpath=//span/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Емкость батареи Galaxy S25 Ultra может вас разочаровать')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c1e72c11-d93d-42e0-858f-db6d39b427a2",
+      "comment": "",
+      "command": "runScript",
+      "target": "window.scrollTo(0,107)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "4481f38e-c310-470e-bfdb-9b75ed9afe30",
+      "comment": "",
+      "command": "runScript",
+      "target": "window.scrollTo(0,1340)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "be84335c-bcd3-4ec6-a273-9ffedb53c332",
+      "comment": "",
+      "command": "runScript",
+      "target": "window.scrollTo(0,1433)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "916dd2a7-b61e-4b30-a895-17e4c431c729",
+      "comment": "",
+      "command": "runScript",
+      "target": "window.scrollTo(0,2292)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "85dd2cb2-1b3c-497b-816f-9184e3f7d2b9",
+      "comment": "",
+      "command": "click",
+      "target": "id=author",
+      "targets": [
+        ["id=author", "id"],
+        ["css=#author", "css:finder"],
+        ["xpath=//input[@id='author']", "xpath:attributes"],
+        ["xpath=//form[@id='commentform']/p/input", "xpath:idRelative"],
+        ["xpath=//p/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "069ade81-c15b-4ea7-b029-ca645edc6cf7",
+      "comment": "",
+      "command": "type",
+      "target": "id=author",
+      "targets": [
+        ["id=author", "id"],
+        ["css=#author", "css:finder"],
+        ["xpath=//input[@id='author']", "xpath:attributes"],
+        ["xpath=//form[@id='commentform']/p/input", "xpath:idRelative"],
+        ["xpath=//p/input", "xpath:position"]
+      ],
+      "value": "hello"
+    }, {
+      "id": "edb7cd6f-60e1-4fc0-9f8a-db563f658352",
+      "comment": "",
+      "command": "click",
+      "target": "id=email",
+      "targets": [
+        ["id=email", "id"],
+        ["name=email", "name"],
+        ["css=#email", "css:finder"],
+        ["xpath=//input[@id='email']", "xpath:attributes"],
+        ["xpath=//form[@id='commentform']/p[2]/input", "xpath:idRelative"],
+        ["xpath=//p[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "de2a1a13-4b1b-4489-9812-dc95354f5028",
+      "comment": "",
+      "command": "type",
+      "target": "id=email",
+      "targets": [
+        ["id=email", "id"],
+        ["name=email", "name"],
+        ["css=#email", "css:finder"],
+        ["xpath=//input[@id='email']", "xpath:attributes"],
+        ["xpath=//form[@id='commentform']/p[2]/input", "xpath:idRelative"],
+        ["xpath=//p[2]/input", "xpath:position"]
+      ],
+      "value": "2398768715@qq.com"
+    }, {
+      "id": "5fe86e86-dc1e-4413-ab3f-2dec10baae80",
+      "comment": "",
+      "command": "click",
+      "target": "id=comment",
+      "targets": [
+        ["id=comment", "id"],
+        ["name=comment", "name"],
+        ["css=#comment", "css:finder"],
+        ["xpath=//textarea[@id='comment']", "xpath:attributes"],
+        ["xpath=//form[@id='commentform']/p[3]/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "68eea793-8989-4a86-8996-91588fb1aa6e",
+      "comment": "",
+      "command": "type",
+      "target": "id=comment",
+      "targets": [
+        ["id=comment", "id"],
+        ["name=comment", "name"],
+        ["css=#comment", "css:finder"],
+        ["xpath=//textarea[@id='comment']", "xpath:attributes"],
+        ["xpath=//form[@id='commentform']/p[3]/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "test"
+    }]
+  }],
+  "suites": [{
+    "id": "16cb659b-c61b-4c69-b014-19a112026c93",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["1f6ce31f-fc37-4014-b746-560955ee9df9"]
+  }],
+  "urls": ["https://dfiles.ru/"],
+  "plugins": []
+}

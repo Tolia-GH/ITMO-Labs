@@ -1,0 +1,136 @@
+{
+  "id": "11beef4f-d027-4d2a-a832-a0774f8b6788",
+  "version": "2.0",
+  "name": "ProgramTestLab3",
+  "url": "https://dfiles.ru",
+  "tests": [{
+    "id": "028d8f80-7f3f-4e12-a8a4-c457230dc44f",
+    "name": "getNews",
+    "commands": [{
+      "id": "5c3c0f95-363a-4e43-baaa-2ba18994e24a",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "8cb1425a-b344-415e-af34-748323ce76e2",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1147x1435",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d48eaff2-15cf-43bd-b7e7-02f749a58b2d",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//li[2]",
+      "targets": [
+        ["id=menu-item-3016", "id"],
+        ["css=#top-menu > #menu-item-3016", "css:finder"],
+        ["xpath=//li[@id='menu-item-3016']", "xpath:attributes"],
+        ["xpath=//ul[@id='top-menu']/li[2]", "xpath:idRelative"],
+        ["xpath=//li[2]", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "4916d37e-7630-4545-b8ac-816540f7e2dc",
+    "name": "getArticles",
+    "commands": [{
+      "id": "4b189a29-2924-4f04-aaf2-3b1091390a3b",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "34755f63-46b1-4f5e-adb3-d566418136bd",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1326x1435",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b45fd8be-7601-4ce5-a94c-811e418f4ab2",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//li",
+      "targets": [
+        ["id=menu-item-3015", "id"],
+        ["css=#top-menu > #menu-item-3015", "css:finder"],
+        ["xpath=//li[@id='menu-item-3015']", "xpath:attributes"],
+        ["xpath=//ul[@id='top-menu']/li", "xpath:idRelative"],
+        ["xpath=//li", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "1c435e61-1679-4c21-8ae7-76b6b1201e95",
+    "name": "getRatingOfPhones",
+    "commands": [{
+      "id": "79cb19c2-542e-4b8e-aa05-efcf0e42f721",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "1f033fd9-bd9f-47be-8153-c448a55b2ad4",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1147x1435",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b761261b-999b-4e15-84c2-479e029e46a6",
+      "comment": "",
+      "command": "mouseMoveAt",
+      "target": "xpath=//li[3]",
+      "targets": [
+        ["id=menu-item-219010", "id"],
+        ["css=#top-menu > #menu-item-219010", "css:finder"],
+        ["xpath=//li[@id='menu-item-219010']", "xpath:attributes"],
+        ["xpath=//ul[@id='top-menu']/li[3]", "xpath:idRelative"],
+        ["xpath=//li[3]", "xpath:position"]
+      ],
+      "value": "3"
+    }, {
+      "id": "0c4c34dc-56d8-45e4-9518-b274dc76489a",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "xpath=//a[contains(text(),'Рейтинги смартфонов')]",
+      "targets": [
+        ["css=#top-menu > #menu-item-219010 > a", "css:finder"],
+        ["xpath=//a[contains(text(),'Рейтинги смартфонов')]", "xpath:link"],
+        ["xpath=//li[@id='menu-item-219010']/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://dfiles.ru/phone/')]", "xpath:href"],
+        ["xpath=//li[3]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "eb903610-9091-485b-affb-7bf4539d4a03",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//a[contains(text(),'Сравнение смартфонов')]",
+      "targets": [
+        ["css=#top-menu > #menu-item-219010 #menu-item-215653 > a", "css:finder"],
+        ["xpath=//a[contains(text(),'Сравнение смартфонов')]", "xpath:link"],
+        ["xpath=//li[@id='menu-item-215653']/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://dfiles.ru/phone-compare/')]", "xpath:href"],
+        ["xpath=//li[3]/ul/li/a", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "16cb659b-c61b-4c69-b014-19a112026c93",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": []
+  }],
+  "urls": ["https://dfiles.ru/"],
+  "plugins": []
+}

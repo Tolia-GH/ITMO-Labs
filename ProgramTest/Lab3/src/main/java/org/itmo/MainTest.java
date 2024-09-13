@@ -86,4 +86,19 @@ public class MainTest {
         }
         driver.findElement(By.xpath("//a[contains(text(),\'Мобильные процессоры\')]")).click();
     }
+
+    @Test
+    public void commentTest() {
+        driver.get("https://dfiles.ru/emkost-batarei-galaxy-s25-ultra-mozhet-vas-razocharovat/");
+        //driver.findElement(By.linkText("Емкость батареи Galaxy S25 Ultra может вас разочаровать")).click();
+        js.executeScript("window.scrollTo(0,2292)");
+        driver.findElement(By.id("author")).click();
+        driver.findElement(By.id("author")).sendKeys("hello");
+        driver.findElement(By.id("email")).click();
+        driver.findElement(By.id("email")).sendKeys("2398768715@qq.com");
+        driver.findElement(By.id("comment")).click();
+        driver.findElement(By.id("comment")).sendKeys("test");
+
+        System.out.println();
+    }
 }
