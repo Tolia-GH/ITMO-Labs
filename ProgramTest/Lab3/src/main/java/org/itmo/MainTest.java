@@ -88,7 +88,7 @@ public class MainTest {
     }
 
     @Test
-    public void commentTest() {
+    public void commentTest() throws InterruptedException {
         driver.get("https://dfiles.ru/emkost-batarei-galaxy-s25-ultra-mozhet-vas-razocharovat/");
         //driver.findElement(By.linkText("Емкость батареи Galaxy S25 Ultra может вас разочаровать")).click();
         js.executeScript("window.scrollTo(0,2292)");
@@ -99,6 +99,6 @@ public class MainTest {
         driver.findElement(By.id("comment")).click();
         driver.findElement(By.id("comment")).sendKeys("test");
 
-        System.out.println();
+        Thread.sleep(10000);
     }
 }
