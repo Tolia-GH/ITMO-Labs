@@ -1,10 +1,10 @@
-package com.itmo.smarthome.smarthomemobile.app.ui.home
+package com.itmo.smarthome.smarthomemobile.app.ui.devices
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class HomeViewModel : ViewModel() {
+class DevicesViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is home Fragment"
