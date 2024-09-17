@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -15,18 +16,19 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <EditText
-            android:id="@+id/et_login_email"
+            android:id="@+id/et_login_username"
             android:layout_width="match_parent"
             android:layout_height="@dimen/element_layout_height"
             android:layout_marginTop="@dimen/element_vertical_margin"
             android:layout_marginBottom="@dimen/element_vertical_margin"
-            android:autofillHints="email"
+            android:autofillHints="username"
             android:background="@drawable/bg_edit_text"
             android:gravity="center"
-            android:hint="@string/email"
+            android:hint="@string/username"
             android:inputType="textEmailAddress"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="VisualLintTextFieldSize" />
 
         <EditText
             android:id="@+id/et_login_password"
@@ -40,7 +42,8 @@
             android:hint="@string/password"
             android:inputType="textPassword"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="VisualLintTextFieldSize" />
 
         <Button
             android:id="@+id/bt_login"
@@ -56,7 +59,8 @@
             android:text="@string/login"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textStyle="bold"
-            app:cornerRadius="500dp" />
+            app:cornerRadius="500dp"
+            tools:ignore="VisualLintButtonSize" />
 
         <Button
             android:id="@+id/bt_register"
@@ -72,7 +76,8 @@
             android:text="@string/register"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textStyle="bold"
-            app:cornerRadius="500dp" />
+            app:cornerRadius="500dp"
+            tools:ignore="VisualLintButtonSize" />
 
     </LinearLayout>
 
