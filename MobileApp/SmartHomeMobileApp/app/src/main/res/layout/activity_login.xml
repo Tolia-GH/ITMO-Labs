@@ -17,57 +17,61 @@
         <EditText
             android:id="@+id/et_login_email"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_height="@dimen/element_layout_height"
+            android:layout_marginTop="@dimen/element_vertical_margin"
+            android:layout_marginBottom="@dimen/element_vertical_margin"
             android:autofillHints="email"
             android:background="@drawable/bg_edit_text"
             android:gravity="center"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/et_login_password"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_height="@dimen/element_layout_height"
+            android:layout_marginTop="@dimen/element_vertical_margin"
+            android:layout_marginBottom="@dimen/element_vertical_margin"
             android:autofillHints="password"
             android:background="@drawable/bg_edit_text"
             android:gravity="center"
             android:hint="@string/password"
             android:inputType="textPassword"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/bt_login"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="@dimen/element_layout_height"
             android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="@dimen/element_vertical_margin"
+            android:layout_marginBottom="@dimen/element_vertical_margin"
             android:insetLeft="0dp"
             android:insetTop="0dp"
             android:insetRight="0dp"
             android:insetBottom="0dp"
             android:text="@string/login"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="bold"
             app:cornerRadius="500dp" />
 
         <Button
             android:id="@+id/bt_register"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="@dimen/element_layout_height"
             android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="@dimen/element_vertical_margin"
+            android:layout_marginBottom="@dimen/element_vertical_margin"
             android:insetLeft="0dp"
             android:insetTop="0dp"
             android:insetRight="0dp"
             android:insetBottom="0dp"
             android:text="@string/register"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="bold"
             app:cornerRadius="500dp" />
 
     </LinearLayout>
