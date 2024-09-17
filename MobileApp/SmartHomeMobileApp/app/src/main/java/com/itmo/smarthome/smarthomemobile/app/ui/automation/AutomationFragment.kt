@@ -22,14 +22,14 @@ class AutomationFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel =
+        val automationViewModel =
             ViewModelProvider(this).get(AutomationViewModel::class.java)
 
         _binding = FragmentAutomationBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
+        automationViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root
