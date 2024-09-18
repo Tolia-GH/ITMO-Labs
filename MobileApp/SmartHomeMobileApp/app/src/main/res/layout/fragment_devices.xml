@@ -6,16 +6,46 @@
     android:layout_height="match_parent"
     tools:context=".ui.devices.DevicesFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_devices"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="0dp"
-        android:layout_marginBottom="60dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:listitem="@layout/listitem_device" />
+        android:layout_marginBottom="60dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_devices"
+            android:layout_width="match_parent"
+            android:layout_height="672dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/bt_fragment_device_add"
+            tools:listitem="@layout/listitem_device" />
+
+        <Button
+            android:id="@+id/bt_fragment_device_add"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/element_layout_height"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/element_start_end_margin"
+            android:layout_marginEnd="@dimen/element_start_end_margin"
+            android:layout_marginTop="@dimen/element_vertical_margin"
+            android:layout_marginBottom="@dimen/element_vertical_margin"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="Add New Device"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="bold"
+            app:cornerRadius="500dp"
+            tools:ignore="VisualLintButtonSize" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
     
 </androidx.constraintlayout.widget.ConstraintLayout>

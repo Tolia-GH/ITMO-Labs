@@ -28,10 +28,6 @@ class UserFragment : Fragment() {
         _binding = FragmentUserBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textNotifications
-        userViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         return root
     }
 

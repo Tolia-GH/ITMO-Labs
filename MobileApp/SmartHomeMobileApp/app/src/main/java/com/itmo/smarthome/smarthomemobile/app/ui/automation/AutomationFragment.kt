@@ -28,10 +28,6 @@ class AutomationFragment : Fragment() {
         _binding = FragmentAutomationBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDashboard
-        automationViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         return root
     }
 
