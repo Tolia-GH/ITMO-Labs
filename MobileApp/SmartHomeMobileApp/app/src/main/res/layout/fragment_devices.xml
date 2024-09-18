@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.devices.DevicesFragment">
 
-
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_devices"
         android:layout_width="0dp"
