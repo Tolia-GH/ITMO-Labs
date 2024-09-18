@@ -1,5 +1,6 @@
 package com.itmo.smarthome.smarthomemobile.app.ui.devices
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.itmo.smarthome.smarthomemobile.app.AddNewDeviceActivity
+import com.itmo.smarthome.smarthomemobile.app.LoginActivity
 import com.itmo.smarthome.smarthomemobile.app.databinding.FragmentDevicesBinding
 import com.itmo.smarthome.smarthomemobile.app.model.Device
 
@@ -43,6 +46,11 @@ class DevicesFragment : Fragment() {
 
         devicesViewModel.devices.observe(viewLifecycleOwner) { devices ->
             devicesAdapter.updateDevices(devices)
+        }
+
+        binding.btFragmentDeviceAdd.setOnClickListener {
+            val intent = Intent(activity, AddNewDeviceActivity::class.java)
+            startActivity(intent)
         }
 
         return root
