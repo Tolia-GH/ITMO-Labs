@@ -99,6 +99,6 @@ public class MainTest {
         driver.findElement(By.id("comment")).click();
         driver.findElement(By.id("comment")).sendKeys("test");
 
-        Thread.sleep(10000);
+        Thread.sleep(5000);
     }
 }
