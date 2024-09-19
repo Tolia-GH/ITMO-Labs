@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.itmo.smarthome.smarthomemobile.app.R
 import com.itmo.smarthome.smarthomemobile.app.model.Device
 
-class DevicesAdapter(private var devices: List<Device>) : RecyclerView.Adapter<DevicesAdapter.DeviceViewHolder>() {
+class DevicesAdapter(private var devicesList: List<Device>) : RecyclerView.Adapter<DevicesAdapter.DeviceViewHolder>() {
 
     inner class DeviceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val deviceName: TextView = itemView.findViewById(R.id.text_device_name)
@@ -23,7 +23,7 @@ class DevicesAdapter(private var devices: List<Device>) : RecyclerView.Adapter<D
     }
 
     override fun onBindViewHolder(holder: DeviceViewHolder, position: Int) {
-        val device = devices[position]
+        val device = devicesList[position]
         holder.deviceName.text = device.name
         holder.deviceDescription.text= device.description
         holder.deviceSwitch.isChecked = device.isOn
@@ -34,10 +34,10 @@ class DevicesAdapter(private var devices: List<Device>) : RecyclerView.Adapter<D
         }
     }
 
-    override fun getItemCount() = devices.size
+    override fun getItemCount() = devicesList.size
 
     fun updateDevices(newDevices: List<Device>) {
-        devices = newDevices
+        devicesList = newDevices
         notifyDataSetChanged()
     }
 

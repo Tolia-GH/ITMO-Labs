@@ -11,12 +11,11 @@ class DevicesViewModel : ViewModel() {
 
     val devices: LiveData<List<Device>> = _devices
     init {
-        val initialDevice = listOf(
+        _devices.value = listOf(
             Device(1, "Light Bulb", "Smart Light Bulb", "Light", false),
             Device(2, "Thermostat", "Smart Thermostat", "Climate Control", false),
             Device(3, "Camera", "Security Camera", "Security", false),
         )
-        _devices.value = initialDevice
     }
 
     fun updateDevices(newDevices: List<Device>) {
@@ -27,5 +26,12 @@ class DevicesViewModel : ViewModel() {
         val updatedDevices = _devices.value?.toMutableList() ?: mutableListOf()
         updatedDevices.add(device)
         _devices.value = updatedDevices
+    }
+
+    fun setDeviceStatus(deviceId: Int, isOn: Boolean) {
+        val updatedDevices = _devices.value?.map { device ->
+            if (device.id == deviceId) device.copy(isOn = isOn) else device
+        }
+        _devices.value = updatedDevices!!
     }
 }
