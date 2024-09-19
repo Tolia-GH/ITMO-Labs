@@ -66,16 +66,46 @@
             tools:ignore="VisualLintTextFieldSize" />
 
         <EditText
-            android:id="@+id/et_add_new_automation_type"
+            android:id="@+id/et_add_new_automation_time"
             android:layout_width="match_parent"
             android:layout_height="@dimen/element_layout_height"
             android:layout_marginTop="@dimen/element_vertical_margin"
             android:layout_marginBottom="@dimen/element_vertical_margin"
-            android:autofillHints="password"
+            android:autofillHints="Time"
             android:background="@drawable/bg_edit_text"
             android:gravity="center"
-            android:hint="Type"
-            android:inputType="textPassword"
+            android:hint="Time"
+            android:focusable="false"
+            android:clickable="true"
+            android:inputType="text"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="bold"
+            tools:ignore="VisualLintTextFieldSize" />
+
+        <Spinner
+            android:id="@+id/sp_add_new_automation_operation"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/element_layout_height"
+            android:layout_marginTop="@dimen/element_vertical_margin"
+            android:layout_marginBottom="@dimen/element_vertical_margin"
+            android:background="@drawable/bg_edit_text"
+            android:hint="Operation"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            tools:ignore="VisualLintTextFieldSize" />
+
+        <EditText
+            android:id="@+id/et_add_new_automation_device_id"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/element_layout_height"
+            android:layout_marginTop="@dimen/element_vertical_margin"
+            android:layout_marginBottom="@dimen/element_vertical_margin"
+            android:autofillHints="username"
+            android:background="@drawable/bg_edit_text"
+            android:gravity="center"
+            android:hint="Device ID"
+            android:inputType="number"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textStyle="bold"
             tools:ignore="VisualLintTextFieldSize" />
