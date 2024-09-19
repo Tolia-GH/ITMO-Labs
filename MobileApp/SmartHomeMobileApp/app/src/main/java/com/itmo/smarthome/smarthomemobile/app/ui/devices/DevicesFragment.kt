@@ -9,9 +9,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.itmo.smarthome.smarthomemobile.app.AddNewDeviceActivity
 import com.itmo.smarthome.smarthomemobile.app.LoginActivity
+import com.itmo.smarthome.smarthomemobile.app.R
 import com.itmo.smarthome.smarthomemobile.app.databinding.FragmentDevicesBinding
 import com.itmo.smarthome.smarthomemobile.app.model.Device
 
@@ -34,7 +35,7 @@ class DevicesFragment : Fragment() {
         _binding = FragmentDevicesBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        devicesViewModel = ViewModelProvider(this).get(DevicesViewModel::class.java)
+        devicesViewModel = ViewModelProvider(requireActivity()).get(DevicesViewModel::class.java)
 
         // Initialize RecyclerView
         val recyclerView = binding.recyclerViewDevices
@@ -49,8 +50,7 @@ class DevicesFragment : Fragment() {
         }
 
         binding.btFragmentDeviceAdd.setOnClickListener {
-            val intent = Intent(activity, AddNewDeviceActivity::class.java)
-            startActivity(intent)
+            findNavController().navigate(R.id.action_navigation_devices_to_navigation_add_new_device)
         }
 
         return root

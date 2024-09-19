@@ -15,16 +15,6 @@ class DevicesViewModel : ViewModel() {
             Device(1, "Light Bulb", "Smart Light Bulb", "Light", false),
             Device(2, "Thermostat", "Smart Thermostat", "Climate Control", false),
             Device(3, "Camera", "Security Camera", "Security", false),
-            Device(4, "Thermostat", "Smart Thermostat", "Climate Control", false),
-            Device(5, "Camera", "Security Camera", "Security", false),
-            Device(6, "Light Bulb", "Smart Light Bulb", "Light", false),
-            Device(7, "Thermostat", "Smart Thermostat", "Climate Control", false),
-            Device(8, "Camera", "Security Camera", "Security", false),
-            Device(9, "Light Bulb", "Smart Light Bulb", "Light", false),
-            Device(10, "Thermostat", "Smart Thermostat", "Climate Control", false),
-            Device(11, "Camera", "Security Camera", "Security", false),
-            Device(12, "Light Bulb", "Smart Light Bulb", "Light", false),
-            Device(13, "Thermostat", "Smart Thermostat", "Climate Control", false),
         )
         _devices.value = initialDevice
     }

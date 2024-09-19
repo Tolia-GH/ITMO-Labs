@@ -9,7 +9,11 @@
         android:id="@+id/navigation_devices"
         android:name="com.itmo.smarthome.smarthomemobile.app.ui.devices.DevicesFragment"
         android:label="@string/title_devices"
-        tools:layout="@layout/fragment_devices" />
+        tools:layout="@layout/fragment_devices" >
+        <action
+            android:id="@+id/action_navigation_devices_to_navigation_add_new_device"
+            app:destination="@id/navigation_add_new_device" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_automation"
@@ -22,4 +26,10 @@
         android:name="com.itmo.smarthome.smarthomemobile.app.ui.user.UserFragment"
         android:label="@string/title_user"
         tools:layout="@layout/fragment_user" />
+
+    <fragment
+        android:id="@+id/navigation_add_new_device"
+        android:name="com.itmo.smarthome.smarthomemobile.app.ui.devices.AddNewDeviceFragment"
+        android:label="Add New Device"
+        tools:layout="@layout/fragment_add_device"/>
 </navigation>
