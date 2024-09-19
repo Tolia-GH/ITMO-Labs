@@ -75,7 +75,7 @@
             android:background="@drawable/bg_edit_text"
             android:gravity="center"
             android:hint="Type"
-            android:inputType="textPassword"
+            android:inputType="text"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textStyle="bold"
             tools:ignore="VisualLintTextFieldSize" />
