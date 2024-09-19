@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.itmo.smarthome.smarthomemobile.app.R
 import com.itmo.smarthome.smarthomemobile.app.databinding.FragmentAutomationBinding
 
 class AutomationFragment : Fragment() {
@@ -43,7 +45,7 @@ class AutomationFragment : Fragment() {
         }
 
         binding.btFragmentAutomationAdd.setOnClickListener {
-            //findNavController().navigate(R.id.action_navigation_devices_to_navigation_add_new_device)
+            findNavController().navigate(R.id.action_navigation_automation_to_navigation_add_new_automation)
         }
 
         return root
