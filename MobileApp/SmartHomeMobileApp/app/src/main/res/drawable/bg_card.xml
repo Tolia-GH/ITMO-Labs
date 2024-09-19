@@ -5,7 +5,7 @@
 
     <!-- 设置圆角半径 -->
     <corners
-        android:radius="32dp"/> <!-- 圆角半径 -->
+        android:radius="16dp"/> <!-- 圆角半径 -->
 
     <!-- 设置边框 -->
     <stroke
