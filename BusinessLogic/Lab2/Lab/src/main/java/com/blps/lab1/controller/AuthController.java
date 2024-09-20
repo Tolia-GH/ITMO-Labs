@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -30,6 +32,7 @@ public class AuthController {
     private AccountsRepo accountsRepo;
     @Autowired
     private AccountsDetailService accountsDetailService;
+
 
     @PostMapping("/signIn")
     public ResponseEntity<?> signIn(@RequestBody AuthRequest authRequest) {
@@ -45,6 +48,7 @@ public class AuthController {
         }
     }
 
+    @Transactional
     @PostMapping("/signUp")
     public ResponseEntity<?> signUp(@RequestBody AccountsJPA account) {
         AccountsJPA accountFound = accountsRepo.findByEmail(account.getEmail()).orElse(null);
