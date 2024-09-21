@@ -32,7 +32,6 @@ public class MovieService {
         return moviesRepo.findById(id);
     }
 
-    @Transactional
     public MoviesJPA addMovie(@RequestBody MoviesJPA movie) {
         System.out.println(movie.getId());
         System.out.println(movie.getName());
@@ -42,13 +41,11 @@ public class MovieService {
         return moviesRepo.save(movie);
     }
 
-    @Transactional
     public String deleteMovie(Integer movieID) {
         moviesRepo.deleteById(movieID);
         return "Movie deleted!";
     }
 
-    @Transactional
     public FavouritesJPA addToFavourites(Integer movieID, AccountsJPA account) {
         FavouritesJPA newFavourite = new FavouritesJPA();
         newFavourite.setMovie_id(movieID);
@@ -60,7 +57,6 @@ public class MovieService {
         return reviewsRepo.findByMovieID(movieID);
     }
 
-    @Transactional
     public ReviewsJPA addReviewToMovie(Integer movieID, ReviewsJPA review) {
         ReviewsJPA newReview = new ReviewsJPA();
         newReview.setContent(review.getContent());
@@ -69,8 +65,6 @@ public class MovieService {
         return reviewsRepo.save(newReview);
     }
 
-
-    @Transactional
     public void deleteReview(Integer reviewID) {
         reviewsRepo.deleteById(reviewID);
     }
@@ -83,7 +77,6 @@ public class MovieService {
         return ticketsRepo.findByMovieID(movieID);
     }
 
-    @Transactional
     public TicketsJPA addTicketToMovie(Integer movieID, TicketsJPA ticket) {
         TicketsJPA newTicket = new TicketsJPA();
         newTicket.setMovie_id(movieID);
@@ -92,7 +85,6 @@ public class MovieService {
         return ticketsRepo.save(newTicket);
     }
 
-    @Transactional
     public void buyTicket(Integer ticketID, AccountsJPA account) {
         OrdersJPA newOrder = new OrdersJPA();
         newOrder.setUser_id(account.getId());
@@ -101,12 +93,10 @@ public class MovieService {
         ordersRepo.save(newOrder);
     }
 
-    @Transactional
     public List<TicketsJPA> getTickets() {
         return ticketsRepo.findAll();
     }
 
-    @Transactional
     public Optional<ReviewsJPA> getReviewByID(Integer reviewID) {
         return reviewsRepo.findById(reviewID);
     }

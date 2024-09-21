@@ -48,7 +48,6 @@ public class AuthController {
         }
     }
 
-    @Transactional
     @PostMapping("/signUp")
     public ResponseEntity<?> signUp(@RequestBody AccountsJPA account) {
         AccountsJPA accountFound = accountsRepo.findByEmail(account.getEmail()).orElse(null);

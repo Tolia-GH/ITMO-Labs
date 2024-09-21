@@ -48,6 +48,22 @@
             <artifactId>spring-boot-starter-jta-bitronix</artifactId>
             <version>2.4.8</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>5.3.15</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.3.15</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.btm</groupId>
+            <artifactId>btm</artifactId>
+            <version>2.1.4</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.postgresql</groupId>
