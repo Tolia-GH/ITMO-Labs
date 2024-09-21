@@ -6,12 +6,15 @@ import com.blps.lab1.databaseJPA.Objects.TicketsJPA;
 import com.blps.lab1.service.AccountsService;
 import com.blps.lab1.service.MovieService;
 import com.blps.lab1.service.OrderService;
+import com.blps.lab1.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +26,9 @@ public class TicketController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Autowired
     AccountsService accountsService;
@@ -44,15 +50,28 @@ public class TicketController {
 
     @PostMapping("/{movieID}/ticket/buy")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<?> buyTicket(@PathVariable Integer movieID, @RequestBody OrdersJPA order) {
-        Optional<AccountsJPA> account = accountsService.findAccountByID(order.getUser_id());
+    public ResponseEntity<?> buyTicket(@PathVariable Integer movieID, HttpServletRequest request) {
+        //Optional<AccountsJPA> account = accountsService.findAccountByID(order.getUser_id());
         Optional<TicketsJPA> ticket = movieService.getTicketByMovieID(movieID);
-        if (account.isEmpty()) {
+
+        String authorizationHeader = request.getHeader("Authorization");
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Authorization header");
+        }
+
+        String jwtToken = authorizationHeader.substring(7);
+        String email = jwtUtil.extractEmail(jwtToken);
+
+        System.out.println(email);
+
+        Optional<AccountsJPA> accountFound = accountsService.findAccountByEmail(email);
+
+        if (accountFound.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Account does not exists!");
         } else if (ticket.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ticket does not exists!");
         } else {
-            movieService.buyTicket(ticket.get().getId(), order);
+            movieService.buyTicket(ticket.get().getId(), accountFound.get());
             return ResponseEntity.ok("Ticket wait for payment");
         }
     }

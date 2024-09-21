@@ -22,7 +22,7 @@ public class OrderController {
     }
 
     @GetMapping("/account/{accountID}/order")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public List<OrdersJPA> getAllOrdersByAccountID(@PathVariable Integer accountID) {
         return orderService.getAllOrdersByAccountID(accountID);
     }

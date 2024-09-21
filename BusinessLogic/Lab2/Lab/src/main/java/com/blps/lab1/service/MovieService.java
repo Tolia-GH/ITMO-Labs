@@ -93,9 +93,9 @@ public class MovieService {
     }
 
     @Transactional
-    public void buyTicket(Integer ticketID, OrdersJPA order) {
+    public void buyTicket(Integer ticketID, AccountsJPA account) {
         OrdersJPA newOrder = new OrdersJPA();
-        newOrder.setUser_id(order.getUser_id());
+        newOrder.setUser_id(account.getId());
         newOrder.setTicket_id(ticketID);
         newOrder.setIs_paid(false);
         ordersRepo.save(newOrder);
