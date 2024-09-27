@@ -5,6 +5,7 @@ import org.junit.After;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 
 import java.util.*;
@@ -17,7 +18,7 @@ public class MainTest {
 
     @Before
     public void setUp() {
-        driver = new ChromeDriver();
+        driver = new FirefoxDriver(); //ChromeDriver()
         js = (JavascriptExecutor) driver;
         vars = new HashMap<String, Object>();
 
