@@ -1,0 +1,185 @@
+openapi: 3.0.3
+info:
+  title: SOA Lab1
+  description: |-
+    This Web Service for SOA Lab1.  
+    
+    Variant: 3177  
+    Student: Чжоу Хунсян  
+    Class: P33141  
+  contact: 
+    email: 2398768715@qq.com
+  license:
+    name: MIT License
+    url: https://opensource.org/license/mit
+  version: 1.0.0
+servers:
+  - url: https://localhost:8083/api/v1
+
+paths:
+  /spacemarine:
+    get:
+      summary: Get list of SpaceMarines
+      tags: 
+        - SpaceMarine
+      operationId: getSpaceMarine
+      parameters:
+        - name: sort
+          description: field that used to sort list of SpaceMarine
+          in: query
+          required: false
+          schema:
+            default: id
+            enum:
+              - id
+              - name
+              - creationDate
+              - health
+              - heartCount
+              - height
+        - name: order
+          description: order to show sorted result
+          in: query
+          required: false
+          schema:
+            default: 'ASC'
+            enum: 
+              - ASC
+              - DESC
+        - name: filter
+          description: filters by specific fields
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              example: id>10
+              pattern: '^(id|name|creatioinDate|health|heartCount|height)[=,>,<,>=,<=].+$'
+          explode: true
+        - name: page
+          description: set the page of result
+          in: query
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: pageSize
+          description: set pageSize of result
+          in: query
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+      responses: 
+        '200':
+          description: OK
+          content: 
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SpaceMarine'
+        '403':
+          description: Forbidden
+          content:
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 403
+                  message: 
+                    type: string
+                    example: Unauthorized access
+                  time: 
+                    type: string
+                    format: date-time
+                    example: 2024-10-03 07:00:00+3
+                xml:
+                  name:
+                    error
+
+components:
+  schemas:
+    SpaceMarine:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Auto generated unique id of SpaceMarine
+          minimum: 1
+          nullable: false
+          
+        name:
+          type: string
+          description: Name of SpaceMarine
+          minLength: 1
+          nullable: false
+        coordinates:
+          $ref: '#/components/schemas/Coordinates'
+        creationDate:
+          type: string
+          format: java.time.ZoneDateTime
+          description: Auto generated date of creation
+          nullable: false
+          example: 2024-10-04 06:03:00+3
+        health:
+          type: integer
+          description: HP of SpaceMarine
+          minimum: 1
+        heartCount:
+          type: integer
+          description: life of SpaceMarine
+          minimum: 1
+          maximum: 3
+        height:
+          type: number
+          format: float
+          description: height of SpaceMarine
+          nullable: false
+        meleeWeapon:
+          $ref: '#/components/schemas/MeleeWeapon'
+        chapter:
+          $ref: '#/components/schemas/Chapter'
+      required:
+        - name
+    
+    Coordinates:
+      type: object
+      description: Locatioin of SpaceMarine
+      properties:
+        x:
+          type: integer
+          description: x coordinate of locaction
+          maximum: 220
+          nullable: false
+        y:
+          type: number
+          format: double
+          description: y coordinate of locaction
+          maximum: 288
+          nullable: false
+    
+    Chapter:
+      type: object
+      description: Chapter of story
+      properties:
+        name:
+          type: string
+          description: Name of chapter
+          minLength: 1
+          nullable: false
+        world:
+          type: string
+          description: World that chapter happens
+          nullable: true
+      required:
+        - name
+    
+    MeleeWeapon:
+      type: string
+      description: Enum for different melee weapons used by SpaceMarine
+      enum:
+        - CHAIN_SWORD
+        - LIGHTING_CLAW
+        - POWER_BLADE
