@@ -1,0 +1,301 @@
+openapi: 3.0.3
+info:
+  title: SOA Lab1
+  description: |-
+    This Web Service for SOA Lab1.  
+    
+    Variant: 3177  
+    Student: Чжоу Хунсян  
+    Class: P33141  
+  contact: 
+    email: 2398768715@qq.com
+  license:
+    name: MIT License
+    url: https://opensource.org/license/mit
+  version: 1.0.0
+servers:
+  - url: https://localhost:8083/api/v1
+
+paths:
+  /starship/{starship-id}/unload/space-marine-id/:
+    get:
+      summary: Unload SpaceMarine from spaceship by SpaceMarine's ID
+      tags: 
+        - Spaceship
+      parameters:
+        - name: SpaceMarine ID
+          description: prefix of SpaceMarine's name for searching
+          in: query
+          required: true
+          schema: 
+            type: array
+            items:
+              type: integer
+              format: int64
+              example: 1
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: Selected SpaceMarine unloaded from given spaceship
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
+                xml:
+                  name:
+                    error
+        '400':
+          description: Invalid param
+          content:
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 400
+                  message:
+                    type: string
+                    example: Invalid param value
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
+                xml:
+                  name:
+                    error
+        '403':
+          description: Forbidden
+          content:
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 403
+                  message: 
+                    type: string
+                    example: Unauthorized access
+                  time: 
+                    type: string
+                    format: date-time
+                    example: 2024-10-03 07:00:00+3
+                xml:
+                  name:
+                    error
+        '500':
+          description: Internal Server error
+          content:
+            application/xml:
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 500
+                  message:
+                    type: string
+                    example: Internal server error
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-10-03 07:00:00+3
+                xml:
+                  name:
+                    error  
+        default:
+          description: Return error code
+          content: 
+            application/xml:
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 503
+                  message:
+                    type: string
+                    example: Service error
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
+  /starship/{starship-id}/unload-all:
+    get:
+      summary: Unload all SpaceMarine from spaceship
+      tags: 
+        - Spaceship
+      parameters:
+        - name: Spaceship ID
+          description: ID of Spaceship
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: All spaceMarines are unloaded from given spaceship
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
+                xml:
+                  name:
+                    error
+        '400':
+          description: Invalid param
+          content:
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 400
+                  message:
+                    type: string
+                    example: Invalid param value
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
+                xml:
+                  name:
+                    error
+        '403':
+          description: Forbidden
+          content:
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 403
+                  message: 
+                    type: string
+                    example: Unauthorized access
+                  time: 
+                    type: string
+                    format: date-time
+                    example: 2024-10-03 07:00:00+3
+                xml:
+                  name:
+                    error
+        '500':
+          description: Internal Server error
+          content:
+            application/xml:
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 500
+                  message:
+                    type: string
+                    example: Internal server error
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-10-03 07:00:00+3
+                xml:
+                  name:
+                    error  
+        default:
+          description: Return error code
+          content: 
+            application/xml:
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 503
+                  message:
+                    type: string
+                    example: Service error
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
+
+components:
+  schemas:
+    Spaceship:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Auto generated unique id of SpaceMarine
+          minimum: 1
+          nullable: false
+        name:
+          type: string
+          description: Name of SpaceMarine
+          minLength: 1
+          nullable: false
+        coordinates:
+          $ref: '#/components/schemas/Coordinates'
+        creationDate:
+          type: string
+          format: java.time.ZoneDateTime
+          description: Auto generated date of creation
+          nullable: false
+          example: 2024-10-04 06:03:00+3
+        spaceMarineId:
+          type: array
+          items:
+            type: integer
+            format: int32
+      required:
+        - name
+    Coordinates:
+      type: object
+      description: Locatioin of Spaceship
+      properties:
+        x:
+          type: integer
+          description: x coordinate of locaction
+          maximum: 220
+          nullable: false
+        y:
+          type: number
+          format: double
+          description: y coordinate of locaction
+          maximum: 288
+          nullable: false

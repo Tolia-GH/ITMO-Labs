@@ -17,12 +17,12 @@ servers:
   - url: https://localhost:8083/api/v1
 
 paths:
-  /spacemarine:
+  /space-marine:
     get:
       summary: Get list of SpaceMarines
       tags: 
         - SpaceMarine
-      operationId: getSpaceMarine
+      operationId: getSpaceMarines
       parameters:
         - name: sort
           description: field that used to sort list of SpaceMarine
@@ -98,6 +98,853 @@ paths:
                 xml:
                   name:
                     error
+        '400':
+          description: Invalid query param
+          content:
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 400
+                  message:
+                    type: string
+                    example: Invalid query param value
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
+                xml:
+                  name:
+                    error
+        '500':
+          description: Internal Server error
+          content:
+            application/xml:
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 500
+                  message:
+                    type: string
+                    example: Internal server error
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-10-03 07:00:00+3
+                xml:
+                  name:
+                    error  
+        default:
+          description: Return error code
+          content: 
+            application/xml:
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 503
+                  message:
+                    type: string
+                    example: Service error
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
+    post:
+      summary: Add new SpaceMarine
+      tags: 
+        - SpaceMarine
+      operationId: addSpaceMarine
+      requestBody:
+        required: true
+        content:
+          application/xml:
+            schema: 
+              $ref: '#/components/schemas/NewSpaceMarine'
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SpaceMarine'
+        '400':
+          description: Invalid param
+          content:
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 400
+                  message:
+                    type: string
+                    example: Invalid param value
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
+                xml:
+                  name:
+                    error
+        '403':
+          description: Forbidden
+          content:
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 403
+                  message: 
+                    type: string
+                    example: Unauthorized access
+                  time: 
+                    type: string
+                    format: date-time
+                    example: 2024-10-03 07:00:00+3
+                xml:
+                  name:
+                    error
+        '500':
+          description: Internal Server error
+          content:
+            application/xml:
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 500
+                  message:
+                    type: string
+                    example: Internal server error
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-10-03 07:00:00+3
+                xml:
+                  name:
+                    error  
+        default:
+          description: Return error code
+          content: 
+            application/xml:
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 503
+                  message:
+                    type: string
+                    example: Service error
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
+  /space-marine/{id}:
+    get:
+      summary: Get SpaceMarine by id
+      tags: 
+        - SpaceMarine
+      operationId: getSpaceMarine
+      parameters:
+        - name: id
+          description: ID of SpaceMarine for searching
+          in: path
+          required: true
+          schema: 
+            type: integer
+            format: int64
+            nullable: false
+            minimum: 1
+            exclusiveMinimum: true
+            example: 1
+
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SpaceMarine'
+        '400':
+          description: Invalid param
+          content:
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 400
+                  message:
+                    type: string
+                    example: Invalid param value
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
+                xml:
+                  name:
+                    error
+        '403':
+          description: Forbidden
+          content:
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 403
+                  message: 
+                    type: string
+                    example: Unauthorized access
+                  time: 
+                    type: string
+                    format: date-time
+                    example: 2024-10-03 07:00:00+3
+                xml:
+                  name:
+                    error
+        '500':
+          description: Internal Server error
+          content:
+            application/xml:
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 500
+                  message:
+                    type: string
+                    example: Internal server error
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-10-03 07:00:00+3
+                xml:
+                  name:
+                    error  
+        default:
+          description: Return error code
+          content: 
+            application/xml:
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 503
+                  message:
+                    type: string
+                    example: Service error
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
+    put:
+      summary: Update SpaceMarine by id
+      tags: 
+        - SpaceMarine
+      parameters:
+        - name: id
+          description: ID of SpaceMarine for searching
+          in: path
+          required: true
+          schema: 
+            type: integer
+            format: int64
+            nullable: false
+            minimum: 1
+            exclusiveMinimum: true
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/xml:
+            schema: 
+              $ref: '#/components/schemas/NewSpaceMarine'
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: SpaceMarine Updated
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
+                xml:
+                  name:
+                    SpaceMarine
+        '400':
+          description: Invalid param
+          content:
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 400
+                  message:
+                    type: string
+                    example: Invalid param value
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
+                xml:
+                  name:
+                    error
+        '403':
+          description: Forbidden
+          content:
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 403
+                  message: 
+                    type: string
+                    example: Unauthorized access
+                  time: 
+                    type: string
+                    format: date-time
+                    example: 2024-10-03 07:00:00+3
+                xml:
+                  name:
+                    error
+        '500':
+          description: Internal Server error
+          content:
+            application/xml:
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 500
+                  message:
+                    type: string
+                    example: Internal server error
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-10-03 07:00:00+3
+                xml:
+                  name:
+                    error  
+        default:
+          description: Return error code
+          content: 
+            application/xml:
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 503
+                  message:
+                    type: string
+                    example: Service error
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
+    delete:
+      summary: Delete SpaceMarine by id
+      tags: 
+        - SpaceMarine
+      parameters:
+        - name: id
+          description: ID of SpaceMarine for searching
+          in: path
+          required: true
+          schema: 
+            type: integer
+            format: int64
+            nullable: false
+            minimum: 1
+            exclusiveMinimum: true
+            example: 1
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: SpaceMarine deleted
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
+                xml:
+                  name:
+                    success
+        '400':
+          description: Invalid param
+          content:
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 400
+                  message:
+                    type: string
+                    example: Invalid param value
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
+                xml:
+                  name:
+                    error
+        '403':
+          description: Forbidden
+          content:
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 403
+                  message: 
+                    type: string
+                    example: Unauthorized access
+                  time: 
+                    type: string
+                    format: date-time
+                    example: 2024-10-03 07:00:00+3
+                xml:
+                  name:
+                    error
+        '500':
+          description: Internal Server error
+          content:
+            application/xml:
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 500
+                  message:
+                    type: string
+                    example: Internal server error
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-10-03 07:00:00+3
+                xml:
+                  name:
+                    error  
+        default:
+          description: Return error code
+          content: 
+            application/xml:
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 503
+                  message:
+                    type: string
+                    example: Service error
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
+  /space-marine/by-heartCount/:
+    delete:
+      summary: Delete SpaceMarine by heartCount
+      tags: 
+        - SpaceMarine
+      parameters:
+        - name: heartCount
+          description: heartCount of SpaceMarine for searching
+          in: query
+          required: true
+          schema: 
+            type: integer
+            format: int32
+            nullable: false
+            minimum: 0
+            exclusiveMinimum: true
+            example: 0
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: SpaceMarines deleted
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
+                xml:
+                  name:
+                    success
+        '400':
+          description: Invalid param
+          content:
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 400
+                  message:
+                    type: string
+                    example: Invalid param value
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
+                xml:
+                  name:
+                    error
+        '403':
+          description: Forbidden
+          content:
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 403
+                  message: 
+                    type: string
+                    example: Unauthorized access
+                  time: 
+                    type: string
+                    format: date-time
+                    example: 2024-10-03 07:00:00+3
+                xml:
+                  name:
+                    error
+        '500':
+          description: Internal Server error
+          content:
+            application/xml:
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 500
+                  message:
+                    type: string
+                    example: Internal server error
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-10-03 07:00:00+3
+                xml:
+                  name:
+                    error  
+        default:
+          description: Return error code
+          content: 
+            application/xml:
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 503
+                  message:
+                    type: string
+                    example: Service error
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
+  /space-marine/by-meleeWeapon/count:
+    get:
+      summary: Get number of SpaceMarine by meleeWeapon
+      tags: 
+        - SpaceMarine
+      parameters:
+        - name: meleeWeapon
+          description: meleeWeapon of SpaceMarine for searching
+          in: query
+          required: true
+          schema: 
+            $ref: '#/components/schemas/MeleeWeapon'
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  count:
+                    type: integer
+                    example: 4
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
+                xml:
+                  name:
+                    success
+        '400':
+          description: Invalid param
+          content:
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 400
+                  message:
+                    type: string
+                    example: Invalid param value
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
+                xml:
+                  name:
+                    error
+        '403':
+          description: Forbidden
+          content:
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 403
+                  message: 
+                    type: string
+                    example: Unauthorized access
+                  time: 
+                    type: string
+                    format: date-time
+                    example: 2024-10-03 07:00:00+3
+                xml:
+                  name:
+                    error
+        '500':
+          description: Internal Server error
+          content:
+            application/xml:
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 500
+                  message:
+                    type: string
+                    example: Internal server error
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-10-03 07:00:00+3
+                xml:
+                  name:
+                    error  
+        default:
+          description: Return error code
+          content: 
+            application/xml:
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 503
+                  message:
+                    type: string
+                    example: Service error
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
+  /space-marine/by-name:
+    get:
+      summary: Get SpaceMarine Array by name prefix
+      tags: 
+        - SpaceMarine
+      parameters:
+        - name: prefix
+          description: prefix of SpaceMarine's name for searching
+          in: query
+          required: true
+          schema: 
+            type: string
+            nullable: false
+            example: John
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SpaceMarine'
+        '400':
+          description: Invalid param
+          content:
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 400
+                  message:
+                    type: string
+                    example: Invalid param value
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
+                xml:
+                  name:
+                    error
+        '403':
+          description: Forbidden
+          content:
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 403
+                  message: 
+                    type: string
+                    example: Unauthorized access
+                  time: 
+                    type: string
+                    format: date-time
+                    example: 2024-10-03 07:00:00+3
+                xml:
+                  name:
+                    error
+        '500':
+          description: Internal Server error
+          content:
+            application/xml:
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 500
+                  message:
+                    type: string
+                    example: Internal server error
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-10-03 07:00:00+3
+                xml:
+                  name:
+                    error  
+        default:
+          description: Return error code
+          content: 
+            application/xml:
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 503
+                  message:
+                    type: string
+                    example: Service error
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2024-09-20T00:20:09Z
 
 components:
   schemas:
@@ -123,6 +970,37 @@ components:
           description: Auto generated date of creation
           nullable: false
           example: 2024-10-04 06:03:00+3
+        health:
+          type: integer
+          description: HP of SpaceMarine
+          minimum: 1
+        heartCount:
+          type: integer
+          description: life of SpaceMarine
+          minimum: 1
+          maximum: 3
+        height:
+          type: number
+          format: float
+          description: height of SpaceMarine
+          nullable: false
+        meleeWeapon:
+          $ref: '#/components/schemas/MeleeWeapon'
+        chapter:
+          $ref: '#/components/schemas/Chapter'
+      required:
+        - name
+
+    NewSpaceMarine:
+      type: object
+      properties:     
+        name:
+          type: string
+          description: Name of SpaceMarine
+          minLength: 1
+          nullable: false
+        coordinates:
+          $ref: '#/components/schemas/Coordinates'
         health:
           type: integer
           description: HP of SpaceMarine
