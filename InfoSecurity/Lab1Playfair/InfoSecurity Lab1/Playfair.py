@@ -37,7 +37,7 @@ def find_position(key_matrix, letter):
 
 # preprocess
 def preprocess_text(text):
-    text = text.upper().replace("J", "I").replace(' ', '')  # replace J with I and remove spaces
+    text = text.upper().replace("J", "I").replace(' ', '').replace(',','').replace('.','')  # replace J with I and remove spaces
     processed_text = ""
     i = 0
 
@@ -133,6 +133,7 @@ def write_file(filename, content):
 # main function
 if __name__ == "__main__":
     key_input = input("Please input keyword：")
+    #key_input = "SECRETKEY"
     matrix = generate_key_matrix(key_input)
 
     # 从read plain text from file
