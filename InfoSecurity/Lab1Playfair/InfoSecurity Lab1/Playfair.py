@@ -30,14 +30,17 @@ def generate_key_matrix(key):
 def find_position(key_matrix, letter):
     for row in range(5):
         for col in range(5):
-            if key_matrix[row][col] == letter:
+            if key_matrix[row][col] == letter.upper():
                 return row, col
-    return None
+
+
+def is_english_letter(char):
+    return 'A' <= char <= 'Z' or 'a' <= char <= 'z'
 
 
 # preprocess
 def preprocess_text(text):
-    text = text.upper().replace("J", "I").replace(' ', '').replace(',','').replace('.','')  # replace J with I and remove spaces
+    text = text.replace("J", "I").replace("j", "i").replace(',', '').replace('.','').replace(' ','')  # replace J with I and remove spaces
     processed_text = ""
     i = 0
 
@@ -63,6 +66,8 @@ def encrypt(text, key_matrix):
     encrypted_text = ""
     text = preprocess_text(text)  # 预处理文本
 
+    print("processed text:", text)
+
     for i in range(0, len(text), 2):
         row1, col1 = find_position(key_matrix, text[i])
         row2, col2 = find_position(key_matrix, text[i + 1])
@@ -77,6 +82,10 @@ def encrypt(text, key_matrix):
             pair_l = key_matrix[row1][col2]
             pair_r = key_matrix[row2][col1]
 
+        if text[i].islower():
+            pair_l = pair_l.lower()
+        if text[i+1].islower():
+            pair_r = pair_r.lower()
         encrypted_text += pair_l + pair_r
 
     return encrypted_text
@@ -100,6 +109,10 @@ def decrypt(ciphertext, key_matrix):
             pair_l = key_matrix[row1][col2]
             pair_r = key_matrix[row2][col1]
 
+        if ciphertext[i].islower():
+            pair_l = pair_l.lower()
+        if ciphertext[i+1].islower():
+            pair_r = pair_r.lower()
         decrypted_text += pair_l + pair_r
 
     decrypted_text = remove_x(decrypted_text)
@@ -109,12 +122,11 @@ def decrypt(ciphertext, key_matrix):
 
 def remove_x(decrypted_text):
     for i in range(0, len(decrypted_text) - 2):
-        if decrypted_text[i] == decrypted_text[i + 2] and decrypted_text[i] == 'X':
+        if decrypted_text[i].upper() == decrypted_text[i + 2].upper() and decrypted_text[i].upper() == 'X':
             decrypted_text = decrypted_text[:i] + decrypted_text[i + 2:]
         i += 1
-    if decrypted_text[-1] == 'X':
+    if decrypted_text[-1].upper() == 'X':
         decrypted_text = decrypted_text[:-1]
-
     return decrypted_text
 
 
@@ -132,8 +144,8 @@ def write_file(filename, content):
 
 # main function
 if __name__ == "__main__":
-    key_input = input("Please input keyword：")
-    #key_input = "SECRETKEY"
+    #key_input = input("Please input keyword：")
+    key_input = "SECRETKEY"
     matrix = generate_key_matrix(key_input)
 
     # 从read plain text from file
