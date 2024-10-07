@@ -1,6 +1,8 @@
+alphabet = "ABCDEFGHIKLMNOPQRSTUVWXYZ"  # combine 'J' and 'I' together
+
+
 # function for generating key matrix
 def generate_key_matrix(key):
-    alphabet = "ABCDEFGHIKLMNOPQRSTUVWXYZ"  # combine 'J' and 'I' together
     key = key.upper()
     key = ''.join(sorted(set(key.upper()), key=lambda x: key.index(x)))  # remove repeat letter in key
     key_matrix = []
@@ -36,7 +38,7 @@ def find_position(key_matrix, letter):
 
 # function to judge whether a character is an english letter
 def is_english_letter(char):
-    return 'A' <= char <= 'Z' or 'a' <= char <= 'z'
+    return char in alphabet or char in alphabet.lower()
 
 
 # function to transform text pair matrix to string
@@ -236,17 +238,17 @@ if __name__ == "__main__":
     print_matrix(matrix)
 
     # 从read plain text from file
-    plaintext = read_file('plaintext.txt')
+    plaintext = read_file('plaintext_en.txt')
     print(f"Plain text: \n{plaintext}")
 
     # encrypt text
     text_pairs_encrypted = encrypt(plaintext, matrix)
-    write_file('encrypted.txt', text_pairs_to_string(text_pairs_encrypted))
+    write_file('encrypted_en.txt', text_pairs_to_string(text_pairs_encrypted))
 
     print(f"Encrypted text: \n{text_pairs_to_string(text_pairs_encrypted)}")
 
     # decrypt text
     text_pairs_decrypted = decrypt(text_pairs_encrypted, matrix)
-    write_file('decrypted.txt', text_pairs_to_string(text_pairs_decrypted))
+    write_file('decrypted_en.txt', text_pairs_to_string(text_pairs_decrypted))
 
     print(f"Decrypted text: \n{text_pairs_to_string(text_pairs_decrypted)}")
