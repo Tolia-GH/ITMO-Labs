@@ -1,6 +1,6 @@
 # function for generating key matrix
 def generate_key_matrix(key):
-    alphabet = "ABCDEFGHIKLMNOPQRSTUVWXYZ"  # combine 'J' and 'I' together
+    alphabet = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABC"  # combine 'J' and 'I' together
     key = key.upper()
     key = ''.join(sorted(set(key.upper()), key=lambda x: key.index(x)))  # remove repeat letter in key
     key_matrix = []
@@ -11,7 +11,7 @@ def generate_key_matrix(key):
         if letter not in used and letter != 'J':  # ignore 'J'
             key_matrix_row.append(letter)
             used.add(letter)
-        if key_matrix_row.__len__() == 5:
+        if key_matrix_row.__len__() == 6:
             key_matrix.append(key_matrix_row)
             key_matrix_row = []
 
@@ -19,7 +19,7 @@ def generate_key_matrix(key):
         if letter not in used:
             key_matrix_row.append(letter)
             used.add(letter)
-        if key_matrix_row.__len__() == 5:
+        if key_matrix_row.__len__() == 6:
             key_matrix.append(key_matrix_row)
             key_matrix_row = []
 
@@ -202,13 +202,13 @@ def remove_x(decrypted_text_pairs):
 
 # read from file
 def read_file(filename):
-    with open(filename, 'r') as file:
+    with open(filename, 'r', encoding='UTF-8') as file:
         return file.read()
 
 
 # write into file
 def write_file(filename, content):
-    with open(filename, 'w') as file:
+    with open(filename, 'w', encoding='UTF-8') as file:
         file.write(content)
 
 
@@ -228,7 +228,7 @@ def write_file(filename, content):
 
 # main function
 if __name__ == "__main__":
-    key_input = input("Please input keyword：")
+    key_input = input("Please input keyword: ")
     # key_input = "SECRETKEY"
     matrix = generate_key_matrix(key_input)
 
