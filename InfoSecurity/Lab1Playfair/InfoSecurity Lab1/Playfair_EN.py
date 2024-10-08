@@ -1,3 +1,5 @@
+from lib2to3.main import diff_texts
+
 alphabet = "ABCDEFGHIKLMNOPQRSTUVWXYZ"  # combine 'J' and 'I' together
 
 
@@ -37,7 +39,7 @@ def find_position(key_matrix, letter):
 
 
 # function to judge whether a character is an english letter
-def is_english_letter(char):
+def is_letter_in_alphabet(char):
     return char in alphabet or char in alphabet.lower()
 
 
@@ -60,7 +62,7 @@ def print_matrix(matrix):
 def get_letter_from_pair(text_pair):
     pair_letter = []
     for letter in text_pair:
-        if is_english_letter(letter):
+        if is_letter_in_alphabet(letter):
             pair_letter.append(letter)
     return pair_letter
 
@@ -76,11 +78,13 @@ def preprocess_text(text):
 
     while i < len(text):
         pair.append(text[i])
-        if is_english_letter(text[i]):
+        if is_letter_in_alphabet(text[i]):
             pair_letter.append(text[i])
         if pair_letter.__len__() == 2:
             if pair_letter[0] == pair_letter[1]: # if there are two same letters in one pair, then add 'X' between them
+                pair.reverse()
                 pair.remove(pair_letter[1])
+                pair.reverse()
                 pair_letter.remove(text[i])
                 pair.append('X')
                 processed_text_pairs.append(pair)
@@ -96,6 +100,8 @@ def preprocess_text(text):
             processed_text_pairs.append(pair)
 
         i += 1
+
+    print(f"DEBUG: processed_text_pairs = \n {processed_text_pairs}")
 
     return processed_text_pairs
 
@@ -131,7 +137,7 @@ def encrypt(text, key_matrix):
         encrypted_text_pair = []
         letter_count = 0
         for letter in preprocessed_text_pair:
-            if is_english_letter(letter):
+            if is_letter_in_alphabet(letter):
                 encrypted_text_pair.append(encrypted_pair_letter[letter_count])
                 letter_count += 1
             else:
@@ -169,7 +175,7 @@ def decrypt(encrypted_text_pairs, key_matrix):
         decrypted_text_pair = []
         letter_count = 0
         for letter in encrypted_text_pair:
-            if is_english_letter(letter):
+            if is_letter_in_alphabet(letter):
                 decrypted_text_pair.append(decrypted_pair_letter[letter_count])
                 letter_count += 1
             else:
@@ -214,18 +220,18 @@ def write_file(filename, content):
         file.write(content)
 
 
-# def compare_strings(str1, str2):
-#     # 确保两个字符串的长度一致
-#     if len(str1) != len(str2):
-#         raise ValueError("String lengths do not match")
-#
-#     # 逐字符比较并统计差异字符数量
-#     diff_count = 0
-#     for char1, char2 in zip(str1, str2):
-#         if char1 != char2:
-#             diff_count += 1
-#
-#     return diff_count
+def compare_strings(str1, str2):
+    # 确保两个字符串的长度一致
+    if len(str1) != len(str2):
+        raise ValueError("String lengths do not match")
+
+    # 逐字符比较并统计差异字符数量
+    diff_count = 0
+    for char1, char2 in zip(str1, str2):
+        if char1 != char2:
+            diff_count += 1
+
+    return diff_count
 
 
 # main function
@@ -252,3 +258,6 @@ if __name__ == "__main__":
     write_file('decrypted_en.txt', text_pairs_to_string(text_pairs_decrypted))
 
     print(f"Decrypted text: \n{text_pairs_to_string(text_pairs_decrypted)}")
+
+    diff_texts = compare_strings(plaintext, text_pairs_to_string(text_pairs_decrypted))
+    print(f"Different between text: \n{diff_texts}")
