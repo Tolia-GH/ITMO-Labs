@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c583e939-5027-4c89-8019-c53d9062a673" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/decrypted_en.txt" beforeDir="false" afterPath="$PROJECT_DIR$/decrypted_en.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/encrypted_en.txt" beforeDir="false" afterPath="$PROJECT_DIR$/encrypted_en.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plaintext_en.txt" beforeDir="false" afterPath="$PROJECT_DIR$/plaintext_en.txt" afterDir="false" />
-    </list>
+    <list default="true" id="c583e939-5027-4c89-8019-c53d9062a673" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,29 +13,29 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2n7WwCdNZYcFeI85Ti7G2OYeA4T" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.Playfair_EN.executor": "Run",
-    "Python.Playfair_RU.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/2398768715qq.com/GitHub/ITMO-Labs/InfoSecurity/Lab1Playfair/InfoSecurity Lab1",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.Playfair_EN.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Playfair_RU.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/2398768715qq.com/GitHub/ITMO-Labs/InfoSecurity/Lab1Playfair/InfoSecurity Lab1&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Python.Playfair_EN">
     <configuration name="Playfair_EN" type="PythonConfigurationType" factoryName="Python">
       <module name="InfoSecurity Lab1" />
@@ -115,6 +111,7 @@
       <option name="presentableId" value="Default" />
       <updated>1728324830361</updated>
       <workItem from="1728324831364" duration="5242000" />
+      <workItem from="1730474301247" duration="615000" />
     </task>
     <servers />
   </component>
@@ -124,11 +121,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Playfair_EN.py</url>
-          <line>256</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Playfair_EN.py</url>
           <line>78</line>
