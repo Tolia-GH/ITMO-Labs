@@ -1,6 +1,6 @@
 from lib2to3.main import diff_texts
 
-alphabet = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABC"  # combine 'J' and 'I' together
+alphabet = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABC"  # Add English letter A,B,C to build 6*6 key matrix
 
 
 # function for generating key matrix
@@ -11,7 +11,7 @@ def generate_key_matrix(key):
     used = set()
 
     for letter in key:
-        if letter not in used and letter != 'J':  # ignore 'J'
+        if letter not in used:
             key_matrix_row.append(letter)
             used.add(letter)
         if key_matrix_row.__len__() == 6:
@@ -94,15 +94,18 @@ def preprocess_text(text):
                 processed_text_pairs.append(pair)
                 pair_letter = []
                 pair = []
-        if i == len(
-                text) - 1 and pair_letter.__len__() == 1:  # if in the end the length of text % 2 == 1, then add 'X'
+        if i == len(text) - 1 and pair_letter.__len__() == 1:  # if in the end the length of text % 2 == 1, then add 'X'
             # in the end
             pair.append('A')
+            processed_text_pairs.append(pair)
+            pair = []
+
+        if i == len(text) - 1 and not is_letter_in_alphabet(text[i]):
             processed_text_pairs.append(pair)
 
         i += 1
 
-    print(f"DEBUG: processed_text_pairs = \n {processed_text_pairs}")
+    # print(f"DEBUG: processed_text_pairs = \n {processed_text_pairs}")
 
     return processed_text_pairs
 
@@ -113,6 +116,9 @@ def encrypt(text, key_matrix):
     preprocessed_text_pairs = preprocess_text(text)  # preprocess plaint text
 
     for preprocessed_text_pair in preprocessed_text_pairs:
+        if len(preprocessed_text_pair) == 1:
+            encrypted_text_pairs.append(preprocessed_text_pair)
+            continue
         preprocessed_pair_letter = get_letter_from_pair(preprocessed_text_pair)
         row1, col1 = find_position(key_matrix, preprocessed_pair_letter[0])
         row2, col2 = find_position(key_matrix, preprocessed_pair_letter[1])
@@ -145,6 +151,8 @@ def encrypt(text, key_matrix):
                 encrypted_text_pair.append(letter)
         encrypted_text_pairs.append(encrypted_text_pair)
 
+    # print(f"DEBUG: encrypted_text_pairs = \n {encrypted_text_pairs}")
+
     return encrypted_text_pairs
 
 
@@ -153,6 +161,9 @@ def decrypt(encrypted_text_pairs, key_matrix):
     decrypted_text_pairs = []
 
     for encrypted_text_pair in encrypted_text_pairs:
+        if len(encrypted_text_pair) == 1:
+            decrypted_text_pairs.append(encrypted_text_pair)
+            continue
         encrypted_pair_letter = get_letter_from_pair(encrypted_text_pair)
         row1, col1 = find_position(key_matrix, encrypted_pair_letter[0])
         row2, col2 = find_position(key_matrix, encrypted_pair_letter[1])
@@ -183,7 +194,11 @@ def decrypt(encrypted_text_pairs, key_matrix):
                 decrypted_text_pair.append(letter)
         decrypted_text_pairs.append(decrypted_text_pair)
 
+    # print(f"DEBUG: decrypted_text_pairs = \n {decrypted_text_pairs}")
+
     decrypted_text_pairs = remove_x(decrypted_text_pairs)
+
+    # print(f"DEBUG: decrypted_text_pairs = \n {decrypted_text_pairs}")
 
     return decrypted_text_pairs
 
@@ -194,6 +209,9 @@ def remove_x(decrypted_text_pairs):
     for i in range(len(decrypted_text_pairs) - 1):
         text_pair = decrypted_text_pairs[i]
         text_pair_next = decrypted_text_pairs[i + 1]
+        if len(text_pair_next) == 1:
+            res_text_pairs.append(text_pair)
+            break
         pair_letter = get_letter_from_pair(text_pair)
         pair_letter_next = get_letter_from_pair(text_pair_next)
 
@@ -205,6 +223,8 @@ def remove_x(decrypted_text_pairs):
     if decrypted_text_pairs[-1][-1] == 'A':
         decrypted_text_pairs[-1].remove('A')
         res_text_pairs.append(decrypted_text_pairs[-1])
+
+    res_text_pairs.append(decrypted_text_pairs[-1])
 
     return res_text_pairs
 
@@ -222,11 +242,11 @@ def write_file(filename, content):
 
 
 def compare_strings(str1, str2):
-    # 确保两个字符串的长度一致
+    # make sure length of str1 and str2 are the same
     if len(str1) != len(str2):
         raise ValueError("String lengths do not match")
 
-    # 逐字符比较并统计差异字符数量
+    # compare and count different letters in str1 and str2
     diff_count = 0
     for char1, char2 in zip(str1, str2):
         if char1 != char2:
@@ -245,20 +265,20 @@ if __name__ == "__main__":
     print_matrix(matrix)
 
     # 从read plain text from file
-    plaintext = read_file('plaintext_en.txt')
-    print(f"Plain text: \n{plaintext}")
+    plaintext = read_file('plaintext_ru.txt')
+    print(f"\nPlain text: \n{plaintext}")
 
     # encrypt text
     text_pairs_encrypted = encrypt(plaintext, matrix)
-    write_file('encrypted_en.txt', text_pairs_to_string(text_pairs_encrypted))
+    write_file('encrypted_ru.txt', text_pairs_to_string(text_pairs_encrypted))
 
-    print(f"Encrypted text: \n{text_pairs_to_string(text_pairs_encrypted)}")
+    print(f"\nEncrypted text: \n{text_pairs_to_string(text_pairs_encrypted)}")
 
     # decrypt text
     text_pairs_decrypted = decrypt(text_pairs_encrypted, matrix)
-    write_file('decrypted_en.txt', text_pairs_to_string(text_pairs_decrypted))
+    write_file('decrypted_ru.txt', text_pairs_to_string(text_pairs_decrypted))
 
-    print(f"Decrypted text: \n{text_pairs_to_string(text_pairs_decrypted)}")
+    print(f"\nDecrypted text: \n{text_pairs_to_string(text_pairs_decrypted)}")
 
     diff_texts = compare_strings(plaintext, text_pairs_to_string(text_pairs_decrypted))
-    print(f"Different between text: \n{diff_texts}")
+    print(f"\nDifferent between text: \n{diff_texts}")
