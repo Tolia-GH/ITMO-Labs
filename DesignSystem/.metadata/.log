@@ -1,0 +1,430 @@
+!SESSION 2024-12-12 17:08:28.410 -----------------------------------------------
+eclipse.buildId=Version 1.9.0
+java.version=11.0.11
+java.vendor=AdoptOpenJDK
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=zh_RU_#Hans
+Framework arguments:  -keyring /Users/2398768715qq.com/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -keyring /Users/2398768715qq.com/.eclipse_keyring
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2024-12-12 17:08:54.118
+!MESSAGE Log4j initialized with config file /Users/2398768715qq.com/GitHub/ITMO-Labs/DesignSystem/.metadata/.log4j.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2024-12-12 17:08:59.085
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.equinox.p2.metadata.repository 4 1000 2024-12-12 17:09:20.838
+!MESSAGE No repository found at https://sw-center.st.com/stm32cubeide/updatesite1.
+
+!ENTRY org.eclipse.equinox.p2.metadata.repository 4 1000 2024-12-12 17:09:20.926
+!MESSAGE No repository found at https://sw-center.st.com/stm32cubeide/openstlinux/updatesite1.
+
+!ENTRY org.eclipse.cdt.core 1 0 2024-12-12 17:10:33.218
+!MESSAGE Indexed 'hello_world' (22 sources, 99 headers) in 7.76 sec: 8,134 declarations; 27,564 references; 6 unresolved inclusions; 299 syntax errors; 1,203 unresolved names (3.3%)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.openocd 4 0 2024-12-12 17:11:31.815
+!MESSAGE couldn't read file ""
+!STACK 0
+tcl.lang.TclException: couldn't read file ""
+	at tcl.lang.Interp.evalFile(Interp.java:2932)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:73)
+	at tcl.lang.Parser.evalObjv(Parser.java:826)
+	at tcl.lang.Parser.eval2(Parser.java:1228)
+	at tcl.lang.Interp.eval(Interp.java:2679)
+	at tcl.lang.Interp.evalFile(Interp.java:2940)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:73)
+	at tcl.lang.Parser.evalObjv(Parser.java:826)
+	at tcl.lang.Parser.eval2(Parser.java:1228)
+	at tcl.lang.Interp.eval(Interp.java:2679)
+	at tcl.lang.Interp.eval(Interp.java:2660)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.run(MCUOpenOCDScriptInterpreter.java:118)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.getScriptInterpretation(MCUOpenOCDScriptInterpreter.java:73)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.assertConditions(MCUOpenOCDScriptInterpreter.java:301)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.isValid(MCUOpenOCDScriptInterpreter.java:254)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.getDebugInterface(MCUOpenOCDScriptInterpreter.java:202)
+	at com.st.stm32cube.ide.mcu.debug.openocd.OpenOCDDebugHardware.logAnalytics(OpenOCDDebugHardware.java:2398)
+	at com.st.stm32cube.ide.mcu.debug.launch.DSFServicesLaunchSequence.run(DSFServicesLaunchSequence.java:159)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.openocd 4 0 2024-12-12 17:11:31.868
+!MESSAGE couldn't read file ""
+!STACK 0
+tcl.lang.TclException: couldn't read file ""
+	at tcl.lang.Interp.evalFile(Interp.java:2932)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:73)
+	at tcl.lang.Parser.evalObjv(Parser.java:826)
+	at tcl.lang.Parser.eval2(Parser.java:1228)
+	at tcl.lang.Interp.eval(Interp.java:2679)
+	at tcl.lang.Interp.evalFile(Interp.java:2940)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:73)
+	at tcl.lang.Parser.evalObjv(Parser.java:826)
+	at tcl.lang.Parser.eval2(Parser.java:1228)
+	at tcl.lang.Interp.eval(Interp.java:2679)
+	at tcl.lang.Interp.eval(Interp.java:2660)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.run(MCUOpenOCDScriptInterpreter.java:118)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.getVariableValue(MCUOpenOCDScriptInterpreter.java:68)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.assertConditions(MCUOpenOCDScriptInterpreter.java:272)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.isValid(MCUOpenOCDScriptInterpreter.java:253)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.isLowPowerDebugModeEnabled(MCUOpenOCDScriptInterpreter.java:170)
+	at com.st.stm32cube.ide.mcu.debug.openocd.OpenOCDDebugHardware.logAnalytics(OpenOCDDebugHardware.java:2400)
+	at com.st.stm32cube.ide.mcu.debug.launch.DSFServicesLaunchSequence.run(DSFServicesLaunchSequence.java:159)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.openocd 4 0 2024-12-12 17:11:31.895
+!MESSAGE couldn't read file ""
+!STACK 0
+tcl.lang.TclException: couldn't read file ""
+	at tcl.lang.Interp.evalFile(Interp.java:2932)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:73)
+	at tcl.lang.Parser.evalObjv(Parser.java:826)
+	at tcl.lang.Parser.eval2(Parser.java:1228)
+	at tcl.lang.Interp.eval(Interp.java:2679)
+	at tcl.lang.Interp.evalFile(Interp.java:2940)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:73)
+	at tcl.lang.Parser.evalObjv(Parser.java:826)
+	at tcl.lang.Parser.eval2(Parser.java:1228)
+	at tcl.lang.Interp.eval(Interp.java:2679)
+	at tcl.lang.Interp.eval(Interp.java:2660)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.run(MCUOpenOCDScriptInterpreter.java:118)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.getVariableValue(MCUOpenOCDScriptInterpreter.java:68)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.assertConditions(MCUOpenOCDScriptInterpreter.java:272)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.isValid(MCUOpenOCDScriptInterpreter.java:253)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.isLowPowerDebugModeEnabled(MCUOpenOCDScriptInterpreter.java:174)
+	at com.st.stm32cube.ide.mcu.debug.openocd.OpenOCDDebugHardware.logAnalytics(OpenOCDDebugHardware.java:2400)
+	at com.st.stm32cube.ide.mcu.debug.launch.DSFServicesLaunchSequence.run(DSFServicesLaunchSequence.java:159)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.openocd 4 0 2024-12-12 17:11:31.911
+!MESSAGE couldn't read file ""
+!STACK 0
+tcl.lang.TclException: couldn't read file ""
+	at tcl.lang.Interp.evalFile(Interp.java:2932)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:73)
+	at tcl.lang.Parser.evalObjv(Parser.java:826)
+	at tcl.lang.Parser.eval2(Parser.java:1228)
+	at tcl.lang.Interp.eval(Interp.java:2679)
+	at tcl.lang.Interp.evalFile(Interp.java:2940)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:73)
+	at tcl.lang.Parser.evalObjv(Parser.java:826)
+	at tcl.lang.Parser.eval2(Parser.java:1228)
+	at tcl.lang.Interp.eval(Interp.java:2679)
+	at tcl.lang.Interp.eval(Interp.java:2660)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.run(MCUOpenOCDScriptInterpreter.java:118)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.getVariableValue(MCUOpenOCDScriptInterpreter.java:68)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.assertConditions(MCUOpenOCDScriptInterpreter.java:272)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.isValid(MCUOpenOCDScriptInterpreter.java:253)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.isStopWatchDogOnHaltEnabled(MCUOpenOCDScriptInterpreter.java:186)
+	at com.st.stm32cube.ide.mcu.debug.openocd.OpenOCDDebugHardware.logAnalytics(OpenOCDDebugHardware.java:2405)
+	at com.st.stm32cube.ide.mcu.debug.launch.DSFServicesLaunchSequence.run(DSFServicesLaunchSequence.java:159)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.openocd 4 0 2024-12-12 17:11:31.928
+!MESSAGE couldn't read file ""
+!STACK 0
+tcl.lang.TclException: couldn't read file ""
+	at tcl.lang.Interp.evalFile(Interp.java:2932)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:73)
+	at tcl.lang.Parser.evalObjv(Parser.java:826)
+	at tcl.lang.Parser.eval2(Parser.java:1228)
+	at tcl.lang.Interp.eval(Interp.java:2679)
+	at tcl.lang.Interp.evalFile(Interp.java:2940)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:73)
+	at tcl.lang.Parser.evalObjv(Parser.java:826)
+	at tcl.lang.Parser.eval2(Parser.java:1228)
+	at tcl.lang.Interp.eval(Interp.java:2679)
+	at tcl.lang.Interp.eval(Interp.java:2660)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.run(MCUOpenOCDScriptInterpreter.java:118)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.getVariableValue(MCUOpenOCDScriptInterpreter.java:68)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.assertConditions(MCUOpenOCDScriptInterpreter.java:272)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.isValid(MCUOpenOCDScriptInterpreter.java:253)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.isStopWatchDogOnHaltEnabled(MCUOpenOCDScriptInterpreter.java:190)
+	at com.st.stm32cube.ide.mcu.debug.openocd.OpenOCDDebugHardware.logAnalytics(OpenOCDDebugHardware.java:2405)
+	at com.st.stm32cube.ide.mcu.debug.launch.DSFServicesLaunchSequence.run(DSFServicesLaunchSequence.java:159)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.openocd 4 0 2024-12-12 17:11:31.936
+!MESSAGE couldn't read file ""
+!STACK 0
+tcl.lang.TclException: couldn't read file ""
+	at tcl.lang.Interp.evalFile(Interp.java:2932)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:73)
+	at tcl.lang.Parser.evalObjv(Parser.java:826)
+	at tcl.lang.Parser.eval2(Parser.java:1228)
+	at tcl.lang.Interp.eval(Interp.java:2679)
+	at tcl.lang.Interp.evalFile(Interp.java:2940)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:73)
+	at tcl.lang.Parser.evalObjv(Parser.java:826)
+	at tcl.lang.Parser.eval2(Parser.java:1228)
+	at tcl.lang.Interp.eval(Interp.java:2679)
+	at tcl.lang.Interp.eval(Interp.java:2660)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.run(MCUOpenOCDScriptInterpreter.java:118)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.getVariableValue(MCUOpenOCDScriptInterpreter.java:68)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.assertConditions(MCUOpenOCDScriptInterpreter.java:272)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.isValid(MCUOpenOCDScriptInterpreter.java:253)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.getResetMode(MCUOpenOCDScriptInterpreter.java:218)
+	at com.st.stm32cube.ide.mcu.debug.openocd.OpenOCDDebugHardware.logAnalytics(OpenOCDDebugHardware.java:2410)
+	at com.st.stm32cube.ide.mcu.debug.launch.DSFServicesLaunchSequence.run(DSFServicesLaunchSequence.java:159)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.openocd 4 0 2024-12-12 17:11:31.945
+!MESSAGE couldn't read file ""
+!STACK 0
+tcl.lang.TclException: couldn't read file ""
+	at tcl.lang.Interp.evalFile(Interp.java:2932)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:73)
+	at tcl.lang.Parser.evalObjv(Parser.java:826)
+	at tcl.lang.Parser.eval2(Parser.java:1228)
+	at tcl.lang.Interp.eval(Interp.java:2679)
+	at tcl.lang.Interp.evalFile(Interp.java:2940)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:73)
+	at tcl.lang.Parser.evalObjv(Parser.java:826)
+	at tcl.lang.Parser.eval2(Parser.java:1228)
+	at tcl.lang.Interp.eval(Interp.java:2679)
+	at tcl.lang.Interp.eval(Interp.java:2660)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.run(MCUOpenOCDScriptInterpreter.java:118)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.getVariableValue(MCUOpenOCDScriptInterpreter.java:68)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.assertConditions(MCUOpenOCDScriptInterpreter.java:272)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.isValid(MCUOpenOCDScriptInterpreter.java:253)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.getResetMode(MCUOpenOCDScriptInterpreter.java:218)
+	at com.st.stm32cube.ide.mcu.debug.openocd.OpenOCDDebugHardware.logAnalytics(OpenOCDDebugHardware.java:2410)
+	at com.st.stm32cube.ide.mcu.debug.launch.DSFServicesLaunchSequence.run(DSFServicesLaunchSequence.java:159)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.openocd 4 0 2024-12-12 17:11:31.951
+!MESSAGE couldn't read file ""
+!STACK 0
+tcl.lang.TclException: couldn't read file ""
+	at tcl.lang.Interp.evalFile(Interp.java:2932)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:73)
+	at tcl.lang.Parser.evalObjv(Parser.java:826)
+	at tcl.lang.Parser.eval2(Parser.java:1228)
+	at tcl.lang.Interp.eval(Interp.java:2679)
+	at tcl.lang.Interp.evalFile(Interp.java:2940)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:73)
+	at tcl.lang.Parser.evalObjv(Parser.java:826)
+	at tcl.lang.Parser.eval2(Parser.java:1228)
+	at tcl.lang.Interp.eval(Interp.java:2679)
+	at tcl.lang.Interp.eval(Interp.java:2660)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.run(MCUOpenOCDScriptInterpreter.java:118)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.getVariableValue(MCUOpenOCDScriptInterpreter.java:68)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.assertConditions(MCUOpenOCDScriptInterpreter.java:272)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.isValid(MCUOpenOCDScriptInterpreter.java:253)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.getResetMode(MCUOpenOCDScriptInterpreter.java:222)
+	at com.st.stm32cube.ide.mcu.debug.openocd.OpenOCDDebugHardware.logAnalytics(OpenOCDDebugHardware.java:2410)
+	at com.st.stm32cube.ide.mcu.debug.launch.DSFServicesLaunchSequence.run(DSFServicesLaunchSequence.java:159)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.openocd 4 0 2024-12-12 17:11:31.965
+!MESSAGE couldn't read file ""
+!STACK 0
+tcl.lang.TclException: couldn't read file ""
+	at tcl.lang.Interp.evalFile(Interp.java:2932)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:73)
+	at tcl.lang.Parser.evalObjv(Parser.java:826)
+	at tcl.lang.Parser.eval2(Parser.java:1228)
+	at tcl.lang.Interp.eval(Interp.java:2679)
+	at tcl.lang.Interp.evalFile(Interp.java:2940)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:73)
+	at tcl.lang.Parser.evalObjv(Parser.java:826)
+	at tcl.lang.Parser.eval2(Parser.java:1228)
+	at tcl.lang.Interp.eval(Interp.java:2679)
+	at tcl.lang.Interp.eval(Interp.java:2660)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.run(MCUOpenOCDScriptInterpreter.java:118)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.getVariableValue(MCUOpenOCDScriptInterpreter.java:68)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.assertConditions(MCUOpenOCDScriptInterpreter.java:272)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.isValid(MCUOpenOCDScriptInterpreter.java:253)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.getResetMode(MCUOpenOCDScriptInterpreter.java:222)
+	at com.st.stm32cube.ide.mcu.debug.openocd.OpenOCDDebugHardware.logAnalytics(OpenOCDDebugHardware.java:2410)
+	at com.st.stm32cube.ide.mcu.debug.launch.DSFServicesLaunchSequence.run(DSFServicesLaunchSequence.java:159)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.openocd 4 0 2024-12-12 17:11:31.971
+!MESSAGE couldn't read file ""
+!STACK 0
+tcl.lang.TclException: couldn't read file ""
+	at tcl.lang.Interp.evalFile(Interp.java:2932)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:73)
+	at tcl.lang.Parser.evalObjv(Parser.java:826)
+	at tcl.lang.Parser.eval2(Parser.java:1228)
+	at tcl.lang.Interp.eval(Interp.java:2679)
+	at tcl.lang.Interp.evalFile(Interp.java:2940)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:73)
+	at tcl.lang.Parser.evalObjv(Parser.java:826)
+	at tcl.lang.Parser.eval2(Parser.java:1228)
+	at tcl.lang.Interp.eval(Interp.java:2679)
+	at tcl.lang.Interp.eval(Interp.java:2660)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.run(MCUOpenOCDScriptInterpreter.java:118)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.getVariableValue(MCUOpenOCDScriptInterpreter.java:68)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.assertConditions(MCUOpenOCDScriptInterpreter.java:272)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.isValid(MCUOpenOCDScriptInterpreter.java:253)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.getResetMode(MCUOpenOCDScriptInterpreter.java:226)
+	at com.st.stm32cube.ide.mcu.debug.openocd.OpenOCDDebugHardware.logAnalytics(OpenOCDDebugHardware.java:2410)
+	at com.st.stm32cube.ide.mcu.debug.launch.DSFServicesLaunchSequence.run(DSFServicesLaunchSequence.java:159)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.openocd 4 0 2024-12-12 17:11:31.979
+!MESSAGE couldn't read file ""
+!STACK 0
+tcl.lang.TclException: couldn't read file ""
+	at tcl.lang.Interp.evalFile(Interp.java:2932)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:73)
+	at tcl.lang.Parser.evalObjv(Parser.java:826)
+	at tcl.lang.Parser.eval2(Parser.java:1228)
+	at tcl.lang.Interp.eval(Interp.java:2679)
+	at tcl.lang.Interp.evalFile(Interp.java:2940)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:73)
+	at tcl.lang.Parser.evalObjv(Parser.java:826)
+	at tcl.lang.Parser.eval2(Parser.java:1228)
+	at tcl.lang.Interp.eval(Interp.java:2679)
+	at tcl.lang.Interp.eval(Interp.java:2660)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.run(MCUOpenOCDScriptInterpreter.java:118)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.getVariableValue(MCUOpenOCDScriptInterpreter.java:68)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.assertConditions(MCUOpenOCDScriptInterpreter.java:272)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.isValid(MCUOpenOCDScriptInterpreter.java:253)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.getResetMode(MCUOpenOCDScriptInterpreter.java:230)
+	at com.st.stm32cube.ide.mcu.debug.openocd.OpenOCDDebugHardware.logAnalytics(OpenOCDDebugHardware.java:2410)
+	at com.st.stm32cube.ide.mcu.debug.launch.DSFServicesLaunchSequence.run(DSFServicesLaunchSequence.java:159)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.openocd 4 0 2024-12-12 17:11:31.991
+!MESSAGE couldn't read file ""
+!STACK 0
+tcl.lang.TclException: couldn't read file ""
+	at tcl.lang.Interp.evalFile(Interp.java:2932)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:73)
+	at tcl.lang.Parser.evalObjv(Parser.java:826)
+	at tcl.lang.Parser.eval2(Parser.java:1228)
+	at tcl.lang.Interp.eval(Interp.java:2679)
+	at tcl.lang.Interp.evalFile(Interp.java:2940)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:73)
+	at tcl.lang.Parser.evalObjv(Parser.java:826)
+	at tcl.lang.Parser.eval2(Parser.java:1228)
+	at tcl.lang.Interp.eval(Interp.java:2679)
+	at tcl.lang.Interp.eval(Interp.java:2660)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.run(MCUOpenOCDScriptInterpreter.java:118)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.getVariableValue(MCUOpenOCDScriptInterpreter.java:68)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.assertConditions(MCUOpenOCDScriptInterpreter.java:272)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.isValid(MCUOpenOCDScriptInterpreter.java:253)
+	at com.st.stm32cube.ide.mcu.debug.openocd.engine.interpreter.MCUOpenOCDScriptInterpreter.getResetMode(MCUOpenOCDScriptInterpreter.java:234)
+	at com.st.stm32cube.ide.mcu.debug.openocd.OpenOCDDebugHardware.logAnalytics(OpenOCDDebugHardware.java:2410)
+	at com.st.stm32cube.ide.mcu.debug.launch.DSFServicesLaunchSequence.run(DSFServicesLaunchSequence.java:159)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+!SESSION 2024-12-12 17:12:27.061 -----------------------------------------------
+eclipse.buildId=Version 1.9.0
+java.version=11.0.11
+java.vendor=AdoptOpenJDK
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=zh_RU_#Hans
+Framework arguments:  -keyring /Users/2398768715qq.com/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -keyring /Users/2398768715qq.com/.eclipse_keyring
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2024-12-12 17:12:41.425
+!MESSAGE Log4j initialized with config file /Users/2398768715qq.com/GitHub/ITMO-Labs/DesignSystem/.metadata/.log4j.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2024-12-12 17:12:52.175
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.equinox.p2.metadata.repository 4 1000 2024-12-12 17:13:12.263
+!MESSAGE No repository found at https://sw-center.st.com/stm32cubeide/updatesite1.
+
+!ENTRY org.eclipse.equinox.p2.metadata.repository 4 1000 2024-12-12 17:13:12.328
+!MESSAGE No repository found at https://sw-center.st.com/stm32cubeide/openstlinux/updatesite1.
+
+!ENTRY org.eclipse.cdt.core 1 0 2024-12-12 17:15:13.772
+!MESSAGE Indexed 'Lab1' (22 sources, 100 headers) in 4.58 sec: 8,141 declarations; 28,996 references; 2 unresolved inclusions; 42 syntax errors; 147 unresolved names (0.39%)
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 5012 2024-12-12 17:18:37.103
+!MESSAGE Error in final launch sequence:
+
+Failed to execute MI command:
+target extended-remote localhost:3333
+
+Error message from debugger back end:
+localhost:3333: Operation timed out.
+!STACK 1
+org.eclipse.core.runtime.CoreException: Failed to execute MI command:
+target extended-remote localhost:3333
+
+Error message from debugger back end:
+localhost:3333: Operation timed out.
+	at org.eclipse.cdt.dsf.concurrent.Query.get(Query.java:112)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launchDebugSession(GdbLaunchDelegate.java:252)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launchDebugger(GdbLaunchDelegate.java:109)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launch(GdbLaunchDelegate.java:97)
+	at com.st.stm32cube.ide.mcu.debug.launch.DSFDelegate.launch(DSFDelegate.java:326)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:803)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:716)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin.buildAndLaunch(DebugUIPlugin.java:1021)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin$2.run(DebugUIPlugin.java:1224)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+Caused by: java.lang.Exception: localhost:3333: Operation timed out.
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.processMIOutput(AbstractMIControl.java:1013)
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.run(AbstractMIControl.java:842)
+!SUBENTRY 1 org.eclipse.cdt.dsf.gdb 4 10004 2024-12-12 17:18:37.106
+!MESSAGE Failed to execute MI command:
+target extended-remote localhost:3333
+
+Error message from debugger back end:
+localhost:3333: Operation timed out.
+!STACK 0
+java.lang.Exception: localhost:3333: Operation timed out.
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.processMIOutput(AbstractMIControl.java:1013)
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.run(AbstractMIControl.java:842)

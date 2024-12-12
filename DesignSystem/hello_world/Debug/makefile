@@ -34,34 +34,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := hello_world
+BUILD_ARTIFACT_NAME := Lab1
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-hello_world.elf \
+Lab1.elf \
 
 MAP_FILES += \
-hello_world.map \
+Lab1.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-hello_world.list \
+Lab1.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: hello_world.elf secondary-outputs
+main-build: Lab1.elf secondary-outputs
 
 # Tool invocations
-hello_world.elf hello_world.map: $(OBJS) $(USER_OBJS) /Users/2398768715qq.com/STM32CubeIDE/workspace_1.9.0/hello_world/STM32F427VITX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "hello_world.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/Users/2398768715qq.com/STM32CubeIDE/workspace_1.9.0/hello_world/STM32F427VITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="hello_world.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Lab1.elf Lab1.map: $(OBJS) $(USER_OBJS) /Users/2398768715qq.com/GitHub/ITMO-Labs/DesignSystem/hello_world/STM32F427VITX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Lab1.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/Users/2398768715qq.com/GitHub/ITMO-Labs/DesignSystem/hello_world/STM32F427VITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Lab1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -70,14 +70,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-hello_world.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "hello_world.list"
+Lab1.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Lab1.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) default.size.stdout hello_world.elf hello_world.list hello_world.map
+	-$(RM) Lab1.elf Lab1.list Lab1.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)

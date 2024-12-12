@@ -56,6 +56,123 @@ static void MX_CAN2_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+void delay(uint32_t milliseconds)
+{
+  uint32_t startTick = HAL_GetTick();
+
+  while((HAL_GetTick() - startTick) < milliseconds)
+  {
+  }
+}
+
+// 防抖相关变量
+uint32_t last_button_press_time = 0;
+uint8_t isButtonEnabled = 0;
+uint8_t didUpdatedAtThatTime = 0;
+const uint32_t debounce_delay = 10; // 防抖延迟（单位：毫秒）
+
+uint8_t sparkling_mode = 0;
+
+uint32_t last_sparking_time_1 = 0;
+uint8_t sparkMode_1 = 0;
+const uint32_t sparkling_delay_1 = 50; // 防抖延迟（单位：毫秒）
+uint32_t last_sparking_time_2 = 0;
+uint8_t sparkMode_2 = 0;
+const uint32_t sparkling_delay_2 = 200; // 防抖延迟（单位：毫秒）
+uint32_t last_sparking_time_3 = 0;
+uint8_t sparkMode_3 = 0;
+const uint32_t sparkling_delay_3 = 800; // 防抖延迟（单位：毫秒）
+
+
+void Check_Button(void) {
+	uint32_t current_time = HAL_GetTick();
+	if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_15) != isButtonEnabled) {
+		isButtonEnabled = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_15);
+		last_button_press_time = current_time;
+		didUpdatedAtThatTime = 0;
+	} else {
+		if (current_time - last_button_press_time > debounce_delay && HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_15) && didUpdatedAtThatTime == 0) {
+			sparkling_mode = (sparkling_mode + 1) % 4;
+			didUpdatedAtThatTime = 1;
+		}
+	}
+}
+
+void Spark(void) {
+	uint32_t current_time = HAL_GetTick();
+
+	if (sparkling_mode == 0) {
+		mode_0();
+	}
+	if (sparkling_mode == 1) {
+		mode_1(current_time);
+	}
+	if (sparkling_mode == 2) {
+		mode_2(current_time);
+	}
+	if (sparkling_mode == 3) {
+		mode_3(current_time);
+	}
+}
+
+void mode_0(void) {
+	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_SET);
+}
+
+void mode_1(uint32_t current_time) {
+	if (current_time - last_sparking_time_1 > sparkling_delay_1){
+		sparkMode_1 = (sparkMode_1 + 1) % 2;
+		last_sparking_time_1 = current_time;
+	}
+
+	if (sparkMode_1) {
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET);
+	} else {
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_SET);
+	}
+}
+
+
+void mode_2(uint32_t current_time) {
+	if (current_time - last_sparking_time_2 > sparkling_delay_2){
+		sparkMode_2 = (sparkMode_2 + 1) % 2;
+		last_sparking_time_2 = current_time;
+	}
+
+	if (sparkMode_2) {
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_SET);
+	} else {
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_SET);
+	}
+}
+
+void mode_3(uint32_t current_time) {
+	if (current_time - last_sparking_time_3 > sparkling_delay_3){
+		sparkMode_3 = (sparkMode_3 + 1) % 2;
+		last_sparking_time_3 = current_time;
+	}
+
+	if (sparkMode_3) {
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_SET);
+	} else {
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET);
+	}
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -65,7 +182,8 @@ static void MX_CAN2_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+//	uint32_t last_button_press_time = 0;
+//	const uint32_t debounce_delay = 50; // 防抖延迟（单位：毫秒）
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -74,6 +192,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
+
 
   /* USER CODE END Init */
 
@@ -93,12 +212,14 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  uint32_t lasttoggle_time = 0;
+
+  uint8_t mode = 0;
   while (1)
   {
-	  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET);
-	  HAL_Delay(250);
-	  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_SET);
-	  HAL_Delay(250);
+	  Check_Button();
+
+	  Spark();
 
     /* USER CODE END WHILE */
 
@@ -195,15 +316,22 @@ static void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : PD13 */
-  GPIO_InitStruct.Pin = GPIO_PIN_13;
+  /*Configure GPIO pin : PC15 */
+  GPIO_InitStruct.Pin = GPIO_PIN_15;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PD13 PD14 PD15 */
+  GPIO_InitStruct.Pin = GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -247,3 +375,4 @@ void assert_failed(uint8_t *file, uint32_t line)
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
+
