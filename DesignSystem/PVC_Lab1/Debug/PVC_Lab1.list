@@ -804,11 +804,11 @@ int main(void)
  80007ec:	f000 f89c 	bl	8000928 <MX_GPIO_Init>
   MX_CAN2_Init();
  80007f0:	f000 f866 	bl	80008c0 <MX_CAN2_Init>
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */
 	  Check_Button();
  80007f4:	f7ff fe7c 	bl	80004f0 <Check_Button>
 

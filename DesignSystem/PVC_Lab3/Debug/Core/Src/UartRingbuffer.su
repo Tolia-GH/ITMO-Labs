@@ -1,0 +1,2 @@
+../Core/Src/UartRingbuffer.c:27:6:store_char	24	static
+../Core/Src/UartRingbuffer.c:42:6:uart_isr	32	static
