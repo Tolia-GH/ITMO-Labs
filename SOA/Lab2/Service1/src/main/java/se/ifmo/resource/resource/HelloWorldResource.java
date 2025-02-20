@@ -1,4 +1,4 @@
-package se.ifmo.resource;
+package se.ifmo.resource.resource;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
