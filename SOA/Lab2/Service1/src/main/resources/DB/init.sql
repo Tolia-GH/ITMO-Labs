@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS space_marine CASCADE;
 
 CREATE TYPE melee_weapon AS ENUM (
     'CHAIN_SWORD',
-    'LIGHTING_SWORD',
+    'LIGHTING_CLAW',
     'POWER_BLADE'
 );
 
