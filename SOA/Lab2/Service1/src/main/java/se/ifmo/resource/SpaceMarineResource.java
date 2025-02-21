@@ -5,6 +5,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.GenericEntity;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import se.ifmo.model.entity.NewSpaceMarine;
 import se.ifmo.model.entity.SpaceMarine;
 import se.ifmo.model.response.ErrorResponse;
 import se.ifmo.model.response.SpaceMarineResponse;
@@ -32,6 +33,27 @@ public class SpaceMarineResource {
             List<SpaceMarine> spaceMarines = spaceMarineService.getAllSpaceMarine(sort, order, filter, page, pageSize);
             SpaceMarineResponse spaceMarineResponse = new SpaceMarineResponse(spaceMarines);
             return Response.ok(spaceMarineResponse).build();
+        } catch (IllegalArgumentException e) {
+            ErrorResponse errorResponse = new ErrorResponse(
+                    400,
+                    "Invalid param",
+                    ZonedDateTime.now()
+            );
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(errorResponse).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_XML)
+    public Response addSpaceMarine(NewSpaceMarine newSpaceMarine) {
+        try {
+            SpaceMarine spaceMarine = spaceMarineService.addSpaceMarine(newSpaceMarine);
+            return Response.ok(spaceMarine).build();
         } catch (IllegalArgumentException e) {
             ErrorResponse errorResponse = new ErrorResponse(
                     400,

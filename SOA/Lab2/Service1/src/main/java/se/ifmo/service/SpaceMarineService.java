@@ -2,14 +2,12 @@ package se.ifmo.service;
 
 import se.ifmo.model.entity.Chapter;
 import se.ifmo.model.entity.Coordinates;
+import se.ifmo.model.entity.NewSpaceMarine;
 import se.ifmo.model.entity.SpaceMarine;
 import se.ifmo.model.enums.MeleeWeapon;
 import se.ifmo.util.DatabaseUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,8 +99,80 @@ public class SpaceMarineService {
 
 
 
-    public SpaceMarine addSpaceMarine(SpaceMarine newSpaceMarine) {
-        return newSpaceMarine;
+    public SpaceMarine addSpaceMarine(NewSpaceMarine newSM) throws SQLException {
+        try (Connection conn = DatabaseUtil.getConnection()){
+            conn.setAutoCommit(false);
+            try {
+                // 插入 coordinates 表
+                int coordinateId;
+                String sqlCoordinates = "INSERT INTO coordinates (x, y) VALUES (?, ?) RETURNING id";
+                try (PreparedStatement ps = conn.prepareStatement(sqlCoordinates)) {
+                    ps.setInt(1, newSM.getCoordinates().getX());
+                    ps.setDouble(2, newSM.getCoordinates().getY());
+                    ResultSet rs = ps.executeQuery();
+                    if(rs.next()){
+                        coordinateId = rs.getInt("id");
+                    } else {
+                        conn.rollback();
+                        throw new SQLException("Failed to insert coordinates");
+                    }
+                }
+                // 插入 chapter 表（如果传入了章节信息）
+                Integer chapterId = null;
+                if(newSM.getChapter() != null && newSM.getChapter().getName() != null){
+                    String sqlChapter = "INSERT INTO chapter (name, world) VALUES (?, ?) RETURNING id";
+                    try (PreparedStatement ps = conn.prepareStatement(sqlChapter)) {
+                        ps.setString(1, newSM.getChapter().getName());
+                        ps.setString(2, newSM.getChapter().getWorld());
+                        ResultSet rs = ps.executeQuery();
+                        if(rs.next()){
+                            chapterId = rs.getInt("id");
+                        }
+                    }
+                }
+                // 插入 space_marine 表
+                String sqlSM = "INSERT INTO space_marine (name, coordinate_id, health, heart_count, height, melee_weapon, chapter_id) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id, creation_date";
+                SpaceMarine sm = new SpaceMarine();
+                try (PreparedStatement ps = conn.prepareStatement(sqlSM)) {
+                    ps.setString(1, newSM.getName());
+                    ps.setInt(2, coordinateId);
+                    ps.setInt(3, newSM.getHealth());
+                    ps.setInt(4, newSM.getHeartCount());
+                    ps.setFloat(5, newSM.getHeight());
+                    if(newSM.getMeleeWeapon() != null)
+                        ps.setObject(6, newSM.getMeleeWeapon(), java.sql.Types.OTHER);
+                    else
+                        ps.setNull(6, Types.VARCHAR);
+                    if(chapterId != null)
+                        ps.setInt(7, chapterId);
+                    else
+                        ps.setNull(7, Types.INTEGER);
+
+                    ResultSet rs = ps.executeQuery();
+                    if(rs.next()){
+                        sm.setId(rs.getLong("id"));
+                        sm.setCreationDate(rs.getTimestamp("creation_date")
+                                .toInstant()
+                                .atZone(ZonedDateTime.now().getZone()));
+                    }
+                }
+                // 设置其它字段
+                sm.setName(newSM.getName());
+                sm.setHealth(newSM.getHealth());
+                sm.setHeartCount(newSM.getHeartCount());
+                sm.setHeight(newSM.getHeight());
+                sm.setMeleeWeapon(newSM.getMeleeWeapon());
+                sm.setCoordinates(newSM.getCoordinates());
+                sm.setChapter(newSM.getChapter());
+
+                conn.commit();
+                return sm;
+            } catch(SQLException e){
+                conn.rollback();
+                throw e;
+            }
+        }
     }
 
     public SpaceMarine getSpaceMarineById(long id) throws SQLException {
