@@ -1,28 +1,42 @@
 package se.ifmo.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import se.ifmo.model.adapter.ZonedDateTimeAdapter;
 import se.ifmo.model.enums.MeleeWeapon;
 
 import java.time.ZonedDateTime;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "space_marine", schema = "soa_lab2")
 @Entity
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class SpaceMarine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Embedded
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "coordinate_id", referencedColumnName = "id")
     private Coordinates coordinates;
 
     @Column(name = "creation_date", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
+    @XmlElement
+    @XmlJavaTypeAdapter(ZonedDateTimeAdapter.class)
     private ZonedDateTime creationDate;
 
     @Column(name = "health")
@@ -33,10 +47,12 @@ public class SpaceMarine {
 
     private Float height;
 
-    @Enumerated
-    @Column(name = "melee_wepon")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "melee_weapon")
     private MeleeWeapon meleeWeapon;
 
-    @Embedded
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "chapter_id", referencedColumnName = "id")
+    @XmlElement
     private Chapter chapter;
 }

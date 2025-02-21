@@ -1,16 +1,16 @@
 package se.ifmo.resource;
 
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.GenericEntity;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import se.ifmo.model.entity.SpaceMarine;
 import se.ifmo.model.response.ErrorResponse;
+import se.ifmo.model.response.SpaceMarineResponse;
 import se.ifmo.service.SpaceMarineService;
 
+import java.sql.SQLException;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -22,16 +22,17 @@ public class SpaceMarineResource {
     @GET
     @Produces(MediaType.APPLICATION_XML)
     public Response getAllSpaceMarine(
-            @QueryParam("sort") String sort,
-            @QueryParam("order") String order,
+            @QueryParam("sort") @DefaultValue("id") String sort,
+            @QueryParam("order") @DefaultValue("ASC") String order,
             @QueryParam("filter") List<String> filter,
-            @QueryParam("page") int page,
-            @QueryParam("pageSize") int pageSize
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("pageSize") @DefaultValue("10") int pageSize
     ) {
         try {
             List<SpaceMarine> spaceMarines = spaceMarineService.getAllSpaceMarine(sort, order, filter, page, pageSize);
-            return Response.ok(spaceMarines).build();
-        } catch (IllegalAccessError e) {
+            SpaceMarine spaceMarine = spaceMarines.get(0);
+            return Response.ok(spaceMarine).build();
+        } catch (IllegalArgumentException e) {
             ErrorResponse errorResponse = new ErrorResponse(
                     400,
                     "Invalid param",
@@ -39,6 +40,9 @@ public class SpaceMarineResource {
             );
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(errorResponse).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 }
