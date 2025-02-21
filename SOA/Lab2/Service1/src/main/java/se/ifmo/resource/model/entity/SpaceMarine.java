@@ -1,4 +1,4 @@
-package se.ifmo.resource.model;
+package se.ifmo.resource.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.xml.bind.annotation.XmlRootElement;

@@ -1,6 +1,6 @@
 package se.ifmo.resource.service;
 
-import se.ifmo.resource.model.SpaceMarine;
+import se.ifmo.resource.model.entity.SpaceMarine;
 
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;

@@ -7,9 +7,11 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import se.ifmo.resource.model.SpaceMarine;
+import se.ifmo.resource.model.entity.SpaceMarine;
+import se.ifmo.resource.model.response.ErrorResponse;
 import se.ifmo.resource.service.SpaceMarineService;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Path("/space_marine")
@@ -26,7 +28,17 @@ public class SpaceMarineResource {
             @QueryParam("page") int page,
             @QueryParam("pageSize") int pageSize
     ) {
-        List<SpaceMarine> spaceMarines = spaceMarineService.getAllSpaceMarine(sort, order, filter, page, pageSize);
-        return Response.ok(spaceMarines).build();
+        try {
+            List<SpaceMarine> spaceMarines = spaceMarineService.getAllSpaceMarine(sort, order, filter, page, pageSize);
+            return Response.ok(spaceMarines).build();
+        } catch (IllegalAccessError e) {
+            ErrorResponse errorResponse = new ErrorResponse(
+                    400,
+                    "Invalid param",
+                    ZonedDateTime.now()
+            );
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(errorResponse).build();
+        }
     }
 }
