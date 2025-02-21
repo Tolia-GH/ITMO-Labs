@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseUtil {
-    private static final String url = "jdbc:postgresql://localhost:5432/studs?currentSchema=soa_lab2";
-    private static final String user = "postgres";
-    private static final String password = "123456";
+    private static final String url = "jdbc:postgresql://localhost:5432/studs?currentSchema=s336184";
+    private static final String user = "s336184";
+    private static final String password = "Di2oaLyDd20js6Ox";
 
     static {
         try {

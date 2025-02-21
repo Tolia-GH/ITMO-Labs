@@ -38,7 +38,7 @@
             </select>
         </label>
         <label>
-            filter (filter，多个条件用英文逗号分隔，如：id>10,name=John):
+            filter (filter, split by comma，example：id>10,name=John):
             <input type="text" id="getListFilter" name="filter" placeholder="例如：id>10">
         </label>
         <label>
@@ -111,7 +111,7 @@
             </select>
         </label>
         <fieldset>
-            <legend>Chapter (可选)</legend>
+            <legend>Chapter (Optinal)</legend>
             <label>
                 Chapter Name:
                 <input type="text" id="postChapterName" name="chapterName">
@@ -121,7 +121,7 @@
                 <input type="text" id="postChapterWorld" name="chapterWorld">
             </label>
         </fieldset>
-        <button type="submit">发送 POST 请求</button>
+        <button type="submit">Send POST request</button>
     </form>
     <div id="postNewResponse" class="response"></div>
 </section>
