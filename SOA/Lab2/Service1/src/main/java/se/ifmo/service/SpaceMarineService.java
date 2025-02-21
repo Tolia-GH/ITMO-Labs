@@ -16,6 +16,31 @@ import java.util.List;
 
 public class SpaceMarineService {
 
+    private static void extractSpaceMarine(SpaceMarine spaceMarine, ResultSet rs) throws SQLException {
+        spaceMarine.setId(rs.getLong("id"));
+        spaceMarine.setName(rs.getString("name"));
+        spaceMarine.setHealth(rs.getInt("health"));
+        spaceMarine.setHeartCount(rs.getInt("heart_count"));
+        spaceMarine.setHeight(rs.getFloat("height"));
+        String weapon = rs.getString("melee_weapon");
+        spaceMarine.setMeleeWeapon(weapon != null ? MeleeWeapon.valueOf(weapon) : null);
+
+        Coordinates coordinates = new Coordinates();
+        coordinates.setX(rs.getInt("x"));
+        coordinates.setY(rs.getDouble("y"));
+        spaceMarine.setCoordinates(coordinates);
+
+        Chapter chapter = new Chapter();
+        chapter.setName(rs.getString("name"));
+        chapter.setWorld(rs.getString("world"));
+        spaceMarine.setChapter(chapter);
+
+        spaceMarine.setCreationDate(
+                rs.getTimestamp("creation_date")
+                        .toInstant()
+                        .atZone(ZonedDateTime.now().getZone()));
+    }
+
     public List<SpaceMarine> getAllSpaceMarine(
             String sort,
             String order,
@@ -65,28 +90,7 @@ public class SpaceMarineService {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 SpaceMarine spaceMarine = new SpaceMarine();
-                spaceMarine.setId(rs.getLong("id"));
-                spaceMarine.setName(rs.getString("name"));
-                spaceMarine.setHealth(rs.getInt("health"));
-                spaceMarine.setHeartCount(rs.getInt("heart_count"));
-                spaceMarine.setHeight(rs.getFloat("height"));
-                String weapon = rs.getString("melee_weapon");
-                spaceMarine.setMeleeWeapon(weapon != null ? MeleeWeapon.valueOf(weapon) : null);
-
-                Coordinates coordinates = new Coordinates();
-                coordinates.setX(rs.getInt("x"));
-                coordinates.setY(rs.getDouble("y"));
-                spaceMarine.setCoordinates(coordinates);
-
-                Chapter chapter = new Chapter();
-                chapter.setName(rs.getString("name"));
-                chapter.setWorld(rs.getString("world"));
-                spaceMarine.setChapter(chapter);
-
-                spaceMarine.setCreationDate(
-                        rs.getTimestamp("creation_date")
-                                .toInstant()
-                                .atZone(ZonedDateTime.now().getZone()));
+                extractSpaceMarine(spaceMarine, rs);
 
                 spaceMarineList.add(spaceMarine);
             }
@@ -95,11 +99,28 @@ public class SpaceMarineService {
         return spaceMarineList;
     }
 
+
+
     public SpaceMarine addSpaceMarine(SpaceMarine newSpaceMarine) {
         return newSpaceMarine;
     }
 
-    public SpaceMarine getSpaceMarineById(int id) {
-        return null;
+    public SpaceMarine getSpaceMarineById(long id) throws SQLException {
+        SpaceMarine spaceMarine = new SpaceMarine();
+
+        String query = "SELECT * FROM space_marine sm";
+        query += " JOIN coordinates c ON c.id = sm.coordinate_id";
+        query += " JOIN chapter ch ON ch.id = sm.chapter_id";
+        query += " WHERE sm.id = " + id;
+
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                extractSpaceMarine(spaceMarine, rs);
+            }
+        }
+
+        return spaceMarine;
     }
 }

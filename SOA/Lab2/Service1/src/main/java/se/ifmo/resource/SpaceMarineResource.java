@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-@Path("/space_marine")
+@Path("/space-marine")
 public class SpaceMarineResource {
     @Inject
     private SpaceMarineService spaceMarineService;
@@ -46,5 +46,23 @@ public class SpaceMarineResource {
         }
     }
 
-    @POST
+    @GET
+    @Path("/{id}")
+    public Response getSpaceMarineById(@PathParam("id") long id) {
+        try {
+            SpaceMarine spaceMarine = spaceMarineService.getSpaceMarineById(id);
+            return Response.ok(spaceMarine).build();
+        } catch (IllegalArgumentException e) {
+            ErrorResponse errorResponse = new ErrorResponse(
+                    400,
+                    "Invalid param",
+                    ZonedDateTime.now()
+            );
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(errorResponse).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
