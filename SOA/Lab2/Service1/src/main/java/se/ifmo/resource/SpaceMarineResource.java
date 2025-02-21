@@ -1,4 +1,4 @@
-package se.ifmo.resource.resource;
+package se.ifmo.resource;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -7,9 +7,9 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import se.ifmo.resource.model.entity.SpaceMarine;
-import se.ifmo.resource.model.response.ErrorResponse;
-import se.ifmo.resource.service.SpaceMarineService;
+import se.ifmo.model.entity.SpaceMarine;
+import se.ifmo.model.response.ErrorResponse;
+import se.ifmo.service.SpaceMarineService;
 
 import java.time.ZonedDateTime;
 import java.util.List;

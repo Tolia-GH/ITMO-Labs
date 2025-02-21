@@ -1,9 +1,9 @@
-package se.ifmo.resource.model.entity;
+package se.ifmo.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
-import se.ifmo.resource.model.enums.MeleeWeapon;
+import se.ifmo.model.enums.MeleeWeapon;
 
 import java.time.ZonedDateTime;
 

@@ -1,4 +1,4 @@
-package se.ifmo.resource.model.response;
+package se.ifmo.model.response;
 
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;

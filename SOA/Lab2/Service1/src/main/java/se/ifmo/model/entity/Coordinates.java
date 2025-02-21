@@ -1,4 +1,4 @@
-package se.ifmo.resource.model.entity;
+package se.ifmo.model.entity;
 
 import jakarta.persistence.Embeddable;
 

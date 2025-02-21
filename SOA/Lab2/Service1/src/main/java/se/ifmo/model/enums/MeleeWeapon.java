@@ -1,4 +1,4 @@
-package se.ifmo.resource.model.enums;
+package se.ifmo.model.enums;
 
 
 public enum MeleeWeapon {
