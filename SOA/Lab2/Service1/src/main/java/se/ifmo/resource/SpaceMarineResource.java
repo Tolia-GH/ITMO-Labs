@@ -30,8 +30,8 @@ public class SpaceMarineResource {
     ) {
         try {
             List<SpaceMarine> spaceMarines = spaceMarineService.getAllSpaceMarine(sort, order, filter, page, pageSize);
-            SpaceMarine spaceMarine = spaceMarines.get(0);
-            return Response.ok(spaceMarine).build();
+            SpaceMarineResponse spaceMarineResponse = new SpaceMarineResponse(spaceMarines);
+            return Response.ok(spaceMarineResponse).build();
         } catch (IllegalArgumentException e) {
             ErrorResponse errorResponse = new ErrorResponse(
                     400,
@@ -45,4 +45,6 @@ public class SpaceMarineResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @POST
 }

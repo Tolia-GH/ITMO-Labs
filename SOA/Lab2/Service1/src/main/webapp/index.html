@@ -1,42 +1,52 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Welcome to Payara</title>
-
-        <style>
-            body {
-                background-image: linear-gradient(rgba(0,44,62), rgba(0,44,62,.8), rgba(0,44,62));
-                color: #fff;
-            }
-            a {
-                font-weight: bold;
-                color: white;
-            }
-        </style>
-    </head>
-    <body>
-
-        <h1>Greetings from Payara!</h1>
-        <p>
-            Thank you for visiting <a href="https://www.payara.fish/">Payara</a>! We're thrilled to have you here. Payara is your go-to destination for all things Jakarta EE and Java enterprise applications.
-        </p>
-        <p>
-            <a href="https://www.payara.fish/"><img width="50%" src="images/payara-fish-logo.svg" alt="Payara Logo"></a>
-        </p>
-        
-        <h2>RESTful Service</h2>
-        <p>
-            The REST end-point is available at <a href="v1/hello">v1/hello</a>.
-            You can supply a name to the end-point using a query parameter like this: <a href="v1/hello?name=John">v1/hello?name=John</a>
-        </p>
-        
-        
-        <h2>Why Choose Payara?</h2>
-        <p>
-            Dive into the world of Jakarta EE with Payara. Our robust application server empowers you to build and deploy scalable, enterprise-ready solutions with ease.
-        </p>
-        <p>
-            Explore the incredible features of Payara, from seamless clustering to unparalleled support. Get started on your journey with Payara by checking out our <a href="https://docs.payara.fish/">documentation</a>.
-        </p>
-    </body>
+<head>
+    <title>API Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #0077cc;
+        }
+        .api-list {
+            list-style: none;
+            padding: 0;
+        }
+        .api-list li {
+            background: #fff;
+            margin: 10px;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        a {
+            color: #0077cc;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<h1>JAX-RS API Endpoints</h1>
+<p>Welcome to the API documentation page. Below are the available RESTful services:</p>
+<ul class="api-list">
+    <li>
+        <strong>GET</strong> <a href="v1/hello">v1/hello</a>
+        <p>Returns a greeting message.</p>
+    </li>
+    <li>
+        <strong>GET</strong> <a href="v1/hello?name=John">v1/hello?name=John</a>
+        <p>Returns a personalized greeting for the given name.</p>
+    </li>
+    <li>
+        <strong>GET</strong> <a href="v1/status">v1/status</a>
+        <p>Returns the current server status.</p>
+    </li>
+</ul>
+</body>
 </html>

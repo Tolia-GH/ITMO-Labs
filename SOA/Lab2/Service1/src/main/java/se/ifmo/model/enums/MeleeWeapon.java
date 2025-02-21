@@ -7,6 +7,6 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlType(name = "meleeWeapon")
 public enum MeleeWeapon {
     CHAIN_SWORD,
-    POWER_SWORD,
+    POWER_BLADE,
     LIGHTING_CLAW
 }
