@@ -2,16 +2,15 @@ package se.ifmo.resource;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.GenericEntity;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import se.ifmo.model.entity.NewSpaceMarine;
 import se.ifmo.model.entity.SpaceMarine;
+import se.ifmo.model.response.SuccessResponse;
 import se.ifmo.model.response.ErrorResponse;
 import se.ifmo.model.response.SpaceMarineResponse;
 import se.ifmo.service.SpaceMarineService;
 
-import java.sql.SQLException;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -50,7 +49,8 @@ public class SpaceMarineResource {
     @POST
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response addSpaceMarine(NewSpaceMarine newSpaceMarine) {
+    public Response addSpaceMarine(
+            NewSpaceMarine newSpaceMarine) {
         try {
             SpaceMarine spaceMarine = spaceMarineService.addSpaceMarine(newSpaceMarine);
             return Response.ok(spaceMarine).build();
@@ -70,10 +70,60 @@ public class SpaceMarineResource {
 
     @GET
     @Path("/{id}")
-    public Response getSpaceMarineById(@PathParam("id") long id) {
+    @Produces(MediaType.APPLICATION_XML)
+    public Response getSpaceMarineById(
+            @PathParam("id") long id) {
         try {
             SpaceMarine spaceMarine = spaceMarineService.getSpaceMarineById(id);
             return Response.ok(spaceMarine).build();
+        } catch (IllegalArgumentException e) {
+            ErrorResponse errorResponse = new ErrorResponse(
+                    400,
+                    "Invalid param",
+                    ZonedDateTime.now()
+            );
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(errorResponse).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_XML)
+    public Response updateSpaceMarineById(
+            @PathParam("id") long id,
+            NewSpaceMarine newSpaceMarine) {
+        try {
+            spaceMarineService.updateSpaceMarine(id, newSpaceMarine);
+            SuccessResponse successResponse = new SuccessResponse(200, "SpaceMarine Updated", ZonedDateTime.now());
+            return Response.ok(successResponse).build();
+        } catch (IllegalArgumentException e) {
+            ErrorResponse errorResponse = new ErrorResponse(
+                    400,
+                    "Invalid param",
+                    ZonedDateTime.now()
+            );
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(errorResponse).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @DELETE
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_XML)
+    public Response deleteSpaceMarineById(
+            @PathParam("id") long id) {
+        try {
+            spaceMarineService.deleteSpaceMarineByID(id);
+            SuccessResponse successResponse = new SuccessResponse(200, "SpaceMarine deleted", ZonedDateTime.now());
+            return Response.ok(successResponse).build();
         } catch (IllegalArgumentException e) {
             ErrorResponse errorResponse = new ErrorResponse(
                     400,

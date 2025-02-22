@@ -24,12 +24,14 @@ public class SpaceMarineService {
         spaceMarine.setMeleeWeapon(weapon != null ? MeleeWeapon.valueOf(weapon) : null);
 
         Coordinates coordinates = new Coordinates();
+        coordinates.setId(rs.getLong("c_id"));
         coordinates.setX(rs.getInt("x"));
         coordinates.setY(rs.getDouble("y"));
         spaceMarine.setCoordinates(coordinates);
 
         Chapter chapter = new Chapter();
-        chapter.setName(rs.getString("name"));
+        chapter.setId(rs.getLong("ch_id"));
+        chapter.setName(rs.getString("ch_name"));
         chapter.setWorld(rs.getString("world"));
         spaceMarine.setChapter(chapter);
 
@@ -69,9 +71,19 @@ public class SpaceMarineService {
             pageSize = 10;
         }
 
-        String query = "SELECT * FROM space_marine sm";
-        query += " JOIN coordinates c ON c.id = sm.coordinate_id";
-        query += " JOIN chapter ch ON ch.id = sm.chapter_id";
+        String query = "SELECT " +
+                "sm.id, " +
+                "sm.name, " +
+                "sm.creation_date, " +
+                "sm.health, " +
+                "sm.heart_count, " +
+                "sm.height, " +
+                "sm.melee_weapon, " +
+                "c.id AS c_id, c.x, c.y, " +
+                "ch.id AS ch_id, ch.name AS ch_name, ch.world " +
+                "FROM space_marine sm " +
+                "JOIN coordinates c ON c.id = sm.coordinate_id " +
+                "JOIN chapter ch ON ch.id = sm.chapter_id";
 
         if (filters != null && !filters.isEmpty()) {
             query += " WHERE ";
@@ -178,10 +190,20 @@ public class SpaceMarineService {
     public SpaceMarine getSpaceMarineById(long id) throws SQLException {
         SpaceMarine spaceMarine = new SpaceMarine();
 
-        String query = "SELECT * FROM space_marine sm";
-        query += " JOIN coordinates c ON c.id = sm.coordinate_id";
-        query += " JOIN chapter ch ON ch.id = sm.chapter_id";
-        query += " WHERE sm.id = " + id;
+        String query = "SELECT " +
+                "sm.id, " +
+                "sm.name, " +
+                "sm.creation_date, " +
+                "sm.health, " +
+                "sm.heart_count, " +
+                "sm.height, " +
+                "sm.melee_weapon, " +
+                "c.id AS c_id, c.x, c.y, " +
+                "ch.id AS ch_id, ch.name AS ch_name, ch.world " +
+                "FROM space_marine sm " +
+                "JOIN coordinates c ON c.id = sm.coordinate_id " +
+                "JOIN chapter ch ON ch.id = sm.chapter_id " +
+                "WHERE sm.id = " + id;
 
         try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
@@ -192,5 +214,58 @@ public class SpaceMarineService {
         }
 
         return spaceMarine;
+    }
+
+    public void updateSpaceMarine(long id, NewSpaceMarine updatedSM) throws SQLException {
+
+        try (Connection conn = DatabaseUtil.getConnection()) {
+            conn.setAutoCommit(false);
+            SpaceMarine spaceMarine = getSpaceMarineById(id);
+            if (spaceMarine == null) {
+                throw new SQLException("Space marine not found");
+            }
+
+            // 更新 coordinates 表
+            String sqlCoordinates = "UPDATE coordinates SET x = ?, y = ? WHERE id = ?";
+            try (PreparedStatement ps = conn.prepareStatement(sqlCoordinates)) {
+                ps.setInt(1, updatedSM.getCoordinates().getX());
+                ps.setDouble(2, updatedSM.getCoordinates().getY());
+                ps.setLong(3, spaceMarine.getCoordinates().getId());
+                ps.executeUpdate();
+            }
+
+            // 更新 chapter 表（如果传入了新的章节信息）
+            if (updatedSM.getChapter() != null && updatedSM.getChapter().getName() != null) {
+                String sqlChapter = "UPDATE chapter SET name = ?, world = ? WHERE id = ?";
+                try (PreparedStatement ps = conn.prepareStatement(sqlChapter)) {
+                    ps.setString(1, updatedSM.getChapter().getName());
+                    ps.setString(2, updatedSM.getChapter().getWorld());
+                    ps.setLong(3, spaceMarine.getChapter().getId());
+                    ps.executeUpdate();
+                }
+            }
+
+            // 更新 space_marine 表
+            String sqlSM = "UPDATE space_marine SET name = ?, health = ?, heart_count = ?, height = ?, melee_weapon = ? WHERE id = ?";
+            try (PreparedStatement ps = conn.prepareStatement(sqlSM)) {
+                ps.setString(1, updatedSM.getName());
+                ps.setInt(2, updatedSM.getHealth());
+                ps.setInt(3, updatedSM.getHeartCount());
+                ps.setFloat(4, updatedSM.getHeight());
+                if (updatedSM.getMeleeWeapon() != null)
+                    ps.setObject(5, updatedSM.getMeleeWeapon(), java.sql.Types.OTHER);
+                else
+                    ps.setNull(5, Types.VARCHAR);
+                ps.setLong(6, id);
+                ps.executeUpdate();
+            }
+
+            conn.commit();
+        } catch (SQLException e) {
+            throw e;
+        }
+    }
+
+    public void deleteSpaceMarineByID(long id) {
     }
 }

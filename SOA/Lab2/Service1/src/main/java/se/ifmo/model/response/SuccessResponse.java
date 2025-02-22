@@ -14,9 +14,9 @@ import java.time.ZonedDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@XmlRootElement(name = "error")
+@XmlRootElement(name = "success")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ErrorResponse {
+public class SuccessResponse {
     @XmlElement
     private int code;
     @XmlElement
