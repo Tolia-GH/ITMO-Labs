@@ -261,11 +261,21 @@ public class SpaceMarineService {
             }
 
             conn.commit();
-        } catch (SQLException e) {
-            throw e;
         }
     }
 
-    public void deleteSpaceMarineByID(long id) {
+    public void deleteSpaceMarineByID(long id) throws SQLException {
+        SpaceMarine spaceMarine = getSpaceMarineById(id);
+        if (spaceMarine == null) {
+            throw new SQLException("Space marine not found");
+        }
+
+        String sql = "DELETE FROM space_marine WHERE id = ?";
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setLong(1, id);
+            ps.executeUpdate();
+        }
     }
 }
