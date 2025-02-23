@@ -158,6 +158,9 @@ paths:
                     type: string
                     format: date-time
                     example: 2024-09-20T00:20:09Z
+                xml:
+                  name:
+                    error
     post:
       summary: Add new SpaceMarine
       tags: 
@@ -608,7 +611,7 @@ paths:
                     type: string
                     format: date-time
                     example: 2024-09-20T00:20:09Z
-  /space-marine/by-heartCount/:
+  /space-marine/by-heart-count/:
     delete:
       summary: Delete SpaceMarine by heartCount
       tags: 
@@ -728,7 +731,7 @@ paths:
                     type: string
                     format: date-time
                     example: 2024-09-20T00:20:09Z
-  /space-marine/by-meleeWeapon/count:
+  /space-marine/count/by-melee-weapon/:
     get:
       summary: Get number of SpaceMarine by meleeWeapon
       tags: 
