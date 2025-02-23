@@ -278,4 +278,86 @@ public class SpaceMarineService {
             ps.executeUpdate();
         }
     }
+
+    public void deleteSpaceMarineByHeartCount(int heartCount) throws SQLException {
+        String sql = "DELETE FROM space_marine WHERE heart_count = ?";
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, heartCount);
+
+            ps.executeUpdate();
+        }
+    }
+
+    public List<SpaceMarine> getSpaceMarineListByMeleeWeapon(String weapon) throws SQLException {
+        List<SpaceMarine> spaceMarineList = new ArrayList<>();
+
+        String query = "SELECT " +
+                "sm.id, " +
+                "sm.name, " +
+                "sm.creation_date, " +
+                "sm.health, " +
+                "sm.heart_count, " +
+                "sm.height, " +
+                "sm.melee_weapon, " +
+                "c.id AS c_id, c.x, c.y, " +
+                "ch.id AS ch_id, ch.name AS ch_name, ch.world " +
+                "FROM space_marine sm " +
+                "JOIN coordinates c ON c.id = sm.coordinate_id " +
+                "JOIN chapter ch ON ch.id = sm.chapter_id " +
+                "WHERE melee_weapon = CAST(? AS melee_weapon) " +
+                "ORDER BY sm.id ";
+
+
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, weapon);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                SpaceMarine spaceMarine = new SpaceMarine();
+                extractSpaceMarine(spaceMarine, rs);
+
+                spaceMarineList.add(spaceMarine);
+            }
+        }
+
+        return spaceMarineList;
+    }
+
+
+    public List<SpaceMarine> getSpaceMarineListByName(String name) throws SQLException {
+        List<SpaceMarine> spaceMarineList = new ArrayList<>();
+
+        String query = "SELECT " +
+                "sm.id, " +
+                "sm.name, " +
+                "sm.creation_date, " +
+                "sm.health, " +
+                "sm.heart_count, " +
+                "sm.height, " +
+                "sm.melee_weapon, " +
+                "c.id AS c_id, c.x, c.y, " +
+                "ch.id AS ch_id, ch.name AS ch_name, ch.world " +
+                "FROM space_marine sm " +
+                "JOIN coordinates c ON c.id = sm.coordinate_id " +
+                "JOIN chapter ch ON ch.id = sm.chapter_id " +
+                "WHERE sm.name = ? " +
+                "ORDER BY sm.id ";
+
+
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                SpaceMarine spaceMarine = new SpaceMarine();
+                extractSpaceMarine(spaceMarine, rs);
+
+                spaceMarineList.add(spaceMarine);
+            }
+        }
+
+        return spaceMarineList;
+    }
 }

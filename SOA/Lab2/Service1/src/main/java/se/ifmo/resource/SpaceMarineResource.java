@@ -2,16 +2,19 @@ package se.ifmo.resource;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import se.ifmo.model.entity.NewSpaceMarine;
 import se.ifmo.model.entity.SpaceMarine;
+import se.ifmo.model.response.CountResponse;
 import se.ifmo.model.response.SuccessResponse;
 import se.ifmo.model.response.ErrorResponse;
 import se.ifmo.model.response.SpaceMarineResponse;
 import se.ifmo.service.SpaceMarineService;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Path("/space-marine")
@@ -124,6 +127,76 @@ public class SpaceMarineResource {
             spaceMarineService.deleteSpaceMarineByID(id);
             SuccessResponse successResponse = new SuccessResponse(200, "SpaceMarine deleted", ZonedDateTime.now());
             return Response.ok(successResponse).build();
+        } catch (IllegalArgumentException e) {
+            ErrorResponse errorResponse = new ErrorResponse(
+                    400,
+                    "Invalid param",
+                    ZonedDateTime.now()
+            );
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(errorResponse).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @DELETE
+    @Path("/by-heart-count")
+    @Produces(MediaType.APPLICATION_XML)
+    public Response deleteSpaceMarineByHeartCount(
+            @QueryParam("heart-count") int heartCount
+    ) {
+        try {
+            spaceMarineService.deleteSpaceMarineByHeartCount(heartCount);
+            SuccessResponse successResponse = new SuccessResponse(200, "SpaceMarine deleted", ZonedDateTime.now());
+            return Response.ok(successResponse).build();
+        } catch (IllegalArgumentException e) {
+            ErrorResponse errorResponse = new ErrorResponse(
+                    400,
+                    "Invalid param",
+                    ZonedDateTime.now()
+            );
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(errorResponse).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GET
+    @Path("/count/by-melee-weapon")
+    @Produces(MediaType.APPLICATION_XML)
+    public Response getSpaceMarineCountByMeleeWeapon(
+            @QueryParam("melee-weapon") String weapon) {
+        try {
+            List<SpaceMarine> spaceMarineList = spaceMarineService.getSpaceMarineListByMeleeWeapon(weapon);
+            CountResponse countResponse = new CountResponse(200, spaceMarineList.size(), ZonedDateTime.now());
+            return Response.ok(countResponse).build();
+        } catch (IllegalArgumentException e) {
+            ErrorResponse errorResponse = new ErrorResponse(
+                    400,
+                    "Invalid param",
+                    ZonedDateTime.now()
+            );
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(errorResponse).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GET
+    @Path("/by-name")
+    @Produces(MediaType.APPLICATION_XML)
+    public Response getSpaceMarineByName(
+            @QueryParam("name") String name)  {
+        try {
+            List<SpaceMarine> spaceMarineList = spaceMarineService.getSpaceMarineListByName(name);
+            SpaceMarineResponse spaceMarineResponse = new SpaceMarineResponse(spaceMarineList);
+            return Response.ok(spaceMarineResponse).build();
         } catch (IllegalArgumentException e) {
             ErrorResponse errorResponse = new ErrorResponse(
                     400,
