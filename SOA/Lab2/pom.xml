@@ -13,6 +13,7 @@
 
     <modules>
         <module>Service1</module>
+        <module>Service2</module>
     </modules>
 
     <properties>
