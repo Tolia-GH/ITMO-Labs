@@ -14,15 +14,23 @@ info:
     url: https://opensource.org/license/mit
   version: 1.0.0
 servers:
-  - url: https://localhost:8083/api/v1
+  - url: https://localhost:8082/api/v1
 
 paths:
   /starship/{starship-id}/unload/space-marine-id/:
     get:
       summary: Unload SpaceMarine from spaceship by SpaceMarine's ID
       tags: 
-        - Spaceship
+        - Starship
       parameters:
+        - name: starship-id
+          description: ID of starship
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
         - name: SpaceMarine ID
           description: prefix of SpaceMarine's name for searching
           in: query
@@ -140,9 +148,9 @@ paths:
     get:
       summary: Unload all SpaceMarine from spaceship
       tags: 
-        - Spaceship
+        - Starship
       parameters:
-        - name: Spaceship ID
+        - name: starship-id
           description: ID of Spaceship
           in: path
           required: true
@@ -256,7 +264,7 @@ paths:
 
 components:
   schemas:
-    Spaceship:
+    Starship:
       type: object
       properties:
         id:

@@ -7,7 +7,7 @@ import se.ifmo.model.SuccessResponse;
 import se.ifmo.service.StarshipService;
 
 @RestController
-@RequestMapping("v1/starship")
+@RequestMapping("api/v1/starship")
 public class StarshipController {
     @Autowired
     private StarshipService starshipService;
@@ -17,7 +17,7 @@ public class StarshipController {
     @ResponseBody
     public SuccessResponse unloadSpaceMarineById(
             @PathVariable("starship-id") long starshipId,
-            @RequestParam("space-marine-id") long spaceMarineId) {
+            @RequestParam("spaceMarineId") long spaceMarineId) {
         return starshipService.unloadSpaceMarineById(starshipId, spaceMarineId);
     }
 
