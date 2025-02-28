@@ -11,6 +11,8 @@ import org.springframework.web.client.RestTemplate;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.SecureRandom;
 
@@ -19,12 +21,20 @@ public class RestTemplateConfig {
 
     @Bean
     public RestTemplate restTemplate() throws Exception {
-        String trustStorePath = getClass().getClassLoader().getResource("cacerts.p12").getFile();
+        // 使用 InputStream 读取 classpath 下的资源文件
+        InputStream trustStoreInputStream = getClass().getClassLoader().getResourceAsStream("cacerts.p12");
+
+        if (trustStoreInputStream == null) {
+            throw new FileNotFoundException("Truststore file not found in the classpath.");
+        }
+
         String trustStorePassword = "changeit";
 
         KeyStore trustStore = KeyStore.getInstance("PKCS12");
-        try (FileInputStream fis = new FileInputStream(trustStorePath)) {
-            trustStore.load(fis, trustStorePassword.toCharArray());
+
+        // 从 InputStream 加载 Truststore
+        try (trustStoreInputStream) {
+            trustStore.load(trustStoreInputStream, trustStorePassword.toCharArray());
         }
 
         TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());

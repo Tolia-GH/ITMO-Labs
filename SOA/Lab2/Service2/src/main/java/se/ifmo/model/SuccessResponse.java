@@ -1,8 +1,6 @@
 package se.ifmo.model;
 
 
-import lombok.*;
-
 import javax.xml.bind.annotation.XmlRootElement;
 import java.time.ZonedDateTime;
 
