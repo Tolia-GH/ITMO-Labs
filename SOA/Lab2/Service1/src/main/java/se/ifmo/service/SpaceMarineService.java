@@ -86,7 +86,7 @@ public class SpaceMarineService {
                 "JOIN chapter ch ON ch.id = sm.chapter_id";
 
         if (filters != null && !filters.isEmpty()) {
-            query += " WHERE ";
+            query += " WHERE sm.";
             // 此处简化处理，每个过滤条件之间使用 AND 拼接
             query += String.join(" AND sm.", filters);
         }

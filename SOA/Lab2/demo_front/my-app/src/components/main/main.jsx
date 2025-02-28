@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const BASE_URL = 'https://localhost:8181'; // 请根据实际后端地址调整
+const BASE_URL = 'https://localhost:8181/api'; // 请根据实际后端地址调整
 
 // 格式化 XML 字符串，利用 XSLTProcessor 进行格式化输出
 function formatXML(xmlDoc) {
@@ -167,7 +167,7 @@ export function Main() {
                         </select>
                     </label>
                     <label style={styles.label}>
-                        filter (filter, split by comma, e.g. id&gt;10,name=John):
+                        filter (filter, split by comma, e.g. id&gt;10,name='Mike'):
                         <input
                             type="text"
                             name="filter"
@@ -225,11 +225,11 @@ export function Main() {
                     <fieldset style={styles.fieldset}>
                         <legend>Coordinates</legend>
                         <label style={styles.label}>
-                            X (\lt=220):
+                            X (&lt=220):
                             <input type="number" name="x" value={postForm.x} onChange={handlePostChange} required style={styles.input} />
                         </label>
                         <label style={styles.label}>
-                            Y (\lt=288):
+                            Y (&lt=288):
                             <input type="number" name="y" value={postForm.y} onChange={handlePostChange} step="any" required style={styles.input} />
                         </label>
                     </fieldset>
