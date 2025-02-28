@@ -213,6 +213,10 @@ public class SpaceMarineService {
             }
         }
 
+        if (spaceMarine.getName() == null) {
+            throw new SQLException("Space marine not found");
+        }
+
         return spaceMarine;
     }
 
@@ -266,9 +270,7 @@ public class SpaceMarineService {
 
     public void deleteSpaceMarineByID(long id) throws SQLException {
         SpaceMarine spaceMarine = getSpaceMarineById(id);
-        if (spaceMarine == null) {
-            throw new SQLException("Space marine not found");
-        }
+
 
         String sql = "DELETE FROM space_marine WHERE id = ?";
         try (Connection conn = DatabaseUtil.getConnection();
@@ -326,7 +328,7 @@ public class SpaceMarineService {
     }
 
 
-    public List<SpaceMarine> getSpaceMarineListByName(String name) throws SQLException {
+    public List<SpaceMarine> getSpaceMarineListByName(String prefix) throws SQLException {
         List<SpaceMarine> spaceMarineList = new ArrayList<>();
 
         String query = "SELECT " +
@@ -342,13 +344,13 @@ public class SpaceMarineService {
                 "FROM space_marine sm " +
                 "JOIN coordinates c ON c.id = sm.coordinate_id " +
                 "JOIN chapter ch ON ch.id = sm.chapter_id " +
-                "WHERE sm.name = ? " +
+                "WHERE sm.name LIKE ? " +
                 "ORDER BY sm.id ";
 
 
         try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setString(1, name);
+            ps.setString(1, prefix + '%');
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 SpaceMarine spaceMarine = new SpaceMarine();

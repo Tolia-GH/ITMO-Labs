@@ -13,6 +13,7 @@ import se.ifmo.model.response.ErrorResponse;
 import se.ifmo.model.response.SpaceMarineResponse;
 import se.ifmo.service.SpaceMarineService;
 
+import java.sql.SQLException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,14 @@ public class SpaceMarineResource {
             );
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(errorResponse).build();
+        } catch (SQLException e) {
+            ErrorResponse errorResponse = new ErrorResponse(
+                    400,
+                    e.getMessage(),
+                    ZonedDateTime.now()
+            );
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(errorResponse).build();
         } catch (Exception e) {
             e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
@@ -65,6 +74,14 @@ public class SpaceMarineResource {
             );
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(errorResponse).build();
+        } catch (SQLException e) {
+            ErrorResponse errorResponse = new ErrorResponse(
+                    400,
+                    e.getMessage(),
+                    ZonedDateTime.now()
+            );
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(errorResponse).build();
         } catch (Exception e) {
             e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
@@ -83,6 +100,14 @@ public class SpaceMarineResource {
             ErrorResponse errorResponse = new ErrorResponse(
                     400,
                     "Invalid param",
+                    ZonedDateTime.now()
+            );
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(errorResponse).build();
+        } catch (SQLException e) {
+            ErrorResponse errorResponse = new ErrorResponse(
+                    400,
+                    e.getMessage(),
                     ZonedDateTime.now()
             );
             return Response.status(Response.Status.BAD_REQUEST)
@@ -112,6 +137,14 @@ public class SpaceMarineResource {
             );
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(errorResponse).build();
+        } catch (SQLException e) {
+            ErrorResponse errorResponse = new ErrorResponse(
+                    400,
+                    e.getMessage(),
+                    ZonedDateTime.now()
+            );
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(errorResponse).build();
         } catch (Exception e) {
             e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
@@ -135,6 +168,14 @@ public class SpaceMarineResource {
             );
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(errorResponse).build();
+        } catch (SQLException e) {
+            ErrorResponse errorResponse = new ErrorResponse(
+                    400,
+                    e.getMessage(),
+                    ZonedDateTime.now()
+            );
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(errorResponse).build();
         } catch (Exception e) {
             e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
@@ -145,7 +186,7 @@ public class SpaceMarineResource {
     @Path("/by-heart-count")
     @Produces(MediaType.APPLICATION_XML)
     public Response deleteSpaceMarineByHeartCount(
-            @QueryParam("heart-count") int heartCount
+            @QueryParam("heartCount") int heartCount
     ) {
         try {
             spaceMarineService.deleteSpaceMarineByHeartCount(heartCount);
@@ -155,6 +196,14 @@ public class SpaceMarineResource {
             ErrorResponse errorResponse = new ErrorResponse(
                     400,
                     "Invalid param",
+                    ZonedDateTime.now()
+            );
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(errorResponse).build();
+        } catch (SQLException e) {
+            ErrorResponse errorResponse = new ErrorResponse(
+                    400,
+                    e.getMessage(),
                     ZonedDateTime.now()
             );
             return Response.status(Response.Status.BAD_REQUEST)
@@ -169,7 +218,7 @@ public class SpaceMarineResource {
     @Path("/count/by-melee-weapon")
     @Produces(MediaType.APPLICATION_XML)
     public Response getSpaceMarineCountByMeleeWeapon(
-            @QueryParam("melee-weapon") String weapon) {
+            @QueryParam("meleeWeapon") String weapon) {
         try {
             List<SpaceMarine> spaceMarineList = spaceMarineService.getSpaceMarineListByMeleeWeapon(weapon);
             CountResponse countResponse = new CountResponse(200, spaceMarineList.size(), ZonedDateTime.now());
@@ -178,6 +227,14 @@ public class SpaceMarineResource {
             ErrorResponse errorResponse = new ErrorResponse(
                     400,
                     "Invalid param",
+                    ZonedDateTime.now()
+            );
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(errorResponse).build();
+        } catch (SQLException e) {
+            ErrorResponse errorResponse = new ErrorResponse(
+                    400,
+                    e.getMessage(),
                     ZonedDateTime.now()
             );
             return Response.status(Response.Status.BAD_REQUEST)
@@ -192,7 +249,7 @@ public class SpaceMarineResource {
     @Path("/by-name")
     @Produces(MediaType.APPLICATION_XML)
     public Response getSpaceMarineByName(
-            @QueryParam("name") String name)  {
+            @QueryParam("prefix") String name)  {
         try {
             List<SpaceMarine> spaceMarineList = spaceMarineService.getSpaceMarineListByName(name);
             SpaceMarineResponse spaceMarineResponse = new SpaceMarineResponse(spaceMarineList);
@@ -201,6 +258,14 @@ public class SpaceMarineResource {
             ErrorResponse errorResponse = new ErrorResponse(
                     400,
                     "Invalid param",
+                    ZonedDateTime.now()
+            );
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(errorResponse).build();
+        } catch (SQLException e) {
+            ErrorResponse errorResponse = new ErrorResponse(
+                    400,
+                    e.getMessage(),
                     ZonedDateTime.now()
             );
             return Response.status(Response.Status.BAD_REQUEST)

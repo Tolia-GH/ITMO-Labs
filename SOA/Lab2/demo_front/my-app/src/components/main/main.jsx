@@ -49,6 +49,26 @@ export function Main() {
     });
     const [postResponse, setPostResponse] = useState('');
 
+    // PUT /space-marine/{id} 状态
+    const [putId, setPutId] = useState('');
+    const [putResponse, setPutResponse] = useState('');
+
+    // DELETE /space-marine/{id} 状态
+    const [deleteId, setDeleteId] = useState('');
+    const [deleteResponse, setDeleteResponse] = useState('');
+
+    // DELETE /space-marine/by-heart-count/ 状态
+    const [deleteHeartCount, setDeleteHeartCount] = useState('');
+    const [deleteHeartCountResponse, setDeleteHeartCountResponse] = useState('');
+
+    // GET /space-marine/count/by-melee-weapon/ 状态
+    const [meleeWeapon, setMeleeWeapon] = useState('CHAIN_SWORD');
+    const [countResponse, setCountResponse] = useState('');
+
+    // GET /space-marine/by-name 状态
+    const [namePrefix, setNamePrefix] = useState('');
+    const [namePrefixResponse, setNamePrefixResponse] = useState('');
+
     // 处理 GET 列表参数变化
     const handleListChange = (e) => {
         setListParams({ ...listParams, [e.target.name]: e.target.value });
@@ -128,6 +148,95 @@ export function Main() {
                 setPostResponse(formatXML(xmlDoc));
             })
             .catch((err) => setPostResponse('错误：' + err));
+    };
+
+    // 处理PUT更新
+    const handlePutSubmit = (e) => {
+        e.preventDefault();
+        const xml = `<newSpaceMarine>
+  <name>${postForm.name}</name>
+  <coordinates>
+    <x>${postForm.x}</x>
+    <y>${postForm.y}</y>
+  </coordinates>
+  <health>${postForm.health}</health>
+  <heartCount>${postForm.heartCount}</heartCount>
+  <height>${postForm.height}</height>
+  <meleeWeapon>${postForm.meleeWeapon}</meleeWeapon>
+  <chapter>
+    <name>${postForm.chapterName}</name>
+    <world>${postForm.chapterWorld}</world>
+  </chapter>
+</newSpaceMarine>`;
+        const url = `${BASE_URL}/v1/space-marine/${encodeURIComponent(putId)}`;
+        fetch(url, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/xml' },
+            body: xml,
+        })
+            .then(res => res.text())
+            .then(data => {
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(data, 'text/xml');
+                setPutResponse(formatXML(xmlDoc));
+            })
+            .catch(err => setPutResponse('错误：' + err));
+    };
+
+    // 处理DELETE by ID
+    const handleDeleteSubmit = (e) => {
+        e.preventDefault();
+        const url = `${BASE_URL}/v1/space-marine/${encodeURIComponent(deleteId)}`;
+        fetch(url, { method: 'DELETE' })
+            .then(res => res.text())
+            .then(data => {
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(data, 'text/xml');
+                setDeleteResponse(formatXML(xmlDoc));
+            })
+            .catch(err => setDeleteResponse('错误：' + err));
+    };
+
+    // 处理DELETE by heartCount
+    const handleDeleteHeartCountSubmit = (e) => {
+        e.preventDefault();
+        const url = `${BASE_URL}/v1/space-marine/by-heart-count/?heartCount=${encodeURIComponent(deleteHeartCount)}`;
+        fetch(url, { method: 'DELETE' })
+            .then(res => res.text())
+            .then(data => {
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(data, 'text/xml');
+                setDeleteHeartCountResponse(formatXML(xmlDoc));
+            })
+            .catch(err => setDeleteHeartCountResponse('错误：' + err));
+    };
+
+    // 处理GET count
+    const handleCountSubmit = (e) => {
+        e.preventDefault();
+        const url = `${BASE_URL}/v1/space-marine/count/by-melee-weapon/?meleeWeapon=${encodeURIComponent(meleeWeapon)}`;
+        fetch(url)
+            .then(res => res.text())
+            .then(data => {
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(data, 'text/xml');
+                setCountResponse(formatXML(xmlDoc));
+            })
+            .catch(err => setCountResponse('错误：' + err));
+    };
+
+    // 处理GET by name prefix
+    const handleNamePrefixSubmit = (e) => {
+        e.preventDefault();
+        const url = `${BASE_URL}/v1/space-marine/by-name?prefix=${encodeURIComponent(namePrefix)}`;
+        fetch(url)
+            .then(res => res.text())
+            .then(data => {
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(data, 'text/xml');
+                setNamePrefixResponse(formatXML(xmlDoc));
+            })
+            .catch(err => setNamePrefixResponse('错误：' + err));
     };
 
     // 内联样式
@@ -267,6 +376,133 @@ export function Main() {
                     <button type="submit">Send POST request</button>
                 </form>
                 <div style={styles.response}>{postResponse}</div>
+
+
+            </section>
+
+            {/* 新增PUT更新接口 */}
+            <hr style={styles.hr} />
+            <section style={styles.section}>
+                <h2>Update SpaceMarine (PUT /space-marine/id)</h2>
+                <form onSubmit={handlePutSubmit}>
+                    <label style={styles.label}>
+                        ID to Update:
+                        <input
+                            type="number"
+                            value={putId}
+                            onChange={(e) => setPutId(e.target.value)}
+                            min="1"
+                            style={styles.input}
+                            required
+                        />
+                    </label>
+                    {/* 复用POST表单字段 */}
+                    {Object.entries(postForm).map(([key, value]) => (
+                        key !== 'chapterName' && key !== 'chapterWorld' && (
+                            <label key={key} style={styles.label}>
+                                {key.charAt(0).toUpperCase() + key.slice(1)}:
+                                <input
+                                    type={key === 'height' ? 'number' : 'text'}
+                                    name={key}
+                                    value={value}
+                                    onChange={handlePostChange}
+                                    style={styles.input}
+                                    required={key !== 'meleeWeapon'}
+                                />
+                            </label>
+                        )
+                    ))}
+                    <button type="submit">Send PUT request</button>
+                </form>
+                <div style={styles.response}>{putResponse}</div>
+            </section>
+
+            {/* 新增DELETE接口 */}
+            <hr style={styles.hr} />
+            <section style={styles.section}>
+                <h2>Delete Operations</h2>
+
+                <div style={{ marginBottom: '20px' }}>
+                    <h3>Delete by ID (DELETE /space-marine/id)</h3>
+                    <form onSubmit={handleDeleteSubmit}>
+                        <label style={styles.label}>
+                            ID to Delete:
+                            <input
+                                type="number"
+                                value={deleteId}
+                                onChange={(e) => setDeleteId(e.target.value)}
+                                min="1"
+                                style={styles.input}
+                                required
+                            />
+                        </label>
+                        <button type="submit">Delete by ID</button>
+                    </form>
+                    <div style={styles.response}>{deleteResponse}</div>
+                </div>
+
+                <div>
+                    <h3>Delete by Heart Count (DELETE /space-marine/by-heart-count/)</h3>
+                    <form onSubmit={handleDeleteHeartCountSubmit}>
+                        <label style={styles.label}>
+                            Heart Count (&gt;0):
+                            <input
+                                type="number"
+                                value={deleteHeartCount}
+                                onChange={(e) => setDeleteHeartCount(e.target.value)}
+                                min="1"
+                                style={styles.input}
+                                required
+                            />
+                        </label>
+                        <button type="submit">Delete by Heart Count</button>
+                    </form>
+                    <div style={styles.response}>{deleteHeartCountResponse}</div>
+                </div>
+            </section>
+
+            {/* 新增统计查询接口 */}
+            <hr style={styles.hr} />
+            <section style={styles.section}>
+                <h2>Query Operations</h2>
+
+                <div style={{ marginBottom: '20px' }}>
+                    <h3>Count by Melee Weapon (GET /space-marine/count/by-melee-weapon/)</h3>
+                    <form onSubmit={handleCountSubmit}>
+                        <label style={styles.label}>
+                            Select Weapon:
+                            <select
+                                value={meleeWeapon}
+                                onChange={(e) => setMeleeWeapon(e.target.value)}
+                                style={styles.input}
+                            >
+                                <option value="CHAIN_SWORD">CHAIN_SWORD</option>
+                                <option value="LIGHTING_CLAW">LIGHTING_CLAW</option>
+                                <option value="POWER_BLADE">POWER_BLADE</option>
+                            </select>
+                        </label>
+                        <button type="submit">Get Count</button>
+                    </form>
+                    <div style={styles.response}>{countResponse}</div>
+                </div>
+
+                <div>
+                    <h3>Search by Name Prefix (GET /space-marine/by-name)</h3>
+                    <form onSubmit={handleNamePrefixSubmit}>
+                        <label style={styles.label}>
+                            Name Prefix:
+                            <input
+                                type="text"
+                                value={namePrefix}
+                                onChange={(e) => setNamePrefix(e.target.value)}
+                                style={styles.input}
+                                required
+                            />
+                        </label>
+                        <button type="submit">Search</button>
+                    </form>
+                    <div style={styles.response}>{namePrefixResponse}</div>
+                </div>
             </section>
         </div>
     );
