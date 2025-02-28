@@ -1,5 +1,6 @@
 package se.ifmo.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -12,11 +13,16 @@ public class StarshipService {
     @Value("${jax-rs.service.baseurl}")
     private String jaxRSServiceBaseUrl;
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
+
+    @Autowired
+    public StarshipService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     public SuccessResponse unloadSpaceMarineById(long starshipId, long spaceMarineId) {
         try {
-            String url = "http://localhost:8080/v1/starship/{starship-id}/unload/space-marine-id?space-marine-id={space-marine-id}";
+            String url = "https://localhost:8181/api/v1/starship/{starship-id}/unload/space-marine-id?space-marine-id={space-marine-id}";
             // 调用第一个 Web Service（JAX-RS）
             ResponseEntity<String> response = restTemplate.getForEntity(url, String.class, starshipId, spaceMarineId);
 
@@ -35,7 +41,7 @@ public class StarshipService {
     public SuccessResponse unloadAllSpaceMarines(long starshipId) {
         try {
             // 调用第一个 Web Service（JAX-RS）
-            String url = "http://localhost:8080/v1/starship/" + starshipId + "/unload-all";
+            String url = "https://localhost:8181/api/v1/starship/" + starshipId + "/unload-all";
             ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
             // 根据 JAX-RS 服务的响应处理数据（此处假设成功返回200）

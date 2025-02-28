@@ -1,29 +1,50 @@
 package se.ifmo.model;
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import lombok.*;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.time.ZonedDateTime;
 
-@Data
-@NoArgsConstructor
-@JacksonXmlRootElement(localName = "success")
+@XmlRootElement(name = "success")
 public class SuccessResponse {
 
-    @JacksonXmlProperty(localName = "code")
     private int code;
-
-    @JacksonXmlProperty(localName = "message")
     private String message;
-
-    @JacksonXmlProperty(localName = "time")
     private ZonedDateTime time;
+
+    public SuccessResponse() {
+        this.time = ZonedDateTime.now();
+    }
 
     public SuccessResponse(int code, String message) {
         this.code = code;
         this.message = message;
         this.time = ZonedDateTime.now();
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public ZonedDateTime getTime() {
+        return time;
+    }
+
+    public void setTime(ZonedDateTime time) {
+        this.time = time;
     }
 
 }
