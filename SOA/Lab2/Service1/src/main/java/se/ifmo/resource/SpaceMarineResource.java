@@ -26,7 +26,7 @@ public class SpaceMarineResource {
     @GET
     @Produces(MediaType.APPLICATION_XML)
     public Response getAllSpaceMarine(
-            @QueryParam("sort") @DefaultValue("id") String sort,
+            @QueryParam("sort") @DefaultValue("id") List<String> sort,
             @QueryParam("order") @DefaultValue("ASC") String order,
             @QueryParam("filter") List<String> filter,
             @QueryParam("page") @DefaultValue("0") int page,

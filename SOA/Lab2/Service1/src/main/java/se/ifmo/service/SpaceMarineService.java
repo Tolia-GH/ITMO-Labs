@@ -10,6 +10,7 @@ import se.ifmo.util.DatabaseUtil;
 import java.sql.*;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SpaceMarineService {
@@ -42,7 +43,7 @@ public class SpaceMarineService {
     }
 
     public List<SpaceMarine> getAllSpaceMarine(
-            String sort,
+            List<String> sort,
             String order,
             List<String> filters,
             int page,
@@ -50,15 +51,13 @@ public class SpaceMarineService {
         List<SpaceMarine> spaceMarineList = new ArrayList<>();
 
         if (sort == null || sort.isEmpty()) {
-            sort = "id";
+            sort = Collections.singletonList("id");
         }
 
         if (order == null || order.isEmpty()) {
             order = "ASC";
         } else {
-            if (order.equalsIgnoreCase("DESC")) {
-                order = "DESC";
-            } else {
+            if (!order.equalsIgnoreCase("DESC")) {
                 order = "ASC";
             }
         }
@@ -71,43 +70,43 @@ public class SpaceMarineService {
             pageSize = 10;
         }
 
-        String query = "SELECT " +
-                "sm.id, " +
-                "sm.name, " +
-                "sm.creation_date, " +
-                "sm.health, " +
-                "sm.heart_count, " +
-                "sm.height, " +
-                "sm.melee_weapon, " +
-                "c.id AS c_id, c.x, c.y, " +
-                "ch.id AS ch_id, ch.name AS ch_name, ch.world " +
-                "FROM space_marine sm " +
-                "JOIN coordinates c ON c.id = sm.coordinate_id " +
-                "JOIN chapter ch ON ch.id = sm.chapter_id";
+        StringBuilder query = new StringBuilder(
+                "SELECT " +
+                        "sm.id, sm.name, sm.creation_date, sm.health, sm.heart_count, sm.height, sm.melee_weapon, " +
+                        "c.id AS c_id, c.x, c.y, " +
+                        "ch.id AS ch_id, ch.name AS ch_name, ch.world " +
+                        "FROM space_marine sm " +
+                        "JOIN coordinates c ON c.id = sm.coordinate_id " +
+                        "JOIN chapter ch ON ch.id = sm.chapter_id"
+        );
 
         if (filters != null && !filters.isEmpty()) {
-            query += " WHERE sm.";
-            // 此处简化处理，每个过滤条件之间使用 AND 拼接
-            query += String.join(" AND sm.", filters);
+            query.append(" WHERE sm.").append(String.join(" AND sm.", filters));
         }
 
-        query += " ORDER BY sm." + sort + " " + order;
-        query += " LIMIT " + pageSize;
-        query += " OFFSET " + page * pageSize;
+        if (!sort.isEmpty()) {
+            query.append(" ORDER BY sm.")
+                    .append(String.join(", sm.", sort))
+                    .append(" ")
+                    .append(order);
+        }
+
+        query.append(" LIMIT ").append(pageSize);
+        query.append(" OFFSET ").append(page * pageSize);
 
         try (Connection conn = DatabaseUtil.getConnection();
-        PreparedStatement ps = conn.prepareStatement(query)) {
+             PreparedStatement ps = conn.prepareStatement(query.toString())) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 SpaceMarine spaceMarine = new SpaceMarine();
                 extractSpaceMarine(spaceMarine, rs);
-
                 spaceMarineList.add(spaceMarine);
             }
         }
 
         return spaceMarineList;
     }
+
 
 
 
@@ -269,9 +268,6 @@ public class SpaceMarineService {
     }
 
     public void deleteSpaceMarineByID(long id) throws SQLException {
-        SpaceMarine spaceMarine = getSpaceMarineById(id);
-
-
         String sql = "DELETE FROM space_marine WHERE id = ?";
         try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {

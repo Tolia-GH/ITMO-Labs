@@ -21,10 +21,138 @@ function formatXML(xmlDoc) {
     return serializer.serializeToString(resultDoc);
 }
 
+const SpaceMarineTable = ({ xmlData }) => {
+    // 将 XML 转换为 DOM
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlData, 'text/xml');
+
+    // 检查是否是错误响应
+    const errorElement = xmlDoc.getElementsByTagName('error')[0];
+    if (errorElement) {
+        const errorCode = errorElement.getElementsByTagName('code')[0]?.textContent;
+        const errorMessage = errorElement.getElementsByTagName('message')[0]?.textContent;
+        const errorTime = errorElement.getElementsByTagName('time')[0]?.textContent;
+
+        return (
+            <div style={{ color: 'red', border: '1px solid red', padding: '10px', marginTop: '20px' }}>
+                <h3>Error</h3>
+                <p><strong>code:</strong> {errorCode}</p>
+                <p><strong>message:</strong> {errorMessage}</p>
+                <p><strong>time:</strong> {errorTime}</p>
+            </div>
+        );
+    }
+
+    // 处理单个 Space Marine
+    let spaceMarines = xmlDoc.getElementsByTagName('SpaceMarine');
+    if (spaceMarines.length === 0) {
+        // 如果没有 <SpaceMarine>，检查是否是单个 <spaceMarine> 结构
+        spaceMarines = xmlDoc.getElementsByTagName('spaceMarine');
+    }
+
+    // 构造表格行
+    const rows = Array.from(spaceMarines).map((spaceMarine) => {
+        const id = spaceMarine.getElementsByTagName('id')[0]?.textContent;
+        const name = spaceMarine.getElementsByTagName('name')[0]?.textContent;
+        const x = spaceMarine.getElementsByTagName('coordinates')[0]?.getElementsByTagName('x')[0]?.textContent;
+        const y = spaceMarine.getElementsByTagName('coordinates')[0]?.getElementsByTagName('y')[0]?.textContent;
+        const health = spaceMarine.getElementsByTagName('health')[0]?.textContent;
+        const heartCount = spaceMarine.getElementsByTagName('heartCount')[0]?.textContent;
+        const height = spaceMarine.getElementsByTagName('height')[0]?.textContent;
+        const meleeWeapon = spaceMarine.getElementsByTagName('meleeWeapon')[0]?.textContent;
+        const chapterName = spaceMarine.getElementsByTagName('chapter')[0]?.getElementsByTagName('name')[0]?.textContent;
+        const chapterWorld = spaceMarine.getElementsByTagName('chapter')[0]?.getElementsByTagName('world')[0]?.textContent;
+
+        return (
+            <tr key={id}>
+                <td>{id}</td>
+                <td>{name}</td>
+                <td>{x}</td>
+                <td>{y}</td>
+                <td>{health}</td>
+                <td>{heartCount}</td>
+                <td>{height}</td>
+                <td>{meleeWeapon}</td>
+                <td>{chapterName}</td>
+                <td>{chapterWorld}</td>
+            </tr>
+        );
+    });
+
+    return (
+        <table style={{ width: '100%', border: '1px solid black', borderCollapse: 'collapse', textAlign: 'center' }}>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>X</th>
+                <th>Y</th>
+                <th>Health</th>
+                <th>Heart Count</th>
+                <th>Height</th>
+                <th>Melee Weapon</th>
+                <th>Chapter Name</th>
+                <th>Chapter World</th>
+            </tr>
+            </thead>
+            <tbody>
+            {rows}
+            </tbody>
+        </table>
+    );
+};
+
+const ResponseMessage = ({ xmlData }) => {
+    if (!xmlData) return null;
+
+    // 解析 XML
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlData, 'text/xml');
+
+    // 处理成功消息
+    const successElement = xmlDoc.getElementsByTagName('success')[0];
+    if (successElement) {
+        const code = successElement.getElementsByTagName('code')[0]?.textContent;
+        const message = successElement.getElementsByTagName('message')[0]?.textContent;
+        const time = successElement.getElementsByTagName('time')[0]?.textContent;
+
+        return (
+            <div style={{ color: 'green', border: '1px solid green', padding: '10px', marginTop: '10px' }}>
+                <h3>Success</h3>
+                <p><strong>code:</strong> {code}</p>
+                <p><strong>message:</strong> {message}</p>
+                <p><strong>time:</strong> {time}</p>
+            </div>
+        );
+    }
+
+    // 处理错误消息
+    const errorElement = xmlDoc.getElementsByTagName('error')[0];
+    if (errorElement) {
+        const code = errorElement.getElementsByTagName('code')[0]?.textContent;
+        const message = errorElement.getElementsByTagName('message')[0]?.textContent;
+        const time = errorElement.getElementsByTagName('time')[0]?.textContent;
+
+        return (
+            <div style={{ color: 'red', border: '1px solid red', padding: '10px', marginTop: '10px' }}>
+                <h3>Error</h3>
+                <p><strong>code:</strong> {code}</p>
+                <p><strong>message:</strong> {message}</p>
+                <p><strong>time:</strong> {time}</p>
+            </div>
+        );
+    }
+
+    // 如果没有识别的 XML 结构
+    return <div style={{ color: 'gray', marginTop: '10px' }}>unrecognized response</div>;
+};
+
+
+
 export function Service1() {
     // GET /space-marine 列表接口状态
     const [listParams, setListParams] = useState({
-        sort: 'id',
+        sort: '',
         order: 'ASC',
         filter: '',
         page: '0',
@@ -88,16 +216,20 @@ export function Service1() {
     // 处理 GET 列表表单提交
     const handleListSubmit = (e) => {
         e.preventDefault();
-        let url = `${BASE_URL_S1}/v1/space-marine?sort=${encodeURIComponent(
-            listParams.sort
-        )}&order=${encodeURIComponent(listParams.order)}&page=${encodeURIComponent(
+        let url = `${BASE_URL_S1}/v1/space-marine?&order=${encodeURIComponent(listParams.order)}&page=${encodeURIComponent(
             listParams.page
         )}&pageSize=${encodeURIComponent(listParams.pageSize)}`;
+
+        if (listParams.sort.trim() !== '') {
+            url += `&sort=${encodeURIComponent(listParams.sort)}`;
+        }
         if (listParams.filter.trim() !== '') {
             listParams.filter.split(',').forEach((f) => {
                 url += `&filter=${encodeURIComponent(f.trim())}`;
             });
         }
+
+
         fetch(url, { method: 'GET', mode: 'cors' })
             .then((res) => res.text())
             .then((data) => {
@@ -305,15 +437,15 @@ export function Service1() {
                 <h2>Get SpaceMarine List (GET /space-marine)</h2>
                 <form onSubmit={handleListSubmit}>
                     <label style={styles.label}>
-                        (sort):
-                        <select name="sort" value={listParams.sort} onChange={handleListChange} style={styles.input}>
-                            <option value="id">id</option>
-                            <option value="name">name</option>
-                            <option value="creationDate">creationDate</option>
-                            <option value="health">health</option>
-                            <option value="heartCount">heartCount</option>
-                            <option value="height">height</option>
-                        </select>
+                        sort
+                        <input
+                            type="text"
+                            name="sort"
+                            value={listParams.sort}
+                            onChange={handleListChange}
+                            placeholder="例如：id, name"
+                            style={styles.input}
+                        />
                     </label>
                     <label style={styles.label}>
                         order (order):
@@ -343,10 +475,12 @@ export function Service1() {
                     </label>
                     <button type="submit">Send GET request</button>
                 </form>
-                <div style={styles.response}>{listResponse}</div>
+                <div style={{marginTop: '20px'}}>
+                    {listResponse && <SpaceMarineTable xmlData={listResponse}/>}
+                </div>
             </section>
 
-            <hr style={styles.hr} />
+            <hr style={styles.hr}/>
 
             {/* GET /space-marine/{id} 接口 */}
             <section style={styles.section}>
@@ -365,10 +499,12 @@ export function Service1() {
                     </label>
                     <button type="submit">Send GET request</button>
                 </form>
-                <div style={styles.response}>{byIdResponse}</div>
+                <div style={{marginTop: '20px'}}>
+                    {listResponse && <SpaceMarineTable xmlData={byIdResponse}/>}
+                </div>
             </section>
 
-            <hr style={styles.hr} />
+            <hr style={styles.hr}/>
 
             {/* POST /space-marine 接口 */}
             <section style={styles.section}>
@@ -422,13 +558,15 @@ export function Service1() {
                     </fieldset>
                     <button type="submit">Send POST request</button>
                 </form>
-                <div style={styles.response}>{postResponse}</div>
+                <div style={{marginTop: '20px'}}>
+                    {listResponse && <SpaceMarineTable xmlData={postResponse}/>}
+                </div>
 
 
             </section>
 
             {/* 新增PUT更新接口 */}
-            <hr style={styles.hr} />
+            <hr style={styles.hr}/>
             <section style={styles.section}>
                 <h2>Update SpaceMarine (PUT /space-marine/id)</h2>
                 <form onSubmit={handlePutSubmit}>
@@ -461,7 +599,10 @@ export function Service1() {
                     ))}
                     <button type="submit">Send PUT request</button>
                 </form>
-                <div style={styles.response}>{putResponse}</div>
+                <div style={styles.response}>
+                    <ResponseMessage xmlData={putResponse}/>
+                </div>
+
             </section>
 
             {/* 新增DELETE接口 */}
@@ -485,7 +626,9 @@ export function Service1() {
                         </label>
                         <button type="submit">Delete by ID</button>
                     </form>
-                    <div style={styles.response}>{deleteResponse}</div>
+                    <div style={styles.response}>
+                        <ResponseMessage xmlData={deleteResponse}/>
+                    </div>
                 </div>
 
                 <div>
@@ -504,12 +647,14 @@ export function Service1() {
                         </label>
                         <button type="submit">Delete by Heart Count</button>
                     </form>
-                    <div style={styles.response}>{deleteHeartCountResponse}</div>
+                    <div style={styles.response}>
+                        <ResponseMessage xmlData={deleteHeartCountResponse}/>
+                    </div>
                 </div>
             </section>
 
             {/* 新增统计查询接口 */}
-            <hr style={styles.hr} />
+            <hr style={styles.hr}/>
             <section style={styles.section}>
                 <h2>Query Operations</h2>
 
@@ -530,7 +675,9 @@ export function Service1() {
                         </label>
                         <button type="submit">Get Count</button>
                     </form>
-                    <div style={styles.response}>{countResponse}</div>
+                    <div style={styles.response}>
+                        <ResponseMessage xmlData={countResponse}/>
+                    </div>
                 </div>
 
                 <div>
@@ -548,13 +695,15 @@ export function Service1() {
                         </label>
                         <button type="submit">Search</button>
                     </form>
-                    <div style={styles.response}>{namePrefixResponse}</div>
+                    <div style={{marginTop: '20px'}}>
+                        {listResponse && <SpaceMarineTable xmlData={namePrefixResponse}/>}
+                    </div>
                 </div>
             </section>
 
-            <hr style={styles.hr} />
+            <hr style={styles.hr}/>
             <section style={styles.section}>
-                <h2>Starship Operations</h2>
+            <h2>Starship Operations</h2>
 
                 <div style={{ marginBottom: '20px' }}>
                     <h3>Unload SpaceMarine (GET /starship/&#123;id&#125;/unload/space-marine-id/)</h3>
@@ -583,7 +732,9 @@ export function Service1() {
                         </label>
                         <button type="submit">Unload</button>
                     </form>
-                    <div style={styles.response}>{unloadResponse}</div>
+                    <div style={styles.response}>
+                        <ResponseMessage xmlData={unloadResponse}/>
+                    </div>
                 </div>
 
                 <div>
@@ -602,7 +753,9 @@ export function Service1() {
                         </label>
                         <button type="submit">Unload all</button>
                     </form>
-                    <div style={styles.response}>{unloadAllResponse}</div>
+                    <div style={styles.response}>
+                        <ResponseMessage xmlData={unloadAllResponse}/>
+                    </div>
                 </div>
             </section>
         </div>
