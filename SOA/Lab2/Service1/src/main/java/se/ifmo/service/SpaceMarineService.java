@@ -107,9 +107,6 @@ public class SpaceMarineService {
         return spaceMarineList;
     }
 
-
-
-
     public SpaceMarine addSpaceMarine(NewSpaceMarine newSM) throws SQLException {
         try (Connection conn = DatabaseUtil.getConnection()){
             conn.setAutoCommit(false);

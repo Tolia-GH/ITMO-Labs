@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@Table(name = "chapter")
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlRootElement

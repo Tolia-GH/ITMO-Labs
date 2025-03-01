@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@Table(name = "coordinates")
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlRootElement

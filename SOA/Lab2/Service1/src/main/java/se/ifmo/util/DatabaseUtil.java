@@ -1,23 +1,34 @@
 package se.ifmo.util;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class DatabaseUtil {
-//    private static final String url = "jdbc:postgresql://localhost:5432/studs?currentSchema=s336184";
-//    private static final String user = "s336184";
-//    private static final String password = "Di2oaLyDd20js6Ox";
-
-    private static final String url = "jdbc:postgresql://localhost:5432/studs?currentSchema=soa_lab2";
-    private static final String user = "postgres";
-    private static final String password = "123456";
+    private static String url;
+    private static String user;
+    private static String password;
 
     static {
-        try {
+        try (InputStream input = DatabaseUtil.class.getClassLoader().getResourceAsStream("DB/DB.properties")) {
+            if (input == null) {
+                throw new IOException("DB.properties file not found in DB directory");
+            }
+
+            Properties prop = new Properties();
+            prop.load(input);
+
+            // 从配置文件加载数据库连接信息
+            url = prop.getProperty("db.url");
+            user = prop.getProperty("db.user");
+            password = prop.getProperty("db.password");
+
             Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
         }
     }
 
