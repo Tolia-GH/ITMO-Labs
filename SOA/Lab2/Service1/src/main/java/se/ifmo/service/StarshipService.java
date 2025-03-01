@@ -1,12 +1,10 @@
 package se.ifmo.service;
 
-import se.ifmo.model.entity.SpaceMarine;
 import se.ifmo.util.DatabaseUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
 
 public class StarshipService {
 

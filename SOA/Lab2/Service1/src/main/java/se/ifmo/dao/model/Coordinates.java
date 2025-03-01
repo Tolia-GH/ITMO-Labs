@@ -1,4 +1,4 @@
-package se.ifmo.model.entity;
+package se.ifmo.dao.model;
 
 import jakarta.persistence.*;
 import jakarta.xml.bind.annotation.*;
@@ -8,20 +8,20 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name = "chapter")
+@Table(name = "coordinates")
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Chapter {
+public class Coordinates {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @XmlTransient//Xml ignore
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "x")
+    private Integer x;
 
-    @Column(name = "world")
-    private String world;
+    @Column(name = "y")
+    private Double y;
 }

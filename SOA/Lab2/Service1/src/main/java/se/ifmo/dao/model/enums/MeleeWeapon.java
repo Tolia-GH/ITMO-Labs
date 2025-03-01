@@ -1,4 +1,4 @@
-package se.ifmo.model.enums;
+package se.ifmo.dao.model.enums;
 
 import jakarta.xml.bind.annotation.XmlEnum;
 import jakarta.xml.bind.annotation.XmlType;

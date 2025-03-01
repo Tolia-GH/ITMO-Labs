@@ -1,10 +1,10 @@
 package se.ifmo.service;
 
-import se.ifmo.model.entity.Chapter;
-import se.ifmo.model.entity.Coordinates;
-import se.ifmo.model.entity.NewSpaceMarine;
-import se.ifmo.model.entity.SpaceMarine;
-import se.ifmo.model.enums.MeleeWeapon;
+import se.ifmo.dao.model.Chapter;
+import se.ifmo.dao.model.Coordinates;
+import se.ifmo.dao.model.NewSpaceMarine;
+import se.ifmo.dao.model.SpaceMarine;
+import se.ifmo.dao.model.enums.MeleeWeapon;
 import se.ifmo.util.DatabaseUtil;
 
 import java.sql.*;

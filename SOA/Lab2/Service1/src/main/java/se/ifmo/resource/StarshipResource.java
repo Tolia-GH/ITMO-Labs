@@ -2,18 +2,13 @@ package se.ifmo.resource;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import se.ifmo.model.entity.SpaceMarine;
-import se.ifmo.model.entity.Starship;
-import se.ifmo.model.response.ErrorResponse;
-import se.ifmo.model.response.SpaceMarineResponse;
-import se.ifmo.model.response.SuccessResponse;
+import se.ifmo.dao.response.ErrorResponse;
+import se.ifmo.dao.response.SuccessResponse;
 import se.ifmo.service.StarshipService;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 
 @Path("/starship")
 public class StarshipResource {

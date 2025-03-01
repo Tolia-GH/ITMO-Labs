@@ -1,11 +1,15 @@
 package se.ifmo.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import se.ifmo.model.SuccessResponse;
+
 
 @Service
 public class StarshipService {
@@ -14,45 +18,35 @@ public class StarshipService {
     private String jaxRSServiceBaseUrl;
 
     private final RestTemplate restTemplate;
+    private static final Logger logger = LoggerFactory.getLogger(StarshipService.class);
 
     @Autowired
     public StarshipService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
-    public SuccessResponse unloadSpaceMarineById(long starshipId, long spaceMarineId) {
+    public boolean unloadSpaceMarineById(long starshipId, long spaceMarineId) {
         try {
-            String url = "https://localhost:8181/api/v1/starship/{starship-id}/unload/space-marine-id?space-marine-id={space-marine-id}";
-            // 调用第一个 Web Service（JAX-RS）
-            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class, starshipId, spaceMarineId);
+            String url = String.format("%s/api/v1/starship/%d/unload/space-marine-id", jaxRSServiceBaseUrl, starshipId);
+            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class, spaceMarineId);
 
-            // 根据 JAX-RS 服务的响应处理数据（此处假设成功返回200）
-            if (response.getStatusCodeValue() == 200) {
-                return new SuccessResponse(200, "Selected SpaceMarine unloaded from given spaceship");
-            } else {
-                return new SuccessResponse(400, "Invalid param value");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new SuccessResponse(500, "Internal server error");
+            return response.getStatusCode().is2xxSuccessful();
+        } catch (RestClientException e) {
+            logger.error("API call failed", e);
+            return false;
         }
     }
 
-    public SuccessResponse unloadAllSpaceMarines(long starshipId) {
+    public boolean unloadAllSpaceMarines(long starshipId) {
         try {
-            // 调用第一个 Web Service（JAX-RS）
-            String url = "https://localhost:8181/api/v1/starship/" + starshipId + "/unload-all";
+            String url = String.format("%s/api/v1/starship/%d/unload-all", jaxRSServiceBaseUrl, starshipId);
             ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
-            // 根据 JAX-RS 服务的响应处理数据（此处假设成功返回200）
-            if (response.getStatusCodeValue() == 200) {
-                return new SuccessResponse(200, "All spaceMarines are unloaded from given spaceship");
-            } else {
-                return new SuccessResponse(400, "Invalid param value");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new SuccessResponse(500, "Internal server error");
+            return response.getStatusCode().is2xxSuccessful();
+        } catch (RestClientException e) {
+            logger.error("API call failed", e);
+            return false;
         }
     }
 }
+

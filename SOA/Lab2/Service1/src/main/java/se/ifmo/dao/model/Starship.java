@@ -1,4 +1,4 @@
-package se.ifmo.model.entity;
+package se.ifmo.dao.model;
 
 import jakarta.persistence.*;
 import jakarta.xml.bind.annotation.XmlAccessType;

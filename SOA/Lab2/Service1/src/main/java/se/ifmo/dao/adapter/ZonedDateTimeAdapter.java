@@ -1,4 +1,4 @@
-package se.ifmo.model.adapter;
+package se.ifmo.dao.adapter;
 
 
 import jakarta.xml.bind.annotation.adapters.XmlAdapter;

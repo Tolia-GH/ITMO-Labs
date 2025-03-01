@@ -1,4 +1,4 @@
-package se.ifmo.model.response;
+package se.ifmo.dao.response;
 
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -7,7 +7,7 @@ import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import se.ifmo.model.adapter.ZonedDateTimeAdapter;
+import se.ifmo.dao.adapter.ZonedDateTimeAdapter;
 
 import java.time.ZonedDateTime;
 

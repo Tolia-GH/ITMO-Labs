@@ -2,20 +2,18 @@ package se.ifmo.resource;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import se.ifmo.model.entity.NewSpaceMarine;
-import se.ifmo.model.entity.SpaceMarine;
-import se.ifmo.model.response.CountResponse;
-import se.ifmo.model.response.SuccessResponse;
-import se.ifmo.model.response.ErrorResponse;
-import se.ifmo.model.response.SpaceMarineResponse;
+import se.ifmo.dao.model.NewSpaceMarine;
+import se.ifmo.dao.model.SpaceMarine;
+import se.ifmo.dao.response.CountResponse;
+import se.ifmo.dao.response.SuccessResponse;
+import se.ifmo.dao.response.ErrorResponse;
+import se.ifmo.dao.response.SpaceMarineResponse;
 import se.ifmo.service.SpaceMarineService;
 
 import java.sql.SQLException;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Path("/space-marine")
