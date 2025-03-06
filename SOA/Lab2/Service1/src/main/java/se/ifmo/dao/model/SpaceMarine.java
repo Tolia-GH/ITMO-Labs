@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 import se.ifmo.dao.adapter.ZonedDateTimeAdapter;
+import se.ifmo.dao.adapter.ZonedDateTimeConverter;
 import se.ifmo.dao.model.enums.MeleeWeapon;
 
 import java.time.ZonedDateTime;
@@ -35,6 +36,7 @@ public class SpaceMarine {
     private Coordinates coordinates;
 
     @Column(name = "creation_date", updatable = false)
+    @Convert(converter = ZonedDateTimeConverter.class)
     @Temporal(TemporalType.TIMESTAMP)
     @XmlElement
     @XmlJavaTypeAdapter(ZonedDateTimeAdapter.class)
