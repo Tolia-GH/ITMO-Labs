@@ -1,6 +1,7 @@
 package se.ifmo.dao.repository;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
@@ -47,6 +48,108 @@ public class SpaceMarineRepo {
                 rs.getTimestamp("creation_date")
                         .toInstant()
                         .atZone(ZonedDateTime.now().getZone()));
+    }
+
+    public List<SpaceMarine> getSpaceMarineList(List<String> sort, String order, List<String> filters, int page, int pageSize) {
+        // 构建 Criteria API 查询
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<SpaceMarine> cq = cb.createQuery(SpaceMarine.class);
+        Root<SpaceMarine> root = cq.from(SpaceMarine.class);
+
+        Join<SpaceMarine, Chapter> chapterJoin = root.join("chapter", JoinType.LEFT); // LEFT JOIN 以包含没有关联的记录
+        Join<SpaceMarine, Coordinates> coordinatesJoin = root.join("coordinates", JoinType.LEFT);
+
+        // 处理过滤条件
+        List<Predicate> predicates = new ArrayList<>();
+        if (filters != null && !filters.isEmpty()) {
+            for (String filter : filters) {
+                String[] filterParts = filter.split("(?<=[^.=><])(?=[=><])|(?<=[=><])(?=[^.=><])");
+                if (filterParts.length == 3) {
+                    String field = filterParts[0].trim();
+                    String operator = filterParts[1].trim();
+                    String value = filterParts[2].trim().replace("'", ""); // 去掉引号
+
+                    Path<Object> path;
+                    if (field.startsWith("chapter.")) {
+                        path = chapterJoin.get(field.replace("chapter.", ""));  // 访问 `chapter` 关联表字段
+                    } else if (field.startsWith("coordinates.")) {
+                        path = coordinatesJoin.get(field.replace("coordinates.", ""));  // 访问 `coordinates` 关联表字段
+                    } else {
+                        path = root.get(field);  // 访问 `space_marine` 自身字段
+                    }
+
+                    switch (operator) {
+                        case ">":
+                            predicates.add(cb.greaterThan(path.as(Integer.class), Integer.parseInt(value)));
+                            break;
+                        case "<":
+                            predicates.add(cb.lessThan(path.as(Integer.class), Integer.parseInt(value)));
+                            break;
+                        case "=":
+                            predicates.add(cb.equal(path, value));
+                            break;
+                        default:
+                            throw new IllegalArgumentException("Unsupported operator: " + operator);
+                    }
+                }
+            }
+        }
+
+        // 添加过滤条件到查询
+        cq.where(predicates.toArray(new Predicate[0]));
+
+        if (sort != null && !sort.isEmpty()) {
+            List<Order> orders = new ArrayList<>();
+            for (String field : sort) {
+                if (field != null && !field.trim().isEmpty()) {
+                    boolean ascending = order != null && order.equalsIgnoreCase("ASC");
+                    Path<?> path;
+
+                    if (field.startsWith("chapter.")) {
+                        path = chapterJoin.get(field.substring(8)); // 访问 chapter 字段
+                    } else if (field.startsWith("coordinates.")) {
+                        path = coordinatesJoin.get(field.substring(11)); // 访问 coordinates 字段
+                    } else {
+                        path = root.get(field); // 访问 SpaceMarine 自身的字段
+                    }
+
+                    orders.add(ascending ? cb.asc(path) : cb.desc(path));
+                }
+            }
+            cq.orderBy(orders);
+        }
+
+        // 创建查询并分页
+        TypedQuery<SpaceMarine> query = em.createQuery(cq);
+        query.setFirstResult(page * pageSize);
+        query.setMaxResults(pageSize);
+
+        // 执行查询
+        return query.getResultList();
+    }
+
+    // 获取指定ID的SpaceMarine
+    public SpaceMarine getSpaceMarineById(long id) throws SQLException {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<SpaceMarine> cq = cb.createQuery(SpaceMarine.class);
+        Root<SpaceMarine> spaceMarineRoot = cq.from(SpaceMarine.class);
+
+        // 连接 Coordinates 和 Chapter 以确保查询时自动加载
+        spaceMarineRoot.fetch("coordinates", JoinType.LEFT);
+        spaceMarineRoot.fetch("chapter", JoinType.LEFT);
+
+        // 添加 where 条件
+        cq.select(spaceMarineRoot)
+                .where(cb.equal(spaceMarineRoot.get("id"), id));
+
+        // 执行查询
+        List<SpaceMarine> results = em.createQuery(cq).getResultList();
+
+        if (results.isEmpty()) {
+            throw new SQLException("Space marine not found");
+        }
+
+        return results.get(0);
     }
 
     // 插入坐标表
@@ -109,103 +212,6 @@ public class SpaceMarineRepo {
             }
         }
         return sm;
-    }
-
-    public List<SpaceMarine> getSpaceMarineList(List<String> sort, String order, List<String> filters, int page, int pageSize) {
-        // 构建 Criteria API 查询
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<SpaceMarine> cq = cb.createQuery(SpaceMarine.class);
-        Root<SpaceMarine> root = cq.from(SpaceMarine.class);
-
-        // 处理过滤条件
-        List<Predicate> predicates = new ArrayList<>();
-        if (filters != null && !filters.isEmpty()) {
-            for (String filter : filters) {
-                String[] filterParts = filter.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)|(?<=\\D)(?=\\W)|(?<=\\W)(?=\\D)");
-                if (filterParts.length == 3) {
-                    String field = filterParts[0].trim();
-                    String operator = filterParts[1].trim();
-                    String value = filterParts[2].trim().replace("'", ""); // 去掉引号
-                    Path<Object> path = root.get(field);
-
-                    switch (operator) {
-                        case ">":
-                            predicates.add(cb.greaterThan(root.get(field), Integer.parseInt(value)));
-                            break;
-                        case "<":
-                            predicates.add(cb.lessThan(root.get(field), Integer.parseInt(value)));
-                            break;
-                        case "=":
-                            predicates.add(cb.equal(root.get(field), value));
-                            break;
-                        default:
-                            throw new IllegalArgumentException("Unsupported operator: " + operator);
-                    }
-                }
-            }
-        }
-
-        // 添加过滤条件到查询
-        cq.where(predicates.toArray(new Predicate[0]));
-
-        // 处理排序条件
-        if (sort != null && !sort.isEmpty()) {
-            List<Order> orders = new ArrayList<>();
-            for (String field : sort) {
-                if (field != null && !field.trim().isEmpty()) {
-                    boolean ascending = order != null && order.equalsIgnoreCase("ASC");
-                    if (ascending) {
-                        orders.add(cb.asc(root.get(field)));
-                    } else {
-                        orders.add(cb.desc(root.get(field)));
-                    }
-                }
-            }
-            cq.orderBy(orders);
-        }
-
-        // 创建查询并分页
-        TypedQuery<SpaceMarine> query = em.createQuery(cq);
-        query.setFirstResult(page * pageSize);
-        query.setMaxResults(pageSize);
-
-        // 执行查询
-        return query.getResultList();
-    }
-
-    // 获取指定ID的SpaceMarine
-    public SpaceMarine getSpaceMarineById(long id) throws SQLException {
-        SpaceMarine spaceMarine = new SpaceMarine();
-
-        String query = "SELECT " +
-                "sm.id, " +
-                "sm.name, " +
-                "sm.creation_date, " +
-                "sm.health, " +
-                "sm.heart_count, " +
-                "sm.height, " +
-                "sm.melee_weapon, " +
-                "c.id AS c_id, c.x, c.y, " +
-                "ch.id AS ch_id, ch.name AS ch_name, ch.world " +
-                "FROM space_marine sm " +
-                "JOIN coordinates c ON c.id = sm.coordinate_id " +
-                "JOIN chapter ch ON ch.id = sm.chapter_id " +
-                "WHERE sm.id = ?";
-
-        try (Connection conn = DatabaseUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setLong(1, id);  // 使用PreparedStatement避免SQL注入
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                extractSpaceMarine(spaceMarine, rs);
-            }
-        }
-
-        if (spaceMarine.getName() == null) {
-            throw new SQLException("Space marine not found");
-        }
-
-        return spaceMarine;
     }
 
     // 更新coordinates表
