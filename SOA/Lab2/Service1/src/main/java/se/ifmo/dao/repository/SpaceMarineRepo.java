@@ -1,5 +1,9 @@
 package se.ifmo.dao.repository;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.*;
 import se.ifmo.dao.model.Chapter;
 import se.ifmo.dao.model.Coordinates;
 import se.ifmo.dao.model.NewSpaceMarine;
@@ -7,12 +11,16 @@ import se.ifmo.dao.model.SpaceMarine;
 import se.ifmo.dao.model.enums.MeleeWeapon;
 import se.ifmo.util.DatabaseUtil;
 
+
 import java.sql.*;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SpaceMarineRepo {
+
+    @PersistenceContext(unitName = "SpaceMarinePU")
+    private EntityManager em;
 
     public void extractSpaceMarine(SpaceMarine spaceMarine, ResultSet rs) throws SQLException {
         spaceMarine.setId(rs.getLong("id"));
@@ -103,44 +111,66 @@ public class SpaceMarineRepo {
         return sm;
     }
 
-    public List<SpaceMarine> getSpaceMarineList(List<String> sort, String order, List<String> filters, int page, int pageSize) throws SQLException {
-        List<SpaceMarine> spaceMarineList = new ArrayList<>();
+    public List<SpaceMarine> getSpaceMarineList(List<String> sort, String order, List<String> filters, int page, int pageSize) {
+        // 构建 Criteria API 查询
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<SpaceMarine> cq = cb.createQuery(SpaceMarine.class);
+        Root<SpaceMarine> root = cq.from(SpaceMarine.class);
 
-        StringBuilder query = new StringBuilder(
-                "SELECT " +
-                        "sm.id, sm.name, sm.creation_date, sm.health, sm.heart_count, sm.height, sm.melee_weapon, " +
-                        "c.id AS c_id, c.x, c.y, " +
-                        "ch.id AS ch_id, ch.name AS ch_name, ch.world " +
-                        "FROM space_marine sm " +
-                        "JOIN coordinates c ON c.id = sm.coordinate_id " +
-                        "JOIN chapter ch ON ch.id = sm.chapter_id"
-        );
-
+        // 处理过滤条件
+        List<Predicate> predicates = new ArrayList<>();
         if (filters != null && !filters.isEmpty()) {
-            query.append(" WHERE sm.").append(String.join(" AND sm.", filters));
-        }
+            for (String filter : filters) {
+                String[] filterParts = filter.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)|(?<=\\D)(?=\\W)|(?<=\\W)(?=\\D)");
+                if (filterParts.length == 3) {
+                    String field = filterParts[0].trim();
+                    String operator = filterParts[1].trim();
+                    String value = filterParts[2].trim().replace("'", ""); // 去掉引号
+                    Path<Object> path = root.get(field);
 
-        if (!sort.isEmpty()) {
-            query.append(" ORDER BY sm.")
-                    .append(String.join(", sm.", sort))
-                    .append(" ")
-                    .append(order);
-        }
-
-        query.append(" LIMIT ").append(pageSize);
-        query.append(" OFFSET ").append(page * pageSize);
-
-        try (Connection conn = DatabaseUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(query.toString())) {
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                SpaceMarine spaceMarine = new SpaceMarine();
-                extractSpaceMarine(spaceMarine, rs);
-                spaceMarineList.add(spaceMarine);
+                    switch (operator) {
+                        case ">":
+                            predicates.add(cb.greaterThan(root.get(field), Integer.parseInt(value)));
+                            break;
+                        case "<":
+                            predicates.add(cb.lessThan(root.get(field), Integer.parseInt(value)));
+                            break;
+                        case "=":
+                            predicates.add(cb.equal(root.get(field), value));
+                            break;
+                        default:
+                            throw new IllegalArgumentException("Unsupported operator: " + operator);
+                    }
+                }
             }
         }
 
-        return spaceMarineList;
+        // 添加过滤条件到查询
+        cq.where(predicates.toArray(new Predicate[0]));
+
+        // 处理排序条件
+        if (sort != null && !sort.isEmpty()) {
+            List<Order> orders = new ArrayList<>();
+            for (String field : sort) {
+                if (field != null && !field.trim().isEmpty()) {
+                    boolean ascending = order != null && order.equalsIgnoreCase("ASC");
+                    if (ascending) {
+                        orders.add(cb.asc(root.get(field)));
+                    } else {
+                        orders.add(cb.desc(root.get(field)));
+                    }
+                }
+            }
+            cq.orderBy(orders);
+        }
+
+        // 创建查询并分页
+        TypedQuery<SpaceMarine> query = em.createQuery(cq);
+        query.setFirstResult(page * pageSize);
+        query.setMaxResults(pageSize);
+
+        // 执行查询
+        return query.getResultList();
     }
 
     // 获取指定ID的SpaceMarine

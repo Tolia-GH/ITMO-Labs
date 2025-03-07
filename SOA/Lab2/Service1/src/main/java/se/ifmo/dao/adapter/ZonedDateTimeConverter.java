@@ -4,6 +4,7 @@ import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 import jakarta.persistence.PersistenceException;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -11,27 +12,32 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 @Converter(autoApply = true)
-public class ZonedDateTimeConverter implements AttributeConverter<ZonedDateTime, Instant> {
+public class ZonedDateTimeConverter implements AttributeConverter<ZonedDateTime, Timestamp> {
+
+    // 允许 ISO 格式以及一些常见的变体格式
+    private static final DateTimeFormatter[] formatters = new DateTimeFormatter[]{
+            DateTimeFormatter.ISO_ZONED_DATE_TIME,
+            DateTimeFormatter.ofPattern("yyyy/MM/dd a hh:mm"),  // 处理中文上午/下午
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS Z"), // 另一种可能的格式
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX")  // 适应时区的格式
+    };
 
     @Override
-    public Instant convertToDatabaseColumn(ZonedDateTime zonedDateTime) {
-        return zonedDateTime != null ? zonedDateTime.toInstant() : null;
-    }
-
-    @Override
-    public ZonedDateTime convertToEntityAttribute(Instant instant) {
-        return instant != null ? ZonedDateTime.ofInstant(instant, ZoneId.systemDefault()) : null;
-    }
-
-    // 用于处理数据库返回的日期字符串格式
-    public ZonedDateTime convertFromDatabaseString(String dbValue) {
-        try {
-            // 自定义解析规则，确保解析时能够处理各种时间格式
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS Z");
-            return ZonedDateTime.parse(dbValue, formatter);
-        } catch (DateTimeParseException e) {
-            throw new PersistenceException("Failed to parse date from database: " + dbValue, e);
+    public Timestamp convertToDatabaseColumn(ZonedDateTime zonedDateTime) {
+        if (zonedDateTime != null) {
+            return Timestamp.from(zonedDateTime.toInstant());  // 将 ZonedDateTime 转换为 Timestamp
         }
+        return null;
     }
-}
 
+    @Override
+    public ZonedDateTime convertToEntityAttribute(Timestamp dbData) {
+        if (dbData != null) {
+            // 将 Timestamp 转换为 ZonedDateTime
+            Instant instant = dbData.toInstant();
+            return ZonedDateTime.ofInstant(instant, java.time.ZoneId.systemDefault());
+        }
+        return null;
+    }
+
+}

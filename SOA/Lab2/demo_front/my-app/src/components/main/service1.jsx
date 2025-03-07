@@ -221,7 +221,9 @@ export function Service1() {
         )}&pageSize=${encodeURIComponent(listParams.pageSize)}`;
 
         if (listParams.sort.trim() !== '') {
-            url += `&sort=${encodeURIComponent(listParams.sort)}`;
+            listParams.sort.split(',').forEach((f) => {
+                url += `&sort=${encodeURIComponent(f.trim())}`;
+            })
         }
         if (listParams.filter.trim() !== '') {
             listParams.filter.split(',').forEach((f) => {
