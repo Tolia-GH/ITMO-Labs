@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>SpaceMarine API Test Page</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h2 { color: #333; }
+        form { margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; }
+        label { display: block; margin-top: 8px; }
+        input, select, textarea { width: 100%; padding: 4px; margin-top: 4px; }
+        .response { background: #f7f7f7; border: 1px dashed #aaa; padding: 10px; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+<h1>SpaceMarine API Test Page</h1>
+
+<!-- 1. GET /space-marine 列表接口 -->
+<section>
+    <h2>Get SpaceMarine List (GET /space-marine)</h2>
+    <form id="getListForm">
+        <label>
+            (sort):
+            <select id="getListSort" name="sort">
+                <option value="id">id</option>
+                <option value="name">name</option>
+                <option value="creationDate">creationDate</option>
+                <option value="health">health</option>
+                <option value="heartCount">heartCount</option>
+                <option value="height">height</option>
+            </select>
+        </label>
+        <label>
+            order (order):
+            <select id="getListOrder" name="order">
+                <option value="ASC">ASC</option>
+                <option value="DESC">DESC</option>
+            </select>
+        </label>
+        <label>
+            filter (filter, split by comma，example：id>10,name=John):
+            <input type="text" id="getListFilter" name="filter" placeholder="例如：id>10">
+        </label>
+        <label>
+            page (page):
+            <input type="number" id="getListPage" name="page" value="0" min="0">
+        </label>
+        <label>
+            pageSize (pageSize):
+            <input type="number" id="getListPageSize" name="pageSize" value="10" min="1">
+        </label>
+        <button type="submit">send GET request</button>
+    </form>
+    <div id="getListResponse" class="response"></div>
+</section>
+
+<hr>
+
+<!-- 2. GET /space-marine/{id} 接口 -->
+<section>
+    <h2>by ID get SpaceMarine (GET /space-marine/{id})</h2>
+    <form id="getByIdForm">
+        <label>
+            SpaceMarine ID:
+            <input type="number" id="getByIdId" name="id" placeholder="输入 id，例如：1" min="1">
+        </label>
+        <button type="submit">send GET request</button>
+    </form>
+    <div id="getByIdResponse" class="response"></div>
+</section>
+
+<hr>
+
+<!-- 3. POST /space-marine 新增接口 -->
+<section>
+    <h2>add SpaceMarine (POST /space-marine)</h2>
+    <form id="postNewForm">
+        <label>
+            Name:
+            <input type="text" id="postName" name="name" required>
+        </label>
+        <fieldset>
+            <legend>Coordinates</legend>
+            <label>
+                X (<=220):
+                <input type="number" id="postCoordX" name="x" required>
+            </label>
+            <label>
+                Y (<=288):
+                <input type="number" id="postCoordY" name="y" step="any" required>
+            </label>
+        </fieldset>
+        <label>
+            Health (>=1):
+            <input type="number" id="postHealth" name="health" required min="1">
+        </label>
+        <label>
+            Heart Count (1 ~ 3):
+            <input type="number" id="postHeartCount" name="heartCount" required min="1" max="3">
+        </label>
+        <label>
+            Height:
+            <input type="number" id="postHeight" name="height" step="any" required>
+        </label>
+        <label>
+            Melee Weapon:
+            <select id="postMeleeWeapon" name="meleeWeapon">
+                <option value="CHAIN_SWORD">CHAIN_SWORD</option>
+                <option value="LIGHTING_CLAW">LIGHTING_CLAW</option>
+                <option value="POWER_BLADE">POWER_BLADE</option>
+            </select>
+        </label>
+        <fieldset>
+            <legend>Chapter (Optinal)</legend>
+            <label>
+                Chapter Name:
+                <input type="text" id="postChapterName" name="chapterName">
+            </label>
+            <label>
+                Chapter World:
+                <input type="text" id="postChapterWorld" name="chapterWorld">
+            </label>
+        </fieldset>
+        <button type="submit">Send POST request</button>
+    </form>
+    <div id="postNewResponse" class="response"></div>
+</section>
+
+<script>
+    // GET /space-marine 列表请求处理
+    document.getElementById('getListForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        let sort = document.getElementById('getListSort').value;
+        let order = document.getElementById('getListOrder').value;
+        let filter = document.getElementById('getListFilter').value;
+        let page = document.getElementById('getListPage').value;
+        let pageSize = document.getElementById('getListPageSize').value;
+        // 构造 URL
+        let url = 'v1/space-marine?sort=' + encodeURIComponent(sort)
+            + '&order=' + encodeURIComponent(order)
+            + '&page=' + encodeURIComponent(page)
+            + '&pageSize=' + encodeURIComponent(pageSize);
+        // 如果有过滤条件，按逗号拆分后逐个添加 filter 参数
+        if (filter.trim() !== "") {
+            filter.split(',').forEach(function(f) {
+                url += '&filter=' + encodeURIComponent(f.trim());
+            });
+        }
+        fetch(url, { method: 'GET' })
+            .then(response => response.text())
+            .then(data => {
+                let parser = new DOMParser();
+                let xmlDoc = parser.parseFromString(data, "text/xml");
+
+                // 使用 XMLSerializer 来格式化输出
+                let formattedXML = formatXML(xmlDoc);
+                document.getElementById('getListResponse').innerText = formattedXML;
+            })
+            .catch(err => {
+                document.getElementById('getListResponse').innerText = '错误：' + err;
+            });
+    });
+
+    // GET /space-marine/{id} 请求处理
+    document.getElementById('getByIdForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        let id = document.getElementById('getByIdId').value;
+        let url = 'v1/space-marine/' + encodeURIComponent(id);
+        fetch(url, { method: 'GET' })
+            .then(response => response.text())
+            .then(data => {
+                let parser = new DOMParser();
+                let xmlDoc = parser.parseFromString(data, "text/xml");
+
+                // 使用 XMLSerializer 来格式化输出
+                let formattedXML = formatXML(xmlDoc);
+                document.getElementById('getByIdResponse').innerText = formattedXML;
+            })
+            .catch(err => {
+                document.getElementById('getByIdResponse').innerText = '错误：' + err;
+            });
+    });
+
+    // POST /space-marine 请求处理
+    document.getElementById('postNewForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        let name = document.getElementById('postName').value;
+        let coordX = document.getElementById('postCoordX').value;
+        let coordY = document.getElementById('postCoordY').value;
+        let health = document.getElementById('postHealth').value;
+        let heartCount = document.getElementById('postHeartCount').value;
+        let height = document.getElementById('postHeight').value;
+        let meleeWeapon = document.getElementById('postMeleeWeapon').value;
+        let chapterName = document.getElementById('postChapterName').value;
+        let chapterWorld = document.getElementById('postChapterWorld').value;
+
+        // 构造 XML 请求体
+        let xml =
+            `<newSpaceMarine>
+  <name>${name}</name>
+  <coordinates>
+    <x>${coordX}</x>
+    <y>${coordY}</y>
+  </coordinates>
+  <health>${health}</health>
+  <heartCount>${heartCount}</heartCount>
+  <height>${height}</height>
+  <meleeWeapon>${meleeWeapon}</meleeWeapon>
+  <chapter>
+    <name>${chapterName}</name>
+    <world>${chapterWorld}</world>
+  </chapter>
+</newSpaceMarine>`;
+
+        fetch('v1/space-marine', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/xml'
+            },
+            body: xml
+        })
+            .then(response => response.text())
+            .then(data => {
+                let parser = new DOMParser();
+                let xmlDoc = parser.parseFromString(data, "text/xml");
+
+                // 使用 XMLSerializer 来格式化输出
+                let formattedXML = formatXML(xmlDoc);
+                document.getElementById('postNewResponse').innerText = formattedXML;
+            })
+            .catch(err => {
+                document.getElementById('postNewResponse').innerText = '错误：' + err;
+            });
+    });
+
+    // 格式化 XML
+    function formatXML(xmlDoc) {
+        let xsltDoc = document.implementation.createDocument('', '', null);
+        let xsltProcessor = new XSLTProcessor();
+
+        // 创建一个 XSLT 样式表，用于格式化 XML
+        let xslt = `<?xml version="1.0" encoding="UTF-8"?>
+                <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                    <xsl:output method="xml" indent="yes"/>
+                    <xsl:template match="/">
+                        <xsl:copy-of select="."/>
+                    </xsl:template>
+                </xsl:stylesheet>`;
+
+        let parser = new DOMParser();
+        let xsltDocParsed = parser.parseFromString(xslt, "application/xml");
+        xsltProcessor.importStylesheet(xsltDocParsed);
+
+        let resultDoc = xsltProcessor.transformToDocument(xmlDoc);
+        let serializer = new XMLSerializer();
+        return serializer.serializeToString(resultDoc);
+    }
+</script>
+</body>
+</html>
