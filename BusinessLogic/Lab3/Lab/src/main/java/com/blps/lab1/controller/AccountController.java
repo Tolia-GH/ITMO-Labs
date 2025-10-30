@@ -26,4 +26,6 @@ public class AccountController {
     public List<FavouritesJPA> getFavouriteMoviesByAccount(@PathVariable Integer accountID) {
         return accountsService.getFavouritesByAccountID(accountID);
     }
+
+
 }

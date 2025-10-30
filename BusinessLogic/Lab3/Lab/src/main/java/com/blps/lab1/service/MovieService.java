@@ -1,6 +1,7 @@
 package com.blps.lab1.service;
 
 import com.blps.lab1.databaseJPA.Objects.*;
+import com.blps.lab1.databaseJPA.OrderStatus;
 import com.blps.lab1.databaseJPA.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,7 +91,8 @@ public class MovieService {
         OrdersJPA newOrder = new OrdersJPA();
         newOrder.setUser_id(account.getId());
         newOrder.setTicket_id(ticketID);
-        newOrder.setIs_paid(false);
+        newOrder.setStatus(OrderStatus.PENDING);
+        newOrder.setCreation_time(LocalDateTime.now());
         ordersRepo.save(newOrder);
     }
 

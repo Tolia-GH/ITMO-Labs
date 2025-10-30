@@ -1,16 +1,15 @@
 package com.blps.lab1.service;
 
-import bitronix.tm.BitronixTransactionManager;
-import bitronix.tm.TransactionManagerServices;
 import com.blps.lab1.databaseJPA.Objects.OrdersJPA;
+import com.blps.lab1.databaseJPA.OrderStatus;
 import com.blps.lab1.databaseJPA.Repositories.OrdersRepo;
 import com.blps.lab1.databaseJPA.Repositories.TicketsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.TransactionManager;
-import javax.transaction.Transactional;
-import javax.transaction.UserTransaction;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +24,26 @@ public class OrderService {
     @Autowired
     private TransactionManager transactionManager;
 
+
+
+    @Scheduled(cron = "0/10 * * * * *")
+    public void autoCleanExpiredOrders() {
+        System.out.println("Begin auto clean expired orders");
+
+        LocalDateTime expireTime = LocalDateTime.now().minusSeconds(10);
+
+        List<OrdersJPA> unpaidOrders = ordersRepo.findAllUnpaidByExpireTime(expireTime);
+
+        for (OrdersJPA order : unpaidOrders) {
+            order.setStatus(OrderStatus.CANCELLED);
+            ordersRepo.save(order);
+            System.out.println("Order with id: " + order.getId() + " has been cancelled");
+        }
+
+        System.out.println("Finished auto clean expired orders");
+    }
+
+
     public void payOrder(Integer orderID) {
 
         try {
@@ -33,7 +52,8 @@ public class OrderService {
 
             // 执行订单支付逻辑
             ordersRepo.findById(orderID).ifPresent(order -> {
-                order.setIs_paid(true);
+                if (order.getStatus().equals(OrderStatus.PENDING)) {}
+                order.setStatus(OrderStatus.COMPLETED);
                 ticketsRepo.findById(order.getTicket_id()).ifPresent(ticket -> {
                     ticket.setAmount(ticket.getAmount() - 1);
                     ticketsRepo.save(ticket);
