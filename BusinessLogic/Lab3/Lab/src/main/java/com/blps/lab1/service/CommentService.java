@@ -15,23 +15,24 @@ public class CommentService {
     @Autowired
     private CommentRepo commentRepo;
 
-    public List<CommentJPA> getReviewsByMovieID(Integer movieID) {
+    public List<CommentJPA> getCommentsByMovieID(Integer movieID) {
         return commentRepo.findByMovieID(movieID);
     }
 
-    public void addReviewToMovie(Integer movieID, CommentJPA review, AccountsJPA account) {
-        CommentJPA newReview = new CommentJPA();
-        newReview.setContent(review.getContent());
-        newReview.setAuthor_id(account.getId());
-        newReview.setMovie_id(movieID);
-        newReview.setStatus(CommentStatus.UNDER_REVIEW);
+    public void addCommentToMovie(Integer movieID, CommentJPA comment, AccountsJPA account) {
+        CommentJPA newComment = new CommentJPA();
+        newComment.setContent(comment.getContent());
+        newComment.setAuthor_id(account.getId());
+        newComment.setMovie_id(movieID);
+        newComment.setStatus(CommentStatus.UNDER_REVIEW);
+
+        commentRepo.save(newComment);
 
         //Connect External API
 
-        commentRepo.save(newReview);
     }
 
-    public void deleteReview(Integer reviewID) {
-        commentRepo.deleteById(reviewID);
+    public void deleteComment(Integer commentID) {
+        commentRepo.deleteById(commentID);
     }
 }

@@ -83,7 +83,7 @@ public class MovieService {
         return ticketsRepo.findAll();
     }
 
-    public Optional<CommentJPA> getReviewByID(Integer reviewID) {
+    public Optional<CommentJPA> getCommentByID(Integer reviewID) {
         return commentRepo.findById(reviewID);
     }
 }

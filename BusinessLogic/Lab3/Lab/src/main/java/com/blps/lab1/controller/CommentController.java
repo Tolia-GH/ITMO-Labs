@@ -1,7 +1,6 @@
 package com.blps.lab1.controller;
 
 import com.blps.lab1.databaseJPA.Objects.AccountsJPA;
-import com.blps.lab1.databaseJPA.Objects.FavouritesJPA;
 import com.blps.lab1.databaseJPA.Objects.MoviesJPA;
 import com.blps.lab1.databaseJPA.Objects.CommentJPA;
 import com.blps.lab1.service.AccountsService;
@@ -36,20 +35,20 @@ public class CommentController {
 
     @Autowired
     AccountsService accountsService;
-    @GetMapping("/{movieID}/review")
+    @GetMapping("/{movieID}/comment")
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-    public List<CommentJPA> getReviews(@PathVariable Integer movieID) {
+    public List<CommentJPA> getComment(@PathVariable Integer movieID) {
         Optional<MoviesJPA> moviesJPA =movieService.getMovie(movieID);
         if (moviesJPA.isEmpty()) {
             return null;
         } else {
-            return commentService.getReviewsByMovieID(movieID);
+            return commentService.getCommentsByMovieID(movieID);
         }
     }
 
-    @PostMapping("/{movieID}/review")
+    @PostMapping("/{movieID}/comment")
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> addReview(@PathVariable Integer movieID, HttpServletRequest request, @RequestBody CommentJPA review) {
+    public ResponseEntity<?> addComment(@PathVariable Integer movieID, HttpServletRequest request, @RequestBody CommentJPA comment) {
 
         String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
@@ -64,25 +63,25 @@ public class CommentController {
         Optional<AccountsJPA> accountFound = accountsService.findAccountByEmail(email);
 
         if (accountFound.isPresent()) {
-            commentService.addReviewToMovie(movieID, review, accountFound.get());
-            return ResponseEntity.status(HttpStatus.OK).body("Review added to movie");
+            commentService.addCommentToMovie(movieID, comment, accountFound.get());
+            return ResponseEntity.status(HttpStatus.OK).body("Comment added to movie");
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Account Not Found");
         }
     }
 
-    @DeleteMapping("/{movieID}/review/{reviewID}")
+    @DeleteMapping("/{movieID}/comment/{commentID}")
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> deleteReview(@PathVariable Integer movieID, @PathVariable Integer reviewID) {
+    public ResponseEntity<?> deleteComment(@PathVariable Integer movieID, @PathVariable Integer commentID) {
         Optional<MoviesJPA> movieFound = movieService.getMovie(movieID);
-        Optional<CommentJPA> reviewFound = movieService.getReviewByID(reviewID);
+        Optional<CommentJPA> commentFound = movieService.getCommentByID(commentID);
         if (movieFound.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie not found!");
-        } else if (reviewFound.isEmpty()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Review not found!");
+        } else if (commentFound.isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Comment not found!");
         } else {
-            commentService.deleteReview(reviewID);
-            return ResponseEntity.ok("Review deleted");
+            commentService.deleteComment(commentID);
+            return ResponseEntity.ok("Comment deleted");
         }
     }
 }
