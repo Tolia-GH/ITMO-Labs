@@ -1,13 +1,14 @@
 package com.blps.lab1.databaseJPA.Objects;
 
+import com.blps.lab1.databaseJPA.CommentStatus;
 import lombok.Data;
 
 import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "reviews", schema = "business_logic")
-public class ReviewsJPA {
+@Table(name = "comments", schema = "business_logic")
+public class CommentJPA {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -17,4 +18,6 @@ public class ReviewsJPA {
     private Integer author_id;
     @Column(name = "content")
     private String content;
+    @Enumerated(EnumType.STRING)
+    private CommentStatus status;
 }

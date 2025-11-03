@@ -25,12 +25,11 @@ public class OrderService {
     private TransactionManager transactionManager;
 
 
-
-    @Scheduled(cron = "0/10 * * * * *")
+    @Scheduled(cron = "0 */5 * * * *")
     public void autoCleanExpiredOrders() {
         System.out.println("Begin auto clean expired orders");
 
-        LocalDateTime expireTime = LocalDateTime.now().minusSeconds(10);
+        LocalDateTime expireTime = LocalDateTime.now().minusMinutes(5);
 
         List<OrdersJPA> unpaidOrders = ordersRepo.findAllUnpaidByExpireTime(expireTime);
 

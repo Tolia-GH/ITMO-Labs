@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +17,7 @@ public class MovieService {
     @Autowired
     private MoviesRepo moviesRepo;
     @Autowired
-    private ReviewsRepo reviewsRepo;
+    private CommentRepo commentRepo;
     @Autowired
     private FavouritesRepo favouritesRepo;
     @Autowired
@@ -55,22 +54,6 @@ public class MovieService {
         return favouritesRepo.save(newFavourite);
     }
 
-    public List<ReviewsJPA> getReviewsByMovieID(Integer movieID) {
-        return reviewsRepo.findByMovieID(movieID);
-    }
-
-    public ReviewsJPA addReviewToMovie(Integer movieID, ReviewsJPA review) {
-        ReviewsJPA newReview = new ReviewsJPA();
-        newReview.setContent(review.getContent());
-        newReview.setAuthor_id(review.getAuthor_id());
-        newReview.setMovie_id(movieID);
-        return reviewsRepo.save(newReview);
-    }
-
-    public void deleteReview(Integer reviewID) {
-        reviewsRepo.deleteById(reviewID);
-    }
-
     public FavouritesJPA findFavouritesByMovieIdAndAccountID(Integer movieID, Integer accountID) {
         return favouritesRepo.findByMovieIDAndUser_id(movieID, accountID);
     }
@@ -100,7 +83,7 @@ public class MovieService {
         return ticketsRepo.findAll();
     }
 
-    public Optional<ReviewsJPA> getReviewByID(Integer reviewID) {
-        return reviewsRepo.findById(reviewID);
+    public Optional<CommentJPA> getReviewByID(Integer reviewID) {
+        return commentRepo.findById(reviewID);
     }
 }

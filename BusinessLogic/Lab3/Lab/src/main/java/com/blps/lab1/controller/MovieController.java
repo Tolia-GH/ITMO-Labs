@@ -26,6 +26,7 @@ public class MovieController {
 
     @Autowired
     AccountsService accountsService;
+
     @Autowired
     private JwtUtil jwtUtil;
 
