@@ -1,7 +1,9 @@
 package com.blps.lab1.service;
 
+import com.blps.lab1.databaseJPA.Objects.AccountsJPA;
 import com.blps.lab1.databaseJPA.Objects.OrdersJPA;
 import com.blps.lab1.databaseJPA.OrderStatus;
+import com.blps.lab1.databaseJPA.Repositories.AccountsRepo;
 import com.blps.lab1.databaseJPA.Repositories.OrdersRepo;
 import com.blps.lab1.databaseJPA.Repositories.TicketsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,11 @@ public class OrderService {
     @Autowired
     private TransactionManager transactionManager;
 
+    @Autowired
+    private MailService mailService;
+    @Autowired
+    private AccountsRepo accountsRepo;
+
 
     @Scheduled(cron = "0 */5 * * * *")
     public void autoCleanExpiredOrders() {
@@ -43,7 +50,7 @@ public class OrderService {
     }
 
 
-    public void payOrder(Integer orderID) {
+    public void payOrder(Integer orderID, Integer accountID) {
 
         try {
             // 开启事务
@@ -73,14 +80,11 @@ public class OrderService {
             }
             e.printStackTrace();
         }
-//        ordersRepo.findById(orderID).map(order -> {
-//            order.setIs_paid(true);
-//            ticketsRepo.findById(order.getTicket_id()).map(ticket -> {
-//                ticket.setAmount(ticket.getAmount() - 1);
-//                return ticketsRepo.save(ticket);
-//            });
-//            return ordersRepo.save(order);
-//        });
+
+        AccountsJPA account = accountsRepo.findById(accountID).orElse(null);
+        OrdersJPA order = ordersRepo.findById(orderID).orElse(null);
+
+        mailService.sendMail("Order Confirmation", order, account);
     }
 
     public List<OrdersJPA> getAllOrders() {

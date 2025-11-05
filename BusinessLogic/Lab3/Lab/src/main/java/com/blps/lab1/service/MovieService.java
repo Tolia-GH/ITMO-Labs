@@ -77,6 +77,8 @@ public class MovieService {
         newOrder.setStatus(OrderStatus.PENDING);
         newOrder.setCreation_time(LocalDateTime.now());
         ordersRepo.save(newOrder);
+
+
     }
 
     public List<TicketsJPA> getTickets() {
@@ -86,4 +88,5 @@ public class MovieService {
     public Optional<CommentJPA> getCommentByID(Integer reviewID) {
         return commentRepo.findById(reviewID);
     }
+
 }

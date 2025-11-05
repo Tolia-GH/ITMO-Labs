@@ -30,7 +30,7 @@ public class OrderController {
     @PutMapping("/account/{accountID}/order/{orderID}/payment")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> payTicket(@PathVariable Integer accountID, @PathVariable Integer orderID) {
-        orderService.payOrder(orderID);
+        orderService.payOrder(orderID, accountID);
         return ResponseEntity.ok("Ticket is paid!");
     }
 }

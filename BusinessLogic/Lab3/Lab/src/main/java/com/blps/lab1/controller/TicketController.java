@@ -75,15 +75,4 @@ public class TicketController {
             return ResponseEntity.ok("Ticket wait for payment");
         }
     }
-
-    @PutMapping("/{movieID}/ticket/payment/{orderID}")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<?> payTicket(@PathVariable Integer movieID, @PathVariable Integer orderID) {
-        Optional<OrdersJPA> orderFound = orderService.getOrderByID(orderID);
-        if (orderFound.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Order not found!");
-        }
-        orderService.payOrder(orderID);
-        return ResponseEntity.ok("Ticket is paid!");
-    }
 }
