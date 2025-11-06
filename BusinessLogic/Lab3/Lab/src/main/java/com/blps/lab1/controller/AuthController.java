@@ -9,15 +9,13 @@ import com.blps.lab1.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 
@@ -32,6 +30,8 @@ public class AuthController {
     private AccountsRepo accountsRepo;
     @Autowired
     private AccountsDetailService accountsDetailService;
+    @Autowired
+    private JmsTemplate jmsTemplate;
 
 
     @PostMapping("/signIn")
@@ -58,5 +58,11 @@ public class AuthController {
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email Already Exists!");
         }
+    }
+
+    @GetMapping("/test-jms")
+    public void testJms() {
+        jmsTemplate.convertAndSend("Consumer.mail.VirtualTopic.order.payment",
+                "{\"orderId\":123,\"userEmail\":\"test@qq.com\"}");
     }
 }

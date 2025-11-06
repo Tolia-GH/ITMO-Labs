@@ -6,6 +6,7 @@ import com.blps.lab1.databaseJPA.OrderStatus;
 import com.blps.lab1.databaseJPA.Repositories.AccountsRepo;
 import com.blps.lab1.databaseJPA.Repositories.OrdersRepo;
 import com.blps.lab1.databaseJPA.Repositories.TicketsRepo;
+import com.blps.lab1.message.MessageProducerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,10 @@ public class OrderService {
 
     @Autowired
     private MailService mailService;
+
+    @Autowired
+    private MessageProducerService messageProducerService;
+
     @Autowired
     private AccountsRepo accountsRepo;
 
@@ -84,7 +89,9 @@ public class OrderService {
         AccountsJPA account = accountsRepo.findById(accountID).orElse(null);
         OrdersJPA order = ordersRepo.findById(orderID).orElse(null);
 
-        mailService.sendMail("Order Confirmation", order, account);
+        messageProducerService.sendPaymentMessage(order, account);
+
+        //mailService.sendMail("Order Confirmation", order, account);
     }
 
     public List<OrdersJPA> getAllOrders() {
