@@ -2,6 +2,7 @@ package com.blps.lab3.service;
 
 import com.blps.lab3.databaseJPA.Objects.AccountsJPA;
 import com.blps.lab3.databaseJPA.Objects.OrdersJPA;
+import com.blps.lab3.databaseJPA.Objects.TicketsJPA;
 import com.blps.lab3.databaseJPA.OrderStatus;
 import com.blps.lab3.databaseJPA.Repositories.AccountsRepo;
 import com.blps.lab3.databaseJPA.Repositories.OrdersRepo;
@@ -10,8 +11,11 @@ import com.blps.lab3.message.MessageProducerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.support.TransactionSynchronizationAdapter;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import javax.transaction.TransactionManager;
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -51,44 +55,39 @@ public class OrderService {
         System.out.println("Finished auto clean expired orders");
     }
 
-
+    @Transactional
     public void payOrder(Integer orderID, Integer accountID) {
 
-        try {
-            // 开启事务
-            transactionManager.begin();
+        OrdersJPA order = ordersRepo.findById(orderID)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
 
-            // 执行订单支付逻辑
-            ordersRepo.findById(orderID).ifPresent(order -> {
-                if (order.getStatus().equals(OrderStatus.PENDING)) {}
-                order.setStatus(OrderStatus.COMPLETED);
-                ticketsRepo.findById(order.getTicket_id()).ifPresent(ticket -> {
-                    ticket.setAmount(ticket.getAmount() - 1);
-                    ticketsRepo.save(ticket);
-                });
-                ordersRepo.save(order);
-            });
+        if (order.getStatus() != OrderStatus.PENDING)
+            throw new RuntimeException("Order already paid or cancelled");
 
-            // 提交事务
-            transactionManager.commit();
-            System.out.println("Transaction committed successfully.");
-        } catch (Exception e) {
-            try {
-                // 出现异常时回滚事务
-                transactionManager.rollback();
-                System.out.println("Transaction rolled back due to an error.");
-            } catch (Exception rollbackException) {
-                rollbackException.printStackTrace();
+        TicketsJPA ticket = ticketsRepo.findById(order.getTicket_id())
+                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+
+        if (ticket.getAmount() <= 0)
+            throw new RuntimeException("No tickets left");
+
+        // 更新库存与订单状态（同一事务中）
+        ticket.setAmount(ticket.getAmount() - 1);
+        ticketsRepo.save(ticket);
+
+        order.setStatus(OrderStatus.COMPLETED);
+        ordersRepo.save(order);
+
+        // 注册事务提交后的回调
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() {
+            @Override
+            public void afterCommit() {
+                AccountsJPA account = accountsRepo.findById(accountID)
+                        .orElseThrow(() -> new RuntimeException("Account not found"));
+
+                // 在事务提交后异步发送MQTT消息
+                messageProducerService.sendPaymentMessage(order, account);
             }
-            e.printStackTrace();
-        }
-
-        AccountsJPA account = accountsRepo.findById(accountID).orElse(null);
-        OrdersJPA order = ordersRepo.findById(orderID).orElse(null);
-
-        messageProducerService.sendPaymentMessage(order, account);
-
-        //mailService.sendMail("Order Confirmation", order, account);
+        });
     }
 
     public List<OrdersJPA> getAllOrders() {
