@@ -52,6 +52,7 @@ public class MailService {
                     AccountsJPA account = accountsRepo.findByEmail(userEmail).get();
 
                     sendMail("Order Confirmation", order, account);
+                    System.out.println("Start sending confirmation email");
                 } else {
                     System.out.println("Order not found");
                 }
