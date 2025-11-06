@@ -78,4 +78,11 @@ public class CommentService {
     public void deleteComment(Integer commentID) {
         commentRepo.deleteById(commentID);
     }
+
+    public CommentJPA reviewComment(Integer commentID, CommentStatus status) {
+        CommentJPA comment = commentRepo.findById(commentID)
+                .orElseThrow(() -> new RuntimeException("Comment not found"));
+        comment.setStatus(status);
+        return commentRepo.save(comment);
+    }
 }

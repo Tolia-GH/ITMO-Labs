@@ -1,5 +1,6 @@
 package com.blps.lab3.controller;
 
+import com.blps.lab3.databaseJPA.CommentStatus;
 import com.blps.lab3.databaseJPA.Objects.AccountsJPA;
 import com.blps.lab3.databaseJPA.Objects.MoviesJPA;
 import com.blps.lab3.databaseJPA.Objects.CommentJPA;
@@ -82,6 +83,19 @@ public class CommentController {
         } else {
             commentService.deleteComment(commentID);
             return ResponseEntity.ok("Comment deleted");
+        }
+    }
+
+    @PutMapping("/comment/{commentID}/review")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> reviewComment(@PathVariable Integer commentID, @RequestParam("status") String statusValue) {
+        try {
+            CommentStatus status = CommentStatus.valueOf(statusValue);
+
+            CommentJPA updatedComment = commentService.reviewComment(commentID, status);
+            return ResponseEntity.ok("Comment review updated status to " + updatedComment.getStatus());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 }
