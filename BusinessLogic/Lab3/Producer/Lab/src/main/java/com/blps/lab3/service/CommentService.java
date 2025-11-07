@@ -4,13 +4,13 @@ import com.blps.lab3.databaseJPA.CommentStatus;
 import com.blps.lab3.databaseJPA.Objects.AccountsJPA;
 import com.blps.lab3.databaseJPA.Objects.CommentJPA;
 import com.blps.lab3.databaseJPA.Repositories.CommentRepo;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -18,17 +18,19 @@ import java.util.List;
 @Service
 public class CommentService {
 
-    @Value("${clickup.url}")
-    private String clickUpUrl;
-    @Value("${clickup.api.token}")
-    private String clickUpApiToken;
-    @Value("${clickup.list.id}")
+    @Value("${external.url}")
+    private String url;
+    @Value("${external.token}")
+    private String token;
+    @Value("${external.list.id}")
     private String listId;
-    @Value("${clickup.space.id}")
+    @Value("${external.space.id}")
     private String spaceId;
 
     @Autowired
     private CommentRepo commentRepo;
+
+    private ObjectMapper mapper = new ObjectMapper();
 
     public List<CommentJPA> getCommentsByMovieID(Integer movieID) {
         return commentRepo.findByMovieID(movieID);
@@ -44,20 +46,24 @@ public class CommentService {
         commentRepo.save(newComment);
 
         //Connect External API
-        createReviewTaskInClickUp(newComment);
+        Integer task_id = createReviewTaskInClickUp(newComment);
+        newComment.setRelated_task_id(task_id);
+
+        commentRepo.save(newComment);
     }
 
-    private void createReviewTaskInClickUp(CommentJPA comment) {
-        String url = clickUpUrl + "list/" + listId + "/task/";
+    private Integer createReviewTaskInClickUp(CommentJPA comment) {
+        String url = this.url + "tm/tasks/";
+
+        System.out.println("Sending request to url: " + url);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", clickUpApiToken);
+        headers.set("Authorization", token);
         headers.set("Content-Type", "application/json");
-        headers.set("accept", "application/json");
 
         String taskBody = String.format(
                 "{" +
-                        "\"name\": \"Review Comment#%d\"," +
+                        "\"title\": \"Review Comment#%d\"," +
                         "\"description\": \"Comment#%d Content: %s\"" +
                 "}", comment.getId(), comment.getId(), comment.getContent()
         );
@@ -66,12 +72,20 @@ public class CommentService {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
 
         if (response.getStatusCode() == HttpStatus.OK) {
-            System.out.println("Review comment task created on ClickUp!");
+            try {
+                JsonNode responseJson = mapper.readTree(response.getBody());
+                Integer taskId = responseJson.path("task").path("id").asInt();
+                System.out.println("Review comment task created with id: " + taskId);
+                return taskId;
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException("Failed to parse JSON response", e);
+            }
         } else {
             System.out.println("Failed creating review comment task on ClickUp with error: " + response.getStatusCode());
+            throw new RuntimeException("Failed creating review comment task with error: " + response.getStatusCode());
         }
     }
 
@@ -89,30 +103,23 @@ public class CommentService {
     }
 
     public void updateReviewTaskInClickUp(CommentJPA comment) {
-        String url = clickUpUrl + "list/" + listId + "/task/";
+
+        String url = this.url + "tm/tasks/" + comment.getRelated_task_id() + "/complete";
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", clickUpApiToken);
+        headers.set("Authorization", token);
         headers.set("Content-Type", "application/json");
-        headers.set("accept", "application/json");
 
-        String taskBody = String.format(
-                "{" +
-                        "\"name\": \"Review Comment#%d\"," +
-                        "\"description\": \"Comment#%d review status change to: %s\"" +
-                "}", comment.getId(), comment.getId(), comment.getStatus()
-        );
-
-        HttpEntity<String> entity = new HttpEntity<>(taskBody, headers);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
 
         RestTemplate restTemplate = new RestTemplate();
 
-        ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
 
         if (response.getStatusCode() == HttpStatus.OK) {
-            System.out.println("Review comment task updated on ClickUp!");
+            System.out.println("Review comment task updated!");
         } else {
-            System.out.println("Failed updating review task on ClickUp with error: " + response.getStatusCode());
+            System.out.println("Failed updating review task with error: " + response.getStatusCode());
         }
     }
 }

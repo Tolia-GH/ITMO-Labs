@@ -8,4 +8,4 @@ drop table movies cascade;
 
 drop table tickets cascade;
 
-drop table reviews cascade;
+drop table comments cascade;

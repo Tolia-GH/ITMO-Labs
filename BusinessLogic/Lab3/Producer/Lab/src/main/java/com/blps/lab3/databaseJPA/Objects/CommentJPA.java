@@ -20,4 +20,6 @@ public class CommentJPA {
     private String content;
     @Enumerated(EnumType.STRING)
     private CommentStatus status;
+    @Column (name = "related_task_id")
+    private Integer related_task_id;
 }
