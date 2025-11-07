@@ -55,7 +55,7 @@ public class CommentService {
     private Integer createReviewTaskInClickUp(CommentJPA comment) {
         String url = this.url + "tm/tasks/";
 
-        System.out.println("Sending request to url: " + url);
+        System.out.println("Sending create task request to url: " + url);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", token);
@@ -64,7 +64,8 @@ public class CommentService {
         String taskBody = String.format(
                 "{" +
                         "\"title\": \"Review Comment#%d\"," +
-                        "\"description\": \"Comment#%d Content: %s\"" +
+                        "\"description\": \"Comment#%d Content: %s\"," +
+                        "\"locations\": [{\"projectId\": 2}]" +
                 "}", comment.getId(), comment.getId(), comment.getContent()
         );
 
@@ -105,6 +106,8 @@ public class CommentService {
     public void updateReviewTaskInClickUp(CommentJPA comment) {
 
         String url = this.url + "tm/tasks/" + comment.getRelated_task_id() + "/complete";
+
+        System.out.println("Sending complete task request to url: " + url);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", token);

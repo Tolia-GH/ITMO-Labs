@@ -11,7 +11,7 @@
     <groupId>com.blps</groupId>
     <artifactId>Lab</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>Lab1</name>
     <description>Lab1</description>
     <properties>
