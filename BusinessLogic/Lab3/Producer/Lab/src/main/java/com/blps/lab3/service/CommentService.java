@@ -83,6 +83,36 @@ public class CommentService {
         CommentJPA comment = commentRepo.findById(commentID)
                 .orElseThrow(() -> new RuntimeException("Comment not found"));
         comment.setStatus(status);
+
+        updateReviewTaskInClickUp(comment);
         return commentRepo.save(comment);
+    }
+
+    public void updateReviewTaskInClickUp(CommentJPA comment) {
+        String url = clickUpUrl + "list/" + listId + "/task/";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", clickUpApiToken);
+        headers.set("Content-Type", "application/json");
+        headers.set("accept", "application/json");
+
+        String taskBody = String.format(
+                "{" +
+                        "\"name\": \"Review Comment#%d\"," +
+                        "\"description\": \"Comment#%d review status change to: %s\"" +
+                "}", comment.getId(), comment.getId(), comment.getStatus()
+        );
+
+        HttpEntity<String> entity = new HttpEntity<>(taskBody, headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
+
+        if (response.getStatusCode() == HttpStatus.OK) {
+            System.out.println("Review comment task updated on ClickUp!");
+        } else {
+            System.out.println("Failed updating review task on ClickUp with error: " + response.getStatusCode());
+        }
     }
 }
