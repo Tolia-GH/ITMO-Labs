@@ -1,7 +1,7 @@
 package se.ifmo.dao.repository;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityNotFoundException;
+
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;

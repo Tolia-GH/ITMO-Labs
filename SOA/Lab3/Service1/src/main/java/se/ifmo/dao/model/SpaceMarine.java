@@ -51,8 +51,7 @@ public class SpaceMarine {
     private Float height;
 
     @Enumerated(EnumType.STRING)
-    @Type(type = "pgsql_enum")
-    @Column(name = "melee_weapon", columnDefinition = "melee_weapon")
+    @Column(name = "melee_weapon")
     private MeleeWeapon meleeWeapon;
 
     @OneToOne(cascade = CascadeType.ALL)
