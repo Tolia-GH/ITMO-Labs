@@ -8,14 +8,14 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name = "chapter")
+@Table(name = "chapter", schema = "soa_lab2")
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Chapter {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @XmlTransient//Xml ignore
     private Long id;
 

@@ -1,5 +1,8 @@
 package se.ifmo.util;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -11,6 +14,8 @@ public class DatabaseUtil {
     private static String url;
     private static String user;
     private static String password;
+
+    private static DataSource dataSource;
 
     static {
         try (InputStream input = DatabaseUtil.class.getClassLoader().getResourceAsStream("DB/DB.properties")) {
@@ -27,12 +32,17 @@ public class DatabaseUtil {
             password = prop.getProperty("db.password");
 
             Class.forName("org.postgresql.Driver");
-        } catch (IOException | ClassNotFoundException ex) {
-            ex.printStackTrace();
+//        try {
+//            // 使用 JNDI 查找 WildFly 配置的数据源
+//            InitialContext ctx = new InitialContext();
+//            dataSource = (DataSource) ctx.lookup("java:/jdbc/Lab2DS");
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(url, user, password);
+        //return dataSource.getConnection();
     }
 }

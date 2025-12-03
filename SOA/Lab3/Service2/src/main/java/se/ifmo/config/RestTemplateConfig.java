@@ -22,7 +22,7 @@ public class RestTemplateConfig {
     @Bean
     public RestTemplate restTemplate() throws Exception {
         // 使用 InputStream 读取 classpath 下的资源文件
-        InputStream trustStoreInputStream = getClass().getClassLoader().getResourceAsStream("cacerts.p12");
+        InputStream trustStoreInputStream = getClass().getClassLoader().getResourceAsStream("service1-truststore.p12");
 
         if (trustStoreInputStream == null) {
             throw new FileNotFoundException("Truststore file not found in the classpath.");

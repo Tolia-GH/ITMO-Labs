@@ -168,19 +168,19 @@ public class SpaceMarineRepo {
     }
 
     // 插入章节表（如果有章节信息）
-    public Integer insertChapter(Connection conn, Chapter chapter) throws SQLException {
-        if (chapter != null && chapter.getName() != null) {
-            String sql = "INSERT INTO chapter (name, world) VALUES (?, ?) RETURNING id";
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setString(1, chapter.getName());
-                ps.setString(2, chapter.getWorld());
-                ResultSet rs = ps.executeQuery();
-                if (rs.next()) {
-                    return rs.getInt("id");
-                }
+    public int insertChapter(Connection conn, Chapter chapter) throws SQLException {
+
+        String sql = "INSERT INTO chapter (name, world) VALUES (?, ?) RETURNING id";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, chapter.getName());
+            ps.setString(2, chapter.getWorld());
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            } else {
+                throw new SQLException("Failed to insert chapter");
             }
         }
-        return null;
     }
 
     // 插入 SpaceMarine 表

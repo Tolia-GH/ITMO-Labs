@@ -1,6 +1,8 @@
 
 
-## 1 Change Deployment Service1 from Payara Server 6 to Wildfly:
+## 1 Change Service1 Deployment from Payara Server 6 to Wildfly 29:
+
+### 1 Configure Wildfly JDBC Driver & Datasource
 1. Download Wildfly 29.0.1 (version 26.x.x does not support Java EE 9.1+)
 2. Download Postgresql JDBC Driver (I used version 42.7)
 3. Create directory in wildfly root directory(/modules/org/postgresql/main) and move Postgresql JDBC Driver jar file into it
@@ -38,3 +40,11 @@
      - Set Password: 123456
    - Test Connection: Successful!
    - Finish
+
+### 2 Configure HTTPS on wildfly server
+1. just open /standalone/configuration/standalone.xml and edit as follows:
+   ```xml
+   <socket-binding name="https" port="8181"/>
+   ```
+2. Wildfly will auto generate self-signed certificate so we don't need to use keystore to generate ourselves
+3. Restart wildfly server, and now Service1 will run on https://localhost:8181

@@ -48,7 +48,6 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.7.8</version>
-            <scope>provided</scope>
         </dependency>
         <!-- Hibernate JPA implementation -->
         <dependency>
@@ -101,6 +100,7 @@
                             <artifactId>lombok</artifactId>
                             <version>1.18.36</version>
                         </path>
+                        <!--Sometimes lombok does not work with maven, need this annotation to compile program-->
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>

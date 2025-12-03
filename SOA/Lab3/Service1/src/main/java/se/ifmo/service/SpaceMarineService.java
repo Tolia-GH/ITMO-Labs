@@ -66,7 +66,7 @@ public class SpaceMarineService {
                 int coordinateId = spaceMarineRepo.insertCoordinates(conn, newSM.getCoordinates());
 
                 // 插入 chapter 表（如果传入了章节信息）
-                Integer chapterId = spaceMarineRepo.insertChapter(conn, newSM.getChapter());
+                int chapterId = spaceMarineRepo.insertChapter(conn, newSM.getChapter());
 
                 // 插入 space_marine 表
                 SpaceMarine sm = spaceMarineRepo.insertSpaceMarine(conn, newSM, coordinateId, chapterId);
