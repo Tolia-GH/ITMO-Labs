@@ -1,4 +1,4 @@
-package se.ifmo.dao.model;
+package se.ifmo.service1ejb.dao.model;
 
 import jakarta.persistence.*;
 import jakarta.xml.bind.annotation.XmlAccessType;
@@ -10,10 +10,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Check;
-import org.hibernate.annotations.Type;
-import se.ifmo.dao.adapter.ZonedDateTimeAdapter;
-import se.ifmo.dao.adapter.ZonedDateTimeConverter;
-import se.ifmo.dao.model.enums.MeleeWeapon;
+import se.ifmo.service1ejb.dao.adapter.ZonedDateTimeAdapter;
+import se.ifmo.service1ejb.dao.adapter.ZonedDateTimeConverter;
+import se.ifmo.service1ejb.dao.model.enums.MeleeWeapon;
+
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;

@@ -5,11 +5,12 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
-import se.ifmo.dao.model.Chapter;
-import se.ifmo.dao.model.Coordinates;
-import se.ifmo.dao.model.NewSpaceMarine;
-import se.ifmo.dao.model.SpaceMarine;
-import se.ifmo.dao.model.enums.MeleeWeapon;
+
+import se.ifmo.service1ejb.dao.model.NewSpaceMarine;
+import se.ifmo.service1ejb.dao.model.Chapter;
+import se.ifmo.service1ejb.dao.model.Coordinates;
+import se.ifmo.service1ejb.dao.model.SpaceMarine;
+import se.ifmo.service1ejb.dao.model.enums.MeleeWeapon;
 import se.ifmo.util.DatabaseUtil;
 
 

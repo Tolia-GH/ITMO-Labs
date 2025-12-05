@@ -4,8 +4,8 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import se.ifmo.dao.response.ErrorResponse;
-import se.ifmo.dao.response.SuccessResponse;
+import se.ifmo.response.ErrorResponse;
+import se.ifmo.response.SuccessResponse;
 import se.ifmo.service.StarshipService;
 
 import java.time.ZonedDateTime;

@@ -1,24 +1,26 @@
 package se.ifmo.service;
 
+import jakarta.ejb.EJB;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import se.ifmo.dao.model.NewSpaceMarine;
-import se.ifmo.dao.model.SpaceMarine;
+import se.ifmo.service1ejb.dao.model.NewSpaceMarine;
+import se.ifmo.service1ejb.dao.model.SpaceMarine;
 import se.ifmo.dao.repository.SpaceMarineRepo;
+import se.ifmo.service1ejb.remote.SpaceMarineServiceRemote;
 import se.ifmo.util.DatabaseUtil;
 import java.sql.*;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
+
 import java.util.Collections;
 import java.util.List;
 
 public class SpaceMarineService {
 
-    @PersistenceContext(unitName = "SpaceMarinePU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "SpaceMarinePU")
+//    private EntityManager em;
 
     private final SpaceMarineRepo spaceMarineRepo;
+
+    @EJB
+    private SpaceMarineServiceRemote spaceMarineServiceRemote;
 
     @Inject
     public SpaceMarineService(SpaceMarineRepo spaceMarineRepo) {
@@ -31,31 +33,45 @@ public class SpaceMarineService {
             List<String> filters,
             int page,
             int pageSize) throws SQLException {
-        List<SpaceMarine> spaceMarineList;
 
-        if (sort == null || sort.isEmpty()) {
-            sort = Collections.singletonList("id");
+//        List<SpaceMarine> spaceMarineList;
+//
+//        if (sort == null || sort.isEmpty()) {
+//            sort = Collections.singletonList("id");
+//        }
+//
+//        if (order == null || order.isEmpty()) {
+//            order = "ASC";
+//        } else {
+//            if (!order.equalsIgnoreCase("DESC")) {
+//                order = "ASC";
+//            }
+//        }
+//
+//        if (page < 0) {
+//            page = 0;
+//        }
+//
+//        if (pageSize < 1) {
+//            pageSize = 10;
+//        }
+//
+//        spaceMarineList = spaceMarineRepo.getSpaceMarineList(sort, order, filters, page, pageSize);
+//
+//        return spaceMarineList;
+        return spaceMarineServiceRemote.getSpaceMarine(sort, order, filters, page, pageSize);
+    }
+
+    // 根据ID获取SpaceMarine
+    public SpaceMarine getSpaceMarineById(long id) throws SQLException {
+        SpaceMarine spaceMarine = spaceMarineRepo.getSpaceMarineById(id);
+
+        if (spaceMarine.getName() == null) {
+            throw new SQLException("Space marine not found");
         }
 
-        if (order == null || order.isEmpty()) {
-            order = "ASC";
-        } else {
-            if (!order.equalsIgnoreCase("DESC")) {
-                order = "ASC";
-            }
-        }
-
-        if (page < 0) {
-            page = 0;
-        }
-
-        if (pageSize < 1) {
-            pageSize = 10;
-        }
-
-        spaceMarineList = spaceMarineRepo.getSpaceMarineList(sort, order, filters, page, pageSize);
-
-        return spaceMarineList;
+        // 这里可以加入其他业务逻辑
+        return spaceMarine;
     }
 
     public SpaceMarine addSpaceMarine(NewSpaceMarine newSM) throws SQLException {
@@ -89,17 +105,6 @@ public class SpaceMarineService {
         }
     }
 
-    // 根据ID获取SpaceMarine
-    public SpaceMarine getSpaceMarineById(long id) throws SQLException {
-        SpaceMarine spaceMarine = spaceMarineRepo.getSpaceMarineById(id);
-
-        if (spaceMarine.getName() == null) {
-            throw new SQLException("Space marine not found");
-        }
-
-        // 这里可以加入其他业务逻辑
-        return spaceMarine;
-    }
 
     public void updateSpaceMarine(long id, NewSpaceMarine updatedSM) throws SQLException {
         try (Connection conn = DatabaseUtil.getConnection()) {

@@ -1,10 +1,11 @@
-package se.ifmo.dao.response;
+package se.ifmo.response;
 
 import jakarta.xml.bind.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import se.ifmo.dao.model.SpaceMarine;
+import se.ifmo.service1ejb.dao.model.SpaceMarine;
+
 
 import java.util.List;
 

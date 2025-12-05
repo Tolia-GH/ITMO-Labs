@@ -4,12 +4,12 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import se.ifmo.dao.model.NewSpaceMarine;
-import se.ifmo.dao.model.SpaceMarine;
-import se.ifmo.dao.response.CountResponse;
-import se.ifmo.dao.response.SuccessResponse;
-import se.ifmo.dao.response.ErrorResponse;
-import se.ifmo.dao.response.SpaceMarineResponse;
+import se.ifmo.service1ejb.dao.model.NewSpaceMarine;
+import se.ifmo.service1ejb.dao.model.SpaceMarine;
+import se.ifmo.response.CountResponse;
+import se.ifmo.response.SuccessResponse;
+import se.ifmo.response.ErrorResponse;
+import se.ifmo.response.SpaceMarineResponse;
 import se.ifmo.service.SpaceMarineService;
 
 import java.sql.SQLException;
@@ -31,7 +31,7 @@ public class SpaceMarineResource {
             @QueryParam("pageSize") @DefaultValue("10") int pageSize
     ) {
         try {
-            List<SpaceMarine> spaceMarines = spaceMarineService.getAllSpaceMarine(sort, order, filter, page, pageSize);
+            List<se.ifmo.service1ejb.dao.model.SpaceMarine> spaceMarines = spaceMarineService.getAllSpaceMarine(sort, order, filter, page, pageSize);
             SpaceMarineResponse spaceMarineResponse = new SpaceMarineResponse(spaceMarines);
             return Response.ok(spaceMarineResponse).build();
         } catch (IllegalArgumentException e) {

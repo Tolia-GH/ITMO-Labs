@@ -1,4 +1,4 @@
-package se.ifmo.dao.response;
+package se.ifmo.response;
 
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
