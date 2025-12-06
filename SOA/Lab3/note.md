@@ -47,4 +47,15 @@
    <socket-binding name="https" port="8181"/>
    ```
 2. Wildfly will auto generate self-signed certificate so we don't need to use keystore to generate ourselves
+3. Open terminal in wildfly home directory and run:
+   ```cmd
+   keytool -exportcert -alias server -keystore application.keystore -file service1.crt
+   ```
+   Default password is: password  
+   Then run:  
+   ```
+   keytool -importcert -alias service1 -file service1.crt -keystore service1-truststore.p12 -storetype PKCS12 -storepass changeit
+   ```
+   if appears `Trust this certificate? [no]:`, enter `y`  
+   now put the service1-truststore.p12 into Service2/src/resources/service1-truststore.p12
 3. Restart wildfly server, and now Service1 will run on https://localhost:8181

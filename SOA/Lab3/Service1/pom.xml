@@ -35,13 +35,11 @@
             <groupId>jakarta.ws.rs</groupId>
             <artifactId>jakarta.ws.rs-api</artifactId>
             <version>4.0.0</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
             <version>3.1.0</version>
-            <scope>provided</scope>
         </dependency>
         <!-- PostgreSQL JDBC 驱动 -->
         <dependency>
@@ -54,7 +52,6 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>5.6.15.Final</version>
-            <scope>provided</scope>
         </dependency>
         <!-- JSON-B (for JAX-RS JSON support) -->
         <!-- JAXB API -->
@@ -74,20 +71,17 @@
             <groupId>jakarta.inject</groupId>
             <artifactId>jakarta.inject-api</artifactId>
             <version>2.0.1</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>jakarta.ejb</groupId>
             <artifactId>jakarta.ejb-api</artifactId>
             <version>4.0.1</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.36</version>
-            <scope>provided</scope>
         </dependency>
 
         <!--Inject dependency from Service1-EJB module-->

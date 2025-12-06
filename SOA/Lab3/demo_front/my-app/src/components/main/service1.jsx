@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const BASE_URL_S1 = 'http://localhost:8080/api'; // 请根据实际后端地址调整
+const BASE_URL_S1 = 'http://localhost:8081/api'; // 请根据实际后端地址调整
 const BASE_URL_S2 = 'http://localhost:8082/api'
 
 // 格式化 XML 字符串，利用 XSLTProcessor 进行格式化输出
