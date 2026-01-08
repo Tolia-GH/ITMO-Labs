@@ -6,7 +6,6 @@ create table if not exists accounts(
     role TEXT not null
 );
 
-
 create table if not exists movies(
     id serial not null primary key,
     name varchar(256) not null,
