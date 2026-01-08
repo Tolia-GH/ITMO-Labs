@@ -40,6 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/camunda/**", "/engine-rest/**").permitAll()
                 .antMatchers("/auth/signIn", "/auth/signUp", "/auth/test-jms").anonymous()
                 .anyRequest().authenticated()
                 .and()
