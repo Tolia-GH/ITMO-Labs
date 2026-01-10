@@ -1,0 +1,39 @@
+{
+  "components": [
+    {
+      "label": "Movie ID",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1",
+        "columns": null
+      },
+      "id": "Field_MovieId",
+      "key": "movieId",
+      "description": "Enter the ID of the movie you want to review",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Comment Content",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_0kosnsa",
+        "columns": null
+      },
+      "id": "Field_0qlikrx",
+      "key": "content",
+      "description": "Write your comment here",
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "comment-submission",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.42.0"
+  },
+  "schemaVersion": 19
+}

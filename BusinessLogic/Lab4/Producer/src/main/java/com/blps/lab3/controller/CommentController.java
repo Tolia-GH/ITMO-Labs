@@ -9,6 +9,7 @@ import com.blps.lab3.service.CommentService;
 import com.blps.lab3.service.MovieService;
 import com.blps.lab3.service.OrderService;
 import com.blps.lab3.utils.JwtUtil;
+import org.camunda.bpm.engine.RuntimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,10 @@ public class CommentController {
 
     @Autowired
     AccountsService accountsService;
+
+    @Autowired
+    private RuntimeService runtimeService;
+
     @GetMapping("/{movieID}/comment")
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public List<CommentJPA> getComment(@PathVariable Integer movieID) {
@@ -49,7 +54,12 @@ public class CommentController {
 
     @PostMapping("/{movieID}/comment")
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> addComment(@PathVariable Integer movieID, HttpServletRequest request, @RequestBody CommentJPA comment) {
+    // Note: RequestBody is ignored if we just start process, but maybe user wants to pass content via API
+    // If so, we can pass it as variables. 
+    // BUT, since we added a User Task "Write comment" at the start,
+    // the process should ideally just start, and then user goes to Tasklist to write.
+    // However, to support API-based submission too, we can pre-fill the form variable if provided.
+    public ResponseEntity<?> addComment(@PathVariable Integer movieID, HttpServletRequest request) {
 
         String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
@@ -58,17 +68,20 @@ public class CommentController {
 
         String jwtToken = authorizationHeader.substring(7);
         String email = jwtUtil.extractEmail(jwtToken);
+        
+        // Start Camunda Process
+        // We set initiator variable so the process knows who started it
+        java.util.Map<String, Object> variables = new java.util.HashMap<>();
+        variables.put("initiator", email); // Used by PersistDelegate to find user
+        variables.put("userEmail", email);
+        // We can pre-set movieId so user doesn't have to type it in Tasklist if we want
+        // But the form has a field for it. Let's pre-fill it if we can (requires form to read process var).
+        // Camunda forms read process variables by default if keys match.
+        variables.put("movieId", movieID);
+        
+        runtimeService.startProcessInstanceByKey("CommentModerationProcess", variables);
 
-        System.out.println(email);
-
-        Optional<AccountsJPA> accountFound = accountsService.findAccountByEmail(email);
-
-        if (accountFound.isPresent()) {
-            commentService.addCommentToMovie(movieID, comment, accountFound.get());
-            return ResponseEntity.status(HttpStatus.OK).body("Comment added to movie");
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Account Not Found");
-        }
+        return ResponseEntity.ok("Comment process started. Please go to Tasklist to write your comment.");
     }
 
     @DeleteMapping("/{movieID}/comment/{commentID}")

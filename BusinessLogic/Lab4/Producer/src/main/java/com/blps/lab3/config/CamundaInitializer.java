@@ -1,5 +1,7 @@
 package com.blps.lab3.config;
 
+import com.blps.lab3.databaseJPA.Objects.AccountsJPA;
+import com.blps.lab3.databaseJPA.Repositories.AccountsRepo;
 import org.camunda.bpm.engine.AuthorizationService;
 import org.camunda.bpm.engine.FilterService;
 import org.camunda.bpm.engine.IdentityService;
@@ -9,9 +11,12 @@ import org.camunda.bpm.engine.authorization.Permissions;
 import org.camunda.bpm.engine.authorization.Resources;
 import org.camunda.bpm.engine.filter.Filter;
 import org.camunda.bpm.engine.identity.Group;
+import org.camunda.bpm.engine.identity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class CamundaInitializer implements CommandLineRunner {
@@ -24,6 +29,8 @@ public class CamundaInitializer implements CommandLineRunner {
     private FilterService filterService;
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private AccountsRepo accountsRepo;
 
     @Override
     public void run(String... args) throws Exception {
@@ -66,6 +73,38 @@ public class CamundaInitializer implements CommandLineRunner {
             adminGroup.setType("SYSTEM");
             identityService.saveGroup(adminGroup);
             System.out.println("Camunda 'camunda-admin' group initialized.");
+        }
+
+        // 3. Sync existing users from DB to Camunda
+        syncUsersToCamunda();
+    }
+
+    private void syncUsersToCamunda() {
+        List<AccountsJPA> accounts = accountsRepo.findAll();
+        for (AccountsJPA account : accounts) {
+            try {
+                // Check if user exists in Camunda
+                if (identityService.createUserQuery().userId(account.getEmail()).count() == 0) {
+                    System.out.println("Syncing user to Camunda: " + account.getEmail());
+
+                    // Create User
+                    User camundaUser = identityService.newUser(account.getEmail());
+                    camundaUser.setPassword("123456"); // Default password for migrated users
+                    camundaUser.setFirstName(account.getUsername());
+                    camundaUser.setLastName("Lab4");
+                    camundaUser.setEmail(account.getEmail());
+                    identityService.saveUser(camundaUser);
+
+                    // Add to Group
+                    if (account.getRole().toString().equals("ADMIN")) {
+                        identityService.createMembership(account.getEmail(), "camunda-admin");
+                    } else if (account.getRole().toString().equals("USER")) {
+                        identityService.createMembership(account.getEmail(), "USER");
+                    }
+                }
+            } catch (Exception e) {
+                System.err.println("Failed to sync user: " + account.getEmail() + " - " + e.getMessage());
+            }
         }
     }
 }

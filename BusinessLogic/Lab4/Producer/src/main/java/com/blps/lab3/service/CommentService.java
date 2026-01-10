@@ -36,6 +36,21 @@ public class CommentService {
         return commentRepo.findByMovieID(movieID);
     }
 
+    public CommentJPA persistComment(String content, Integer movieID, Integer userId) {
+        CommentJPA newComment = new CommentJPA();
+        newComment.setContent(content);
+        newComment.setAuthor_id(userId);
+        newComment.setMovie_id(movieID);
+        newComment.setStatus(CommentStatus.UNDER_REVIEW);
+        return commentRepo.save(newComment);
+    }
+
+    public void updateCommentExternalTaskId(Integer commentId, Integer taskId) {
+        CommentJPA comment = commentRepo.findById(commentId).orElseThrow();
+        comment.setRelated_task_id(taskId);
+        commentRepo.save(comment);
+    }
+
     public void addCommentToMovie(Integer movieID, CommentJPA comment, AccountsJPA account) {
         CommentJPA newComment = new CommentJPA();
         newComment.setContent(comment.getContent());
@@ -52,7 +67,7 @@ public class CommentService {
         commentRepo.save(newComment);
     }
 
-    private Integer createReviewTaskInClickUp(CommentJPA comment) {
+    public Integer createReviewTaskInClickUp(CommentJPA comment) {
         String url = this.url + "tm/tasks/";
 
         System.out.println("Sending create task request to url: " + url);
@@ -92,6 +107,16 @@ public class CommentService {
 
     public void deleteComment(Integer commentID) {
         commentRepo.deleteById(commentID);
+    }
+
+    public CommentJPA getCommentById(Integer id) {
+        return commentRepo.findById(id).orElseThrow(() -> new RuntimeException("Comment not found"));
+    }
+
+    public void updateCommentStatus(Integer commentId, CommentStatus status) {
+        CommentJPA comment = getCommentById(commentId);
+        comment.setStatus(status);
+        commentRepo.save(comment);
     }
 
     public CommentJPA reviewComment(Integer commentID, CommentStatus status) {
