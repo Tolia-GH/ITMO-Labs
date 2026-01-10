@@ -56,8 +56,7 @@ public class OrderService {
     }
 
     @Transactional
-    public void payOrder(Integer orderID, Integer accountID) {
-
+    public void completeOrder(Integer orderID) {
         OrdersJPA order = ordersRepo.findById(orderID)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
 
@@ -76,6 +75,11 @@ public class OrderService {
 
         order.setStatus(OrderStatus.COMPLETED);
         ordersRepo.save(order);
+    }
+
+    @Transactional
+    public void payOrder(Integer orderID, Integer accountID) {
+        completeOrder(orderID);
 
         // 注册事务提交后的回调
         TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() {
@@ -83,6 +87,8 @@ public class OrderService {
             public void afterCommit() {
                 AccountsJPA account = accountsRepo.findById(accountID)
                         .orElseThrow(() -> new RuntimeException("Account not found"));
+                
+                OrdersJPA order = ordersRepo.findById(orderID).orElseThrow();
 
                 // 在事务提交后异步发送MQTT消息
                 messageProducerService.sendPaymentMessage(order, account);

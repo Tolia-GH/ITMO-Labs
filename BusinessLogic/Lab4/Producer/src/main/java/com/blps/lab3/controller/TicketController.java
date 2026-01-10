@@ -6,6 +6,7 @@ import com.blps.lab3.service.AccountsService;
 import com.blps.lab3.service.MovieService;
 import com.blps.lab3.service.OrderService;
 import com.blps.lab3.utils.JwtUtil;
+import org.camunda.bpm.engine.RuntimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,10 @@ public class TicketController {
 
     @Autowired
     AccountsService accountsService;
+
+    @Autowired
+    private RuntimeService runtimeService;
+
     @PostMapping("/{movieID}/ticket")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> addTicket(@PathVariable Integer movieID, @RequestBody TicketsJPA ticket) {
@@ -68,9 +73,19 @@ public class TicketController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Account does not exists!");
         } else if (ticket.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ticket does not exists!");
-        } else {
-            movieService.buyTicket(ticket.get().getId(), accountFound.get());
-            return ResponseEntity.ok("Ticket wait for payment");
+        } else if (ticket.get().getAmount() <= 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ticket is not available");
+        }
+        else {
+            // Start Camunda Process
+            java.util.Map<String, Object> variables = new java.util.HashMap<>();
+            variables.put("movieId", movieID);
+            variables.put("quantity", 1);
+            variables.put("accountEmail", email);
+
+            runtimeService.startProcessInstanceByKey("TicketPurchaseProcess", variables);
+
+            return ResponseEntity.ok("Ticket purchase process started. Please complete booking in Tasklist.");
         }
     }
 }

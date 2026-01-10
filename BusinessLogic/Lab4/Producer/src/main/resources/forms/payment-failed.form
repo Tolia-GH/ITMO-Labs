@@ -1,0 +1,28 @@
+{
+  "id": "payment-failed",
+  "type": "default",
+  "schemaVersion": 14,
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.15.1"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.17.0",
+  "components": [
+    {
+      "type": "text",
+      "text": "## 支付失败\\n支付未成功。你可以重试支付或取消订单。"
+    },
+    {
+      "label": "是否重试支付？",
+      "type": "radio",
+      "key": "retryPayment",
+      "values": [
+        { "label": "重试支付", "value": true },
+        { "label": "取消订单", "value": false }
+      ],
+      "validate": { "required": true }
+    }
+  ]
+}
+

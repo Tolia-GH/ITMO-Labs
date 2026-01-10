@@ -1,0 +1,46 @@
+{
+  "id": "ticket-booking",
+  "type": "default",
+  "schemaVersion": 14,
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.15.1"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.17.0",
+  "components": [
+    {
+      "type": "text",
+      "text": "# 电影订票"
+    },
+    {
+      "label": "电影 ID（movieId）",
+      "type": "number",
+      "key": "movieId",
+      "validate": {
+        "required": true,
+        "min": 1
+      }
+    },
+    {
+      "label": "购票数量（默认 1）",
+      "type": "number",
+      "key": "quantity",
+      "defaultValue": 1,
+      "validate": {
+        "required": true,
+        "min": 1,
+        "max": 10
+      }
+    },
+    {
+      "label": "账号邮箱（用于绑定你现有 JWT 账号）",
+      "type": "textfield",
+      "key": "accountEmail",
+      "validate": {
+        "required": true
+      }
+    }
+  ]
+}
+

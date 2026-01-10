@@ -70,15 +70,13 @@ public class MovieService {
         return ticketsRepo.save(newTicket);
     }
 
-    public void buyTicket(Integer ticketID, AccountsJPA account) {
+    public OrdersJPA buyTicket(Integer ticketID, AccountsJPA account) {
         OrdersJPA newOrder = new OrdersJPA();
         newOrder.setUser_id(account.getId());
         newOrder.setTicket_id(ticketID);
         newOrder.setStatus(OrderStatus.PENDING);
         newOrder.setCreation_time(LocalDateTime.now());
-        ordersRepo.save(newOrder);
-
-
+        return ordersRepo.save(newOrder);
     }
 
     public List<TicketsJPA> getTickets() {

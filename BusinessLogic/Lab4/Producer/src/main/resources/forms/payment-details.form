@@ -1,0 +1,52 @@
+{
+  "id": "payment-details",
+  "type": "default",
+  "schemaVersion": 14,
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.15.1"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.17.0",
+  "components": [
+    {
+      "type": "text",
+      "text": "# 支付信息"
+    },
+    {
+      "label": "支付方式",
+      "type": "select",
+      "key": "paymentMethod",
+      "values": [
+        { "label": "银行卡", "value": "CARD" },
+        { "label": "余额支付（模拟）", "value": "BALANCE" }
+      ],
+      "validate": { "required": true }
+    },
+    {
+      "label": "持卡人姓名",
+      "type": "textfield",
+      "key": "cardHolder",
+      "validate": { "required": true }
+    },
+    {
+      "label": "卡号（模拟）",
+      "type": "textfield",
+      "key": "cardNumber",
+      "validate": { "required": true, "minLength": 12, "maxLength": 19 }
+    },
+    {
+      "label": "有效期（MM/YY）",
+      "type": "textfield",
+      "key": "expiry",
+      "validate": { "required": true, "minLength": 4, "maxLength": 5 }
+    },
+    {
+      "label": "CVV（模拟）",
+      "type": "textfield",
+      "key": "cvv",
+      "validate": { "required": true, "minLength": 3, "maxLength": 4 }
+    }
+  ]
+}
+

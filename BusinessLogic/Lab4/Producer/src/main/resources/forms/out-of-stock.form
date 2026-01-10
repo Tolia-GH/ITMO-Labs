@@ -1,0 +1,28 @@
+{
+  "id": "out-of-stock",
+  "type": "default",
+  "schemaVersion": 14,
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.15.1"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.17.0",
+  "components": [
+    {
+      "type": "text",
+      "text": "## 库存不足\\n当前电影票库存不足，无法创建订单。你可以返回重新选择电影，或者结束流程。"
+    },
+    {
+      "label": "是否重新订票？",
+      "type": "radio",
+      "key": "retryBooking",
+      "values": [
+        { "label": "重新选择", "value": true },
+        { "label": "结束", "value": false }
+      ],
+      "validate": { "required": true }
+    }
+  ]
+}
+
