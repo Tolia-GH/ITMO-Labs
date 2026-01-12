@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_TicketPurchase" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.42.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.17.0">
   <bpmn:process id="TicketPurchaseProcess" name="Ticket Purchase Process" isExecutable="true" camunda:historyTimeToLive="100">
-    <bpmn:startEvent id="StartEvent_Start" name="Start booking ticket">
+    <bpmn:startEvent id="StartEvent_Start" name="Start booking ticket" camunda:initiator="accountEmail">
       <bpmn:outgoing>Flow_Start_To_Book</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:userTask id="UserTask_BookTicket" name="Book ticket" camunda:formRef="ticket-booking" camunda:formRefBinding="latest" camunda:candidateGroups="USER">
       <bpmn:extensionElements>
-        <camunda:taskListener delegateExpression="${userEmailInjectorListener}" event="complete">
+        <camunda:taskListener delegateExpression="${userEmailInjectorListener}" event="create">
           <camunda:field name="variableName">
             <camunda:string>accountEmail</camunda:string>
           </camunda:field>
@@ -28,7 +28,7 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${stockAvailable == true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_StockNo_To_OutOfStock" name="Not available" sourceRef="Gateway_StockAvailable" targetRef="UserTask_OutOfStock" />
-    <bpmn:userTask id="UserTask_OutOfStock" name="Out of stock" camunda:formRef="out-of-stock" camunda:formRefBinding="latest" camunda:candidateGroups="USER">
+    <bpmn:userTask id="UserTask_OutOfStock" name="Out of stock" camunda:assignee="${accountEmail}" camunda:formRef="out-of-stock" camunda:formRefBinding="latest" camunda:candidateGroups="USER">
       <bpmn:incoming>Flow_StockNo_To_OutOfStock</bpmn:incoming>
       <bpmn:outgoing>Flow_OutOfStock_To_Gw_RetryBooking</bpmn:outgoing>
     </bpmn:userTask>
@@ -48,7 +48,7 @@
       <bpmn:incoming>Flow_StockYes_To_CreateOrder</bpmn:incoming>
       <bpmn:outgoing>Flow_CreateOrder_To_Payment</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:userTask id="UserTask_SelectPaymentMethod" name="Select Payment Method" camunda:formRef="payment-method" camunda:formRefBinding="latest" camunda:candidateGroups="USER">
+    <bpmn:userTask id="UserTask_SelectPaymentMethod" name="Select Payment Method" camunda:assignee="${accountEmail}" camunda:formRef="payment-method" camunda:formRefBinding="latest" camunda:candidateGroups="USER">
       <bpmn:incoming>Flow_CreateOrder_To_Payment</bpmn:incoming>
       <bpmn:outgoing>Flow_Payment_To_ProcessPayment</bpmn:outgoing>
     </bpmn:userTask>
@@ -71,7 +71,7 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${paymentSuccessful == true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_PaymentNo_To_PaymentFailed" name="Not successful" sourceRef="Gateway_PaymentSuccess" targetRef="UserTask_PaymentFailed" />
-    <bpmn:userTask id="UserTask_PaymentFailed" name="Payment failed" camunda:formRef="payment-failed" camunda:formRefBinding="latest" camunda:candidateGroups="USER">
+    <bpmn:userTask id="UserTask_PaymentFailed" name="Payment failed" camunda:assignee="${accountEmail}" camunda:formRef="payment-failed" camunda:formRefBinding="latest" camunda:candidateGroups="USER">
       <bpmn:incoming>Flow_PaymentNo_To_PaymentFailed</bpmn:incoming>
       <bpmn:outgoing>Flow_PaymentFailed_To_Gw_RetryPayment</bpmn:outgoing>
     </bpmn:userTask>
@@ -123,14 +123,14 @@
     <bpmn:sequenceFlow id="Flow_002kh2g" name="Balance" sourceRef="Gateway_ChooseMethod" targetRef="UserTask_ConfirmBalance">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${paymentMethod == 'BALANCE'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:userTask id="UserTask_ConfirmBalance" name="Confirm Balance" camunda:formRef="balance-confirm" camunda:formRefBinding="latest" camunda:candidateGroups="USER">
+    <bpmn:userTask id="UserTask_ConfirmBalance" name="Confirm Balance" camunda:assignee="${accountEmail}" camunda:formRef="balance-confirm" camunda:formRefBinding="latest" camunda:candidateGroups="USER">
       <bpmn:incoming>Flow_002kh2g</bpmn:incoming>
       <bpmn:outgoing>Flow_1es4ojq</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_0dks0rg" name="Card" sourceRef="Gateway_ChooseMethod" targetRef="UserTask_EnterCardInfo">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${paymentMethod == 'CARD'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:userTask id="UserTask_EnterCardInfo" name="Enter Card Info" camunda:formRef="card-info" camunda:formRefBinding="latest" camunda:candidateGroups="USER">
+    <bpmn:userTask id="UserTask_EnterCardInfo" name="Enter Card Info" camunda:assignee="${accountEmail}" camunda:formRef="card-info" camunda:formRefBinding="latest" camunda:candidateGroups="USER">
       <bpmn:incoming>Flow_0dks0rg</bpmn:incoming>
       <bpmn:outgoing>Flow_1xzp9o9</bpmn:outgoing>
     </bpmn:userTask>

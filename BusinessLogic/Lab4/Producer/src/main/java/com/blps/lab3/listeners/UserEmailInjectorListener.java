@@ -18,27 +18,47 @@ public class UserEmailInjectorListener implements TaskListener {
 
     @Override
     public void notify(DelegateTask delegateTask) {
-        // Try to get authenticated user (the one who clicked "Complete")
+        // Determine target variable name first
+        String targetVar = "userEmail";
+        if (variableName != null) {
+            Object val = variableName.getValue(delegateTask);
+            if (val != null) {
+                targetVar = (String) val;
+            }
+        }
+
         String userId = null;
-        if (identityService.getCurrentAuthentication() != null) {
+
+        // 1. Check if the variable is already set (e.g. by camunda:initiator)
+        if (delegateTask.hasVariable(targetVar)) {
+            Object varVal = delegateTask.getVariable(targetVar);
+            if (varVal instanceof String) {
+                userId = (String) varVal;
+            }
+        }
+
+        // 2. Try to get authenticated user
+        if (userId == null && identityService.getCurrentAuthentication() != null) {
             userId = identityService.getCurrentAuthentication().getUserId();
         }
-        
-        // Fallback: try to get assignee if authenticated user is null (e.g. API call)
+
+        // 3. Fallback: try to get assignee if set manually
         if (userId == null) {
             userId = delegateTask.getAssignee();
         }
 
         if (userId != null) {
-            // Determine target variable name
-            String targetVar = "userEmail";
-            if (variableName != null) {
-                targetVar = (String) variableName.getValue(delegateTask);
+            // Ensure variable is set
+            if (!delegateTask.hasVariable(targetVar)) {
+                delegateTask.setVariable(targetVar, userId);
+                System.out.println("Automatically injected " + targetVar + ": " + userId);
             }
 
-            // Since our User ID is the Email, we can directly use it
-            delegateTask.setVariable(targetVar, userId);
-            System.out.println("Automatically injected " + targetVar + ": " + userId);
+            // Ensure task is assigned (if it's a user task and unassigned)
+            if (delegateTask.getAssignee() == null) {
+                delegateTask.setAssignee(userId);
+                System.out.println("Automatically assigned task " + delegateTask.getName() + " to user: " + userId);
+            }
         } else {
             System.err.println("Could not determine user email for task: " + delegateTask.getId());
         }

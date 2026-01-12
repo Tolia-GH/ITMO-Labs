@@ -76,16 +76,25 @@ public class CommentService {
         headers.set("Authorization", token);
         headers.set("Content-Type", "application/json");
 
+        // Clean content to avoid JSON breaking issues
+        String safeContent = "";
+        if (comment.getContent() != null) {
+            safeContent = comment.getContent()
+                    .replace("\\", "\\\\")
+                    .replace("\"", "\\\"")
+                    .replace("\n", " ")
+                    .replace("\r", " ");
+        }
+
         String taskBody = String.format(
                 "{" +
                         "\"title\": \"Review Comment#%d\"," +
                         "\"description\": \"Comment#%d Content: %s\"," +
                         "\"locations\": [{\"projectId\": 2}]" +
-                "}", comment.getId(), comment.getId(), comment.getContent()
+                "}", comment.getId(), comment.getId(), safeContent
         );
 
         HttpEntity<String> entity = new HttpEntity<>(taskBody, headers);
-
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
