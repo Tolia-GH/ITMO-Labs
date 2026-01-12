@@ -111,7 +111,7 @@
     <bpmn:sequenceFlow id="Flow_CompleteOrder_To_SendConfirmation" sourceRef="Task_CompleteOrder" targetRef="Task_SendConfirmation" />
     <bpmn:sequenceFlow id="Flow_SendConfirmation_To_EndCompleted" sourceRef="Task_SendConfirmation" targetRef="EndEvent_Completed" />
     <bpmn:sequenceFlow id="Flow_CancelOrder_To_EndCancelled" sourceRef="Task_CancelOrder" targetRef="EndEvent_Cancelled" />
-    <bpmn:sendTask id="Task_SendConfirmation" name="Send payment confirmation" camunda:asyncAfter="true" camunda:delegateExpression="${sendPaymentConfirmationDelegate}">
+    <bpmn:sendTask id="Task_SendConfirmation" name="Send payment confirmation" camunda:asyncBefore="true" camunda:delegateExpression="${sendPaymentConfirmationDelegate}">
       <bpmn:incoming>Flow_CompleteOrder_To_SendConfirmation</bpmn:incoming>
       <bpmn:outgoing>Flow_SendConfirmation_To_EndCompleted</bpmn:outgoing>
     </bpmn:sendTask>
