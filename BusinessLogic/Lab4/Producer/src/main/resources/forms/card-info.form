@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 4,
+  "components": [
+    {
+      "type": "text",
+      "text": "# Enter Credit Card Details"
+    },
+    {
+      "label": "Cardholder Name",
+      "type": "textfield",
+      "key": "cardHolder",
+      "validate": { "required": true }
+    },
+    {
+      "label": "Card Number",
+      "type": "textfield",
+      "key": "cardNumber",
+      "validate": { "required": true, "minLength": 12, "maxLength": 19 }
+    },
+    {
+      "label": "Expiry Date (MM/YY)",
+      "type": "textfield",
+      "key": "expiry",
+      "validate": { "required": true, "minLength": 4, "maxLength": 5 }
+    },
+    {
+      "label": "CVV",
+      "type": "textfield",
+      "key": "cvv",
+      "validate": { "required": true, "minLength": 3, "maxLength": 4 }
+    }
+  ],
+  "type": "default",
+  "id": "card-info",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.15.1"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.17.0"
+}

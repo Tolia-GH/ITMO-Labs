@@ -77,6 +77,41 @@ public class CamundaInitializer implements CommandLineRunner {
 
         // 3. Sync existing users from DB to Camunda
         syncUsersToCamunda();
+
+        // 4. Ensure USER group has Start Process permissions
+        if (authorizationService.createAuthorizationQuery()
+                .groupIdIn("USER")
+                .resourceType(Resources.PROCESS_DEFINITION)
+                .resourceId("*")
+                .count() == 0) {
+
+            Authorization processAuth = authorizationService.createNewAuthorization(Authorization.AUTH_TYPE_GRANT);
+            processAuth.setGroupId("USER");
+            processAuth.setResource(Resources.PROCESS_DEFINITION);
+            processAuth.setResourceId("*");
+            processAuth.addPermission(Permissions.READ);
+            processAuth.addPermission(Permissions.CREATE_INSTANCE);
+            authorizationService.saveAuthorization(processAuth);
+            System.out.println("Granted Process Start permissions to USER group.");
+        }
+
+        // 5. Ensure USER group has CREATE permission on Process Instance
+        if (authorizationService.createAuthorizationQuery()
+                .groupIdIn("USER")
+                .resourceType(Resources.PROCESS_INSTANCE)
+                .resourceId("*")
+                .count() == 0) {
+
+            Authorization instanceAuth = authorizationService.createNewAuthorization(Authorization.AUTH_TYPE_GRANT);
+            instanceAuth.setGroupId("USER");
+            instanceAuth.setResource(Resources.PROCESS_INSTANCE);
+            instanceAuth.setResourceId("*");
+            instanceAuth.addPermission(Permissions.CREATE);
+            instanceAuth.addPermission(Permissions.READ);
+            instanceAuth.addPermission(Permissions.UPDATE);
+            authorizationService.saveAuthorization(instanceAuth);
+            System.out.println("Granted Process Instance CREATE permissions to USER group.");
+        }
     }
 
     private void syncUsersToCamunda() {

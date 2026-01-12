@@ -11,15 +11,15 @@
   "components": [
     {
       "type": "text",
-      "text": "## 库存不足\\n当前电影票库存不足，无法创建订单。你可以返回重新选择电影，或者结束流程。"
+      "text": "## Out of Stock\\nUnfortunately, the tickets are out of stock. You can retry with another movie or end the process."
     },
     {
-      "label": "是否重新订票？",
+      "label": "Retry Booking?",
       "type": "radio",
       "key": "retryBooking",
       "values": [
-        { "label": "重新选择", "value": true },
-        { "label": "结束", "value": false }
+        { "label": "Yes, Retry", "value": true },
+        { "label": "No, End Process", "value": false }
       ],
       "validate": { "required": true }
     }

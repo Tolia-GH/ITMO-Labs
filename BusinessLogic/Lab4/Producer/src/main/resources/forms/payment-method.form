@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 4,
+  "components": [
+    {
+      "type": "text",
+      "text": "# Select Payment Method"
+    },
+    {
+      "label": "Payment Method",
+      "type": "radio",
+      "key": "paymentMethod",
+      "values": [
+        { "label": "Credit Card", "value": "CARD" },
+        { "label": "Balance", "value": "BALANCE" }
+      ],
+      "validate": { "required": true }
+    }
+  ],
+  "type": "default",
+  "id": "payment-method",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.15.1"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.17.0"
+}

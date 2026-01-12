@@ -11,41 +11,41 @@
   "components": [
     {
       "type": "text",
-      "text": "# 支付信息"
+      "text": "# Payment Details"
     },
     {
-      "label": "支付方式",
+      "label": "Payment Method",
       "type": "select",
       "key": "paymentMethod",
       "values": [
-        { "label": "银行卡", "value": "CARD" },
-        { "label": "余额支付（模拟）", "value": "BALANCE" }
+        { "label": "Credit Card", "value": "CARD" },
+        { "label": "Balance Payment (Simulated)", "value": "BALANCE" }
       ],
       "validate": { "required": true }
     },
     {
-      "label": "持卡人姓名",
+      "label": "Cardholder Name (Required for Card)",
       "type": "textfield",
       "key": "cardHolder",
-      "validate": { "required": true }
+      "validate": { "required": false }
     },
     {
-      "label": "卡号（模拟）",
+      "label": "Card Number (Required for Card)",
       "type": "textfield",
       "key": "cardNumber",
-      "validate": { "required": true, "minLength": 12, "maxLength": 19 }
+      "validate": { "required": false, "minLength": 12, "maxLength": 19 }
     },
     {
-      "label": "有效期（MM/YY）",
+      "label": "Expiry Date (MM/YY) (Required for Card)",
       "type": "textfield",
       "key": "expiry",
-      "validate": { "required": true, "minLength": 4, "maxLength": 5 }
+      "validate": { "required": false, "minLength": 4, "maxLength": 5 }
     },
     {
-      "label": "CVV（模拟）",
+      "label": "CVV (Required for Card)",
       "type": "textfield",
       "key": "cvv",
-      "validate": { "required": true, "minLength": 3, "maxLength": 4 }
+      "validate": { "required": false, "minLength": 3, "maxLength": 4 }
     }
   ]
 }

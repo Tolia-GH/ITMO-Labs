@@ -11,15 +11,15 @@
   "components": [
     {
       "type": "text",
-      "text": "## 支付失败\\n支付未成功。你可以重试支付或取消订单。"
+      "text": "## Payment Failed\\nPayment was not successful. You can retry payment or cancel the order."
     },
     {
-      "label": "是否重试支付？",
+      "label": "Retry Payment?",
       "type": "radio",
       "key": "retryPayment",
       "values": [
-        { "label": "重试支付", "value": true },
-        { "label": "取消订单", "value": false }
+        { "label": "Retry", "value": true },
+        { "label": "Cancel Order", "value": false }
       ],
       "validate": { "required": true }
     }

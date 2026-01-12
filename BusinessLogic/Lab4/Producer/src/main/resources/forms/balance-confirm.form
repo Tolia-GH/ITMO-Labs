@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 4,
+  "components": [
+    {
+      "type": "text",
+      "text": "# Confirm Balance Payment\nAre you sure you want to pay using your account balance?"
+    },
+    {
+      "label": "Confirm Payment",
+      "type": "checkbox",
+      "key": "balanceConfirmed",
+      "defaultValue": true,
+      "validate": { "required": true }
+    }
+  ],
+  "type": "default",
+  "id": "balance-confirm",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.15.1"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.17.0"
+}

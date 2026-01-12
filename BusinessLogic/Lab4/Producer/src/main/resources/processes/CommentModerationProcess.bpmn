@@ -26,6 +26,9 @@
       <bpmn:outgoing>Flow_Start_To_WriteComment</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:userTask id="UserTask_WriteComment" name="Write comment" camunda:formRef="comment-submission" camunda:formRefBinding="latest" camunda:candidateGroups="USER">
+      <bpmn:extensionElements>
+        <camunda:taskListener delegateExpression="${userEmailInjectorListener}" event="complete" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_Start_To_WriteComment</bpmn:incoming>
       <bpmn:outgoing>Flow_WriteComment_To_Persist</bpmn:outgoing>
     </bpmn:userTask>
