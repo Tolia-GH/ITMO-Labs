@@ -64,7 +64,9 @@ public class SpaceMarineRepo {
         }
 
         // 添加过滤条件到查询
-        cq.where(predicates.toArray(new Predicate[0]));
+        if (!predicates.isEmpty()) {
+            cq.where(predicates.toArray(new Predicate[0]));
+        }
 
         if (sort != null && !sort.isEmpty()) {
             List<Order> orders = new ArrayList<>();
@@ -76,7 +78,7 @@ public class SpaceMarineRepo {
                     if (field.startsWith("chapter.")) {
                         path = chapterJoin.get(field.substring(8)); // 访问 chapter 字段
                     } else if (field.startsWith("coordinates.")) {
-                        path = coordinatesJoin.get(field.substring(11)); // 访问 coordinates 字段
+                        path = coordinatesJoin.get(field.substring(12)); // 访问 coordinates 字段
                     } else {
                         path = root.get(field); // 访问 SpaceMarine 自身的字段
                     }
@@ -84,7 +86,9 @@ public class SpaceMarineRepo {
                     orders.add(ascending ? cb.asc(path) : cb.desc(path));
                 }
             }
-            cq.orderBy(orders);
+            if (!orders.isEmpty()) {
+                cq.orderBy(orders);
+            }
         }
 
         // 创建查询并分页
@@ -93,5 +97,55 @@ public class SpaceMarineRepo {
         query.setMaxResults(pageSize);
 
         return query.getResultList();
+    }
+    public SpaceMarine getSpaceMarineById(long id) {
+        return em.find(SpaceMarine.class, id);
+    }
+
+    public void save(SpaceMarine spaceMarine) {
+        if (spaceMarine.getId() == null) {
+            em.persist(spaceMarine);
+        } else {
+            em.merge(spaceMarine);
+        }
+    }
+
+    public void delete(SpaceMarine spaceMarine) {
+        if (em.contains(spaceMarine)) {
+            em.remove(spaceMarine);
+        } else {
+            em.remove(em.merge(spaceMarine));
+        }
+    }
+
+    public void deleteSpaceMarineByHeartCount(int heartCount) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaDelete<SpaceMarine> delete = cb.createCriteriaDelete(SpaceMarine.class);
+        Root<SpaceMarine> root = delete.from(SpaceMarine.class);
+        delete.where(cb.equal(root.get("heartCount"), heartCount));
+        em.createQuery(delete).executeUpdate();
+    }
+
+    public List<SpaceMarine> findByMeleeWeapon(String weapon) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<SpaceMarine> cq = cb.createQuery(SpaceMarine.class);
+        Root<SpaceMarine> root = cq.from(SpaceMarine.class);
+        
+        // Handle enum conversion if needed, assuming weapon string matches enum name
+        try {
+            se.ifmo.service1ejb.dao.model.enums.MeleeWeapon mw = se.ifmo.service1ejb.dao.model.enums.MeleeWeapon.valueOf(weapon);
+            cq.where(cb.equal(root.get("meleeWeapon"), mw));
+            return em.createQuery(cq).getResultList();
+        } catch (IllegalArgumentException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    public List<SpaceMarine> findByNamePrefix(String prefix) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<SpaceMarine> cq = cb.createQuery(SpaceMarine.class);
+        Root<SpaceMarine> root = cq.from(SpaceMarine.class);
+        cq.where(cb.like(root.get("name"), prefix + "%"));
+        return em.createQuery(cq).getResultList();
     }
 }

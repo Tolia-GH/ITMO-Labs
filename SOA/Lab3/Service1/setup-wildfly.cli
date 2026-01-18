@@ -1,0 +1,15 @@
+embed-server --server-config=standalone-full.xml --std-out=echo
+
+batch
+
+# Add PostgreSQL driver module
+module add --name=org.postgresql --resources=/opt/jboss/wildfly/standalone/deployments/postgresql-42.7.2.jar --dependencies=javax.api,javax.transaction.api
+
+# Add Driver
+/subsystem=datasources/jdbc-driver=postgresql:add(driver-name=postgresql,driver-module-name=org.postgresql,driver-class-name=org.postgresql.Driver)
+
+# Add Datasource
+data-source add --name=Lab2DS --jndi-name=java:/jdbc/Lab2DS --driver-name=postgresql --connection-url=jdbc:postgresql://host.docker.internal:5432/studs?currentSchema=soa_lab2 --user-name=postgres --password=123456 --min-pool-size=5 --max-pool-size=20 --check-valid-connection-sql="SELECT 1" --background-validation=true --background-validation-millis=60000 --flush-strategy=IdleConnections --statistics-enabled=true
+
+run-batch
+stop-embedded-server
