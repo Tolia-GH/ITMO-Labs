@@ -1,3 +1,6 @@
+CREATE SCHEMA IF NOT EXISTS soa_lab2;
+SET search_path TO soa_lab2;
+
 DROP TYPE IF EXISTS melee_weapon CASCADE;
 DROP TABLE IF EXISTS chapter CASCADE;
 DROP TABLE IF EXISTS coordinates CASCADE;

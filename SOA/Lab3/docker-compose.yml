@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   consul:
     image: consul:1.15
@@ -12,12 +10,16 @@ services:
     hostname: service1-1
     ports:
       - "19990:9990"
+    depends_on:
+      - consul
 
   service1-2:
     build: ./Service1
     hostname: service1-2
     ports:
       - "19991:9990"
+    depends_on:
+      - consul
 
   service2-1:
     build: ./Service2
@@ -25,7 +27,7 @@ services:
     environment:
       - SPRING_CLOUD_CONSUL_HOST=consul
       - SPRING_CLOUD_CONSUL_PORT=8500
-      - JAX_RS_SERVICE_BASEURL=http://haproxy:8080/Service1
+      - JAX_RS_SERVICE_BASEURL=http://haproxy:8080/api
       - SERVER_PORT=8083
     depends_on:
       - consul
@@ -37,7 +39,7 @@ services:
     environment:
       - SPRING_CLOUD_CONSUL_HOST=consul
       - SPRING_CLOUD_CONSUL_PORT=8500
-      - JAX_RS_SERVICE_BASEURL=http://haproxy:8080/Service1
+      - JAX_RS_SERVICE_BASEURL=http://haproxy:8080/api
       - SERVER_PORT=8083
     depends_on:
       - consul
