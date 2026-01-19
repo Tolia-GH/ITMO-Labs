@@ -15,7 +15,10 @@ USER jboss
 # Copy CLI script
 COPY setup-wildfly.cli /opt/jboss/wildfly/bin/setup-wildfly.cli
 
-# Run CLI script to configure datasource
+# Copy Keystore
+COPY keystore.p12 /opt/jboss/wildfly/standalone/configuration/keystore.p12
+
+# Run CLI script to configure datasource and SSL
 RUN /opt/jboss/wildfly/bin/jboss-cli.sh --file=/opt/jboss/wildfly/bin/setup-wildfly.cli
 
 # Copy WAR

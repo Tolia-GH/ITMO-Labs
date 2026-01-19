@@ -27,8 +27,15 @@ services:
     environment:
       - SPRING_CLOUD_CONSUL_HOST=consul
       - SPRING_CLOUD_CONSUL_PORT=8500
-      - JAX_RS_SERVICE_BASEURL=http://haproxy:8080/api
+      - JAX_RS_SERVICE_BASEURL=https://haproxy:8443/api
       - SERVER_PORT=8083
+      - SERVER_SSL_ENABLED=true
+      - SERVER_SSL_KEY_STORE=file:/app/keystore.p12
+      - SERVER_SSL_KEY_STORE_PASSWORD=password
+      - SERVER_SSL_KEY_STORE_TYPE=PKCS12
+      - SPRING_CLOUD_CONSUL_DISCOVERY_SCHEME=https
+      - SPRING_CLOUD_CONSUL_DISCOVERY_HEALTH_CHECK_TLS_SKIP_VERIFY=true
+      - JAVA_TOOL_OPTIONS=-Djavax.net.ssl.trustStore=/app/keystore.p12 -Djavax.net.ssl.trustStorePassword=password -Djavax.net.ssl.trustStoreType=PKCS12
     depends_on:
       - consul
       - service1-1
@@ -39,8 +46,15 @@ services:
     environment:
       - SPRING_CLOUD_CONSUL_HOST=consul
       - SPRING_CLOUD_CONSUL_PORT=8500
-      - JAX_RS_SERVICE_BASEURL=http://haproxy:8080/api
+      - JAX_RS_SERVICE_BASEURL=https://haproxy:8443/api
       - SERVER_PORT=8083
+      - SERVER_SSL_ENABLED=true
+      - SERVER_SSL_KEY_STORE=file:/app/keystore.p12
+      - SERVER_SSL_KEY_STORE_PASSWORD=password
+      - SERVER_SSL_KEY_STORE_TYPE=PKCS12
+      - SPRING_CLOUD_CONSUL_DISCOVERY_SCHEME=https
+      - SPRING_CLOUD_CONSUL_DISCOVERY_HEALTH_CHECK_TLS_SKIP_VERIFY=true
+      - JAVA_TOOL_OPTIONS=-Djavax.net.ssl.trustStore=/app/keystore.p12 -Djavax.net.ssl.trustStorePassword=password -Djavax.net.ssl.trustStoreType=PKCS12
     depends_on:
       - consul
 
@@ -48,9 +62,10 @@ services:
     image: haproxy:2.8
     volumes:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+      - ./certs/haproxy.pem:/usr/local/etc/haproxy/haproxy.pem:ro
     ports:
-      - "18080:8080"
-      - "18083:8083"
+      - "18443:8443"
+      - "18444:8444"
       - "1937:1936"
     depends_on:
       - service1-1
