@@ -24,7 +24,7 @@ public class NewSpaceMarine {
     private Integer heartCount;
     private Float height;
     @Enumerated(EnumType.STRING)
-    @Type(type = "pgsql_enum")
+    @Column(name = "melee_weapon", columnDefinition = "melee_weapon")
     private MeleeWeapon meleeWeapon;
     @XmlElement
     private Chapter chapter;
