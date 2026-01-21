@@ -80,4 +80,26 @@ public class SpaceMarineWebServiceImpl implements SpaceMarineWebService {
             throw new RuntimeException("Internal error: " + e.getMessage(), e);
         }
     }
+
+    @Override
+    public List<SpaceMarine> getSpaceMarineListByMeleeWeapon(String meleeWeapon) {
+        try {
+            return spaceMarineService.getSpaceMarineListByMeleeWeapon(meleeWeapon);
+        } catch (SQLException e) {
+            throw new RuntimeException("Database error: " + e.getMessage(), e);
+        } catch (Exception e) {
+            throw new RuntimeException("Internal error: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<SpaceMarine> getSpaceMarineListByName(String name) {
+        try {
+            return spaceMarineService.getSpaceMarineListByName(name);
+        } catch (SQLException e) {
+            throw new RuntimeException("Database error: " + e.getMessage(), e);
+        } catch (Exception e) {
+            throw new RuntimeException("Internal error: " + e.getMessage(), e);
+        }
+    }
 }

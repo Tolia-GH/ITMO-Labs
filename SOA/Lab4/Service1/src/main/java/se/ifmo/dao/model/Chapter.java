@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name = "chapter")
+@Table(name = "chapter", schema = "soa_lab2")
 @NoArgsConstructor
 @AllArgsConstructor
-@XmlRootElement
+@XmlRootElement(name = "chapter")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Chapter {
     @Id

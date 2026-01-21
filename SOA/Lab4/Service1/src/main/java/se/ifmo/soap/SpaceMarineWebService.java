@@ -36,4 +36,10 @@ public interface SpaceMarineWebService {
 
     @WebMethod
     void deleteSpaceMarineByHeartCount(@WebParam(name = "heartCount") int heartCount);
+
+    @WebMethod
+    List<SpaceMarine> getSpaceMarineListByMeleeWeapon(@WebParam(name = "meleeWeapon") String meleeWeapon);
+
+    @WebMethod
+    List<SpaceMarine> getSpaceMarineListByName(@WebParam(name = "name") String name);
 }

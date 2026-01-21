@@ -13,6 +13,10 @@ import se.ifmo.dao.model.enums.MeleeWeapon;
 import se.ifmo.util.DatabaseUtil;
 
 
+import jakarta.persistence.EntityGraph;
+import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
+
 import java.sql.*;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -50,13 +54,26 @@ public class SpaceMarineRepo {
                         .atZone(ZonedDateTime.now().getZone()));
     }
 
+    // Helper method to unproxy Hibernate entities
+    @SuppressWarnings("unchecked")
+    private <T> T unproxy(T entity) {
+        if (entity == null) {
+            return null;
+        }
+        if (entity instanceof HibernateProxy) {
+            Hibernate.initialize(entity);
+            return (T) ((HibernateProxy) entity).getHibernateLazyInitializer().getImplementation();
+        }
+        return entity;
+    }
+
     public List<SpaceMarine> getSpaceMarineList(List<String> sort, String order, List<String> filters, int page, int pageSize) {
         // 构建 Criteria API 查询
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<SpaceMarine> cq = cb.createQuery(SpaceMarine.class);
         Root<SpaceMarine> root = cq.from(SpaceMarine.class);
 
-        Join<SpaceMarine, Chapter> chapterJoin = root.join("chapter", JoinType.LEFT); // LEFT JOIN 以包含没有关联的记录
+        Join<SpaceMarine, Chapter> chapterJoin = root.join("chapter", JoinType.LEFT);
         Join<SpaceMarine, Coordinates> coordinatesJoin = root.join("coordinates", JoinType.LEFT);
 
         // 处理过滤条件
@@ -121,11 +138,31 @@ public class SpaceMarineRepo {
 
         // 创建查询并分页
         TypedQuery<SpaceMarine> query = em.createQuery(cq);
+        
+        // Use EntityGraph for fetching
+        EntityGraph<SpaceMarine> graph = em.createEntityGraph(SpaceMarine.class);
+        graph.addAttributeNodes("coordinates", "chapter");
+        query.setHint("jakarta.persistence.loadgraph", graph);
+        
         query.setFirstResult(page * pageSize);
         query.setMaxResults(pageSize);
 
         // 执行查询
-        return query.getResultList();
+        List<SpaceMarine> results = query.getResultList();
+        
+        // Unproxy
+        List<SpaceMarine> unproxiedResults = new ArrayList<>();
+        for (SpaceMarine sm : results) {
+            if (sm.getCoordinates() != null) {
+                sm.setCoordinates(unproxy(sm.getCoordinates()));
+            }
+            if (sm.getChapter() != null) {
+                sm.setChapter(unproxy(sm.getChapter()));
+            }
+            unproxiedResults.add(unproxy(sm));
+        }
+        
+        return unproxiedResults;
     }
 
     // 获取指定ID的SpaceMarine
@@ -134,27 +171,39 @@ public class SpaceMarineRepo {
         CriteriaQuery<SpaceMarine> cq = cb.createQuery(SpaceMarine.class);
         Root<SpaceMarine> spaceMarineRoot = cq.from(SpaceMarine.class);
 
-        // 连接 Coordinates 和 Chapter 以确保查询时自动加载
-        spaceMarineRoot.fetch("coordinates", JoinType.LEFT);
-        spaceMarineRoot.fetch("chapter", JoinType.LEFT);
-
-        // 添加 where 条件
+        // Add where condition
         cq.select(spaceMarineRoot)
                 .where(cb.equal(spaceMarineRoot.get("id"), id));
 
         // 执行查询
-        List<SpaceMarine> results = em.createQuery(cq).getResultList();
+        TypedQuery<SpaceMarine> query = em.createQuery(cq);
+        
+        // 使用 EntityGraph 确保关联数据被加载
+        EntityGraph<SpaceMarine> graph = em.createEntityGraph(SpaceMarine.class);
+        graph.addAttributeNodes("coordinates", "chapter");
+        query.setHint("jakarta.persistence.loadgraph", graph);
+        
+        List<SpaceMarine> results = query.getResultList();
 
         if (results.isEmpty()) {
             throw new SQLException("Space marine not found");
         }
+        
+        SpaceMarine sm = results.get(0);
+        
+        if (sm.getCoordinates() != null) {
+            sm.setCoordinates(unproxy(sm.getCoordinates()));
+        }
+        if (sm.getChapter() != null) {
+            sm.setChapter(unproxy(sm.getChapter()));
+        }
 
-        return results.get(0);
+        return unproxy(sm);
     }
 
     // 插入坐标表
     public int insertCoordinates(Connection conn, Coordinates coordinates) throws SQLException {
-        String sql = "INSERT INTO coordinates (x, y) VALUES (?, ?) RETURNING id";
+        String sql = "INSERT INTO soa_lab2.coordinates (x, y) VALUES (?, ?) RETURNING id";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, coordinates.getX());
             ps.setDouble(2, coordinates.getY());
@@ -170,7 +219,7 @@ public class SpaceMarineRepo {
     // 插入章节表（如果有章节信息）
     public Integer insertChapter(Connection conn, Chapter chapter) throws SQLException {
         if (chapter != null && chapter.getName() != null) {
-            String sql = "INSERT INTO chapter (name, world) VALUES (?, ?) RETURNING id";
+            String sql = "INSERT INTO soa_lab2.chapter (name, world) VALUES (?, ?) RETURNING id";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, chapter.getName());
                 ps.setString(2, chapter.getWorld());
@@ -185,7 +234,7 @@ public class SpaceMarineRepo {
 
     // 插入 SpaceMarine 表
     public SpaceMarine insertSpaceMarine(Connection conn, NewSpaceMarine newSM, int coordinateId, Integer chapterId) throws SQLException {
-        String sql = "INSERT INTO space_marine (name, coordinate_id, health, heart_count, height, melee_weapon, chapter_id) " +
+        String sql = "INSERT INTO soa_lab2.space_marine (name, coordinate_id, health, heart_count, height, melee_weapon, chapter_id) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id, creation_date";
         SpaceMarine sm = new SpaceMarine();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -216,7 +265,7 @@ public class SpaceMarineRepo {
 
     // 更新coordinates表
     public void updateCoordinates(Connection conn, Coordinates coordinates, Long id) throws SQLException {
-        String sql = "UPDATE coordinates SET x = ?, y = ? WHERE id = ?";
+        String sql = "UPDATE soa_lab2.coordinates SET x = ?, y = ? WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, coordinates.getX());
             ps.setDouble(2, coordinates.getY());
@@ -227,7 +276,7 @@ public class SpaceMarineRepo {
 
     // 更新chapter表
     public void updateChapter(Connection conn, Chapter chapter, Long id) throws SQLException {
-        String sql = "UPDATE chapter SET name = ?, world = ? WHERE id = ?";
+        String sql = "UPDATE soa_lab2.chapter SET name = ?, world = ? WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, chapter.getName());
             ps.setString(2, chapter.getWorld());
@@ -238,7 +287,7 @@ public class SpaceMarineRepo {
 
     // 更新space_marine表
     public void updateSpaceMarine(Connection conn, NewSpaceMarine updatedSM, long id) throws SQLException {
-        String sql = "UPDATE space_marine SET name = ?, health = ?, heart_count = ?, height = ?, melee_weapon = ? WHERE id = ?";
+        String sql = "UPDATE soa_lab2.space_marine SET name = ?, health = ?, heart_count = ?, height = ?, melee_weapon = ? WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, updatedSM.getName());
             ps.setInt(2, updatedSM.getHealth());
@@ -254,7 +303,7 @@ public class SpaceMarineRepo {
     }
 
     public void deleteSpaceMarineById(long id) throws SQLException {
-        String sql = "DELETE FROM space_marine WHERE id = ?";
+        String sql = "DELETE FROM soa_lab2.space_marine WHERE id = ?";
         try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -264,7 +313,7 @@ public class SpaceMarineRepo {
     }
 
     public void deleteSpaceMarineByHeartCount(int heartCount) throws SQLException {
-        String sql = "DELETE FROM space_marine WHERE heart_count = ?";
+        String sql = "DELETE FROM soa_lab2.space_marine WHERE heart_count = ?";
         try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -287,10 +336,10 @@ public class SpaceMarineRepo {
                 "sm.melee_weapon, " +
                 "c.id AS c_id, c.x, c.y, " +
                 "ch.id AS ch_id, ch.name AS ch_name, ch.world " +
-                "FROM space_marine sm " +
-                "JOIN coordinates c ON c.id = sm.coordinate_id " +
-                "JOIN chapter ch ON ch.id = sm.chapter_id " +
-                "WHERE melee_weapon = CAST(? AS melee_weapon) " +
+                "FROM soa_lab2.space_marine sm " +
+                "JOIN soa_lab2.coordinates c ON c.id = sm.coordinate_id " +
+                "JOIN soa_lab2.chapter ch ON ch.id = sm.chapter_id " +
+                "WHERE melee_weapon = CAST(? AS soa_lab2.melee_weapon) " +
                 "ORDER BY sm.id ";
 
         try (Connection conn = DatabaseUtil.getConnection();
@@ -320,9 +369,9 @@ public class SpaceMarineRepo {
                 "sm.melee_weapon, " +
                 "c.id AS c_id, c.x, c.y, " +
                 "ch.id AS ch_id, ch.name AS ch_name, ch.world " +
-                "FROM space_marine sm " +
-                "JOIN coordinates c ON c.id = sm.coordinate_id " +
-                "JOIN chapter ch ON ch.id = sm.chapter_id " +
+                "FROM soa_lab2.space_marine sm " +
+                "JOIN soa_lab2.coordinates c ON c.id = sm.coordinate_id " +
+                "JOIN soa_lab2.chapter ch ON ch.id = sm.chapter_id " +
                 "WHERE sm.name LIKE ? " +
                 "ORDER BY sm.id ";
 
