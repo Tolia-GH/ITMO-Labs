@@ -8,10 +8,10 @@ import jakarta.jws.WebService;
 public interface StarshipWebService {
     @WebMethod
     void unloadSpaceMarineById(
-            @WebParam(name = "starshipId") long starshipId,
-            @WebParam(name = "spaceMarineId") long spaceMarineId
+            @WebParam(name = "starship_id") long starshipId,
+            @WebParam(name = "space_marine_id") long spaceMarineId
     );
 
     @WebMethod
-    void unloadAllSpaceMarines(@WebParam(name = "starshipId") long starshipId);
+    void unloadAllSpaceMarines(@WebParam(name = "starship_id") long starshipId);
 }

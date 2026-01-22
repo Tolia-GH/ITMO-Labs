@@ -11,9 +11,9 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@XmlRootElement(name = "res")
+@XmlRootElement(name = "space_marine_list")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SpaceMarineResponse {
-    @XmlElement(name = "SpaceMarine")
+    @XmlElement(name = "space_marine")
     private List<SpaceMarine> spaceMarines;
 }

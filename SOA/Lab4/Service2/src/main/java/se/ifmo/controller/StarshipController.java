@@ -19,7 +19,7 @@ public class StarshipController {
     @ResponseBody
     public ResponseEntity<?> unloadSpaceMarineById(
             @PathVariable("starship-id") long starshipId,
-            @RequestParam("spaceMarineId") long spaceMarineId) {
+            @RequestParam("space_marine_id") long spaceMarineId) {
         return starshipService.unloadSpaceMarineById(starshipId, spaceMarineId)?
                 ResponseEntity.ok(new SuccessResponse(200, "Selected SpaceMarine unloaded from given spaceship")) :
                 ResponseEntity.status(500).body(new ErrorResponse(500, "Something wrong"));

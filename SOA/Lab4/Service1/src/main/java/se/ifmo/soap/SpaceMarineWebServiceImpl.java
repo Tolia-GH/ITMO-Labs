@@ -93,9 +93,9 @@ public class SpaceMarineWebServiceImpl implements SpaceMarineWebService {
     }
 
     @Override
-    public List<SpaceMarine> getSpaceMarineListByName(String name) {
+    public List<SpaceMarine> getSpaceMarineListByName(String namePrefix) {
         try {
-            return spaceMarineService.getSpaceMarineListByName(name);
+            return spaceMarineService.getSpaceMarineListByName(namePrefix);
         } catch (SQLException e) {
             throw new RuntimeException("Database error: " + e.getMessage(), e);
         } catch (Exception e) {

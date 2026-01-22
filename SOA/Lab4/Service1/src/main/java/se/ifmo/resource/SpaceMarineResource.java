@@ -28,7 +28,7 @@ public class SpaceMarineResource {
             @QueryParam("order") @DefaultValue("ASC") String order,
             @QueryParam("filter") List<String> filter,
             @QueryParam("page") @DefaultValue("0") int page,
-            @QueryParam("pageSize") @DefaultValue("10") int pageSize
+            @QueryParam("page_size") @DefaultValue("10") int pageSize
     ) {
         try {
             List<SpaceMarine> spaceMarines = spaceMarineService.getAllSpaceMarine(sort, order, filter, page, pageSize);
@@ -184,7 +184,7 @@ public class SpaceMarineResource {
     @Path("/by-heart-count")
     @Produces(MediaType.APPLICATION_XML)
     public Response deleteSpaceMarineByHeartCount(
-            @QueryParam("heartCount") int heartCount
+            @QueryParam("heart_count") int heartCount
     ) {
         try {
             spaceMarineService.deleteSpaceMarineByHeartCount(heartCount);
@@ -216,7 +216,7 @@ public class SpaceMarineResource {
     @Path("/count/by-melee-weapon")
     @Produces(MediaType.APPLICATION_XML)
     public Response getSpaceMarineCountByMeleeWeapon(
-            @QueryParam("meleeWeapon") String weapon) {
+            @QueryParam("melee_weapon") String weapon) {
         try {
             List<SpaceMarine> spaceMarineList = spaceMarineService.getSpaceMarineListByMeleeWeapon(weapon);
             CountResponse countResponse = new CountResponse(200, spaceMarineList.size(), ZonedDateTime.now());
@@ -247,7 +247,7 @@ public class SpaceMarineResource {
     @Path("/by-name")
     @Produces(MediaType.APPLICATION_XML)
     public Response getSpaceMarineByName(
-            @QueryParam("prefix") String name)  {
+            @QueryParam("name_prefix") String name)  {
         try {
             List<SpaceMarine> spaceMarineList = spaceMarineService.getSpaceMarineListByName(name);
             SpaceMarineResponse spaceMarineResponse = new SpaceMarineResponse(spaceMarineList);

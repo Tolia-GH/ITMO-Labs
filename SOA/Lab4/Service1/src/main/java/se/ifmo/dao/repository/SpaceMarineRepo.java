@@ -67,6 +67,23 @@ public class SpaceMarineRepo {
         return entity;
     }
 
+    private String normalizeSpaceMarineField(String field) {
+        if (field == null) {
+            return null;
+        }
+        for (int i = 0; i < field.length(); i++) {
+            if (Character.isUpperCase(field.charAt(i))) {
+                throw new IllegalArgumentException("Field must be snake_case: " + field);
+            }
+        }
+        return switch (field) {
+            case "heart_count" -> "heartCount";
+            case "melee_weapon" -> "meleeWeapon";
+            case "creation_date" -> "creationDate";
+            default -> field;
+        };
+    }
+
     public List<SpaceMarine> getSpaceMarineList(List<String> sort, String order, List<String> filters, int page, int pageSize) {
         // 构建 Criteria API 查询
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -92,7 +109,7 @@ public class SpaceMarineRepo {
                     } else if (field.startsWith("coordinates.")) {
                         path = coordinatesJoin.get(field.replace("coordinates.", ""));  // 访问 `coordinates` 关联表字段
                     } else {
-                        path = root.get(field);  // 访问 `space_marine` 自身字段
+                        path = root.get(normalizeSpaceMarineField(field));  // 访问 `space_marine` 自身字段
                     }
 
                     switch (operator) {
@@ -127,7 +144,7 @@ public class SpaceMarineRepo {
                     } else if (field.startsWith("coordinates.")) {
                         path = coordinatesJoin.get(field.substring(11)); // 访问 coordinates 字段
                     } else {
-                        path = root.get(field); // 访问 SpaceMarine 自身的字段
+                        path = root.get(normalizeSpaceMarineField(field)); // 访问 SpaceMarine 自身的字段
                     }
 
                     orders.add(ascending ? cb.asc(path) : cb.desc(path));
@@ -339,7 +356,7 @@ public class SpaceMarineRepo {
                 "FROM soa_lab2.space_marine sm " +
                 "JOIN soa_lab2.coordinates c ON c.id = sm.coordinate_id " +
                 "JOIN soa_lab2.chapter ch ON ch.id = sm.chapter_id " +
-                "WHERE melee_weapon = CAST(? AS soa_lab2.melee_weapon) " +
+                "WHERE CAST(sm.melee_weapon AS text) = ? " +
                 "ORDER BY sm.id ";
 
         try (Connection conn = DatabaseUtil.getConnection();

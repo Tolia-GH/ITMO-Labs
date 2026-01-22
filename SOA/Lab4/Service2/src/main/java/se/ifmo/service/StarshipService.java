@@ -10,6 +10,7 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import se.ifmo.model.SuccessResponse;
 
+import java.util.Map;
 
 @Service
 public class StarshipService {
@@ -27,8 +28,16 @@ public class StarshipService {
 
     public boolean unloadSpaceMarineById(long starshipId, long spaceMarineId) {
         try {
-            String url = String.format("%s/api/v1/starship/%d/unload/space-marine-id", jaxRSServiceBaseUrl, starshipId);
-            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class, spaceMarineId);
+            String url = String.format(
+                    "%s/api/v1/starship/%d/unload/space-marine-id?space_marine_id={space_marine_id}",
+                    jaxRSServiceBaseUrl,
+                    starshipId
+            );
+            ResponseEntity<String> response = restTemplate.getForEntity(
+                    url,
+                    String.class,
+                    Map.of("space_marine_id", spaceMarineId)
+            );
 
             return response.getStatusCode().is2xxSuccessful();
         } catch (RestClientException e) {

@@ -20,7 +20,7 @@ public class StarshipResource {
     @Produces(MediaType.APPLICATION_XML)
     public Response unloadSpaceMarineById(
             @PathParam("starship-id") long starshipId,
-            @QueryParam("space-marine-id") long spaceMarineId
+            @QueryParam("space_marine_id") long spaceMarineId
     ) {
         try {
             starshipService.unloadSpaceMarineById(starshipId, spaceMarineId);

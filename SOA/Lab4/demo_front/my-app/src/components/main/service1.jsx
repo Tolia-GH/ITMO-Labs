@@ -44,11 +44,7 @@ const SpaceMarineTable = ({ xmlData }) => {
     }
 
     // 处理单个 Space Marine
-    let spaceMarines = xmlDoc.getElementsByTagName('SpaceMarine');
-    if (spaceMarines.length === 0) {
-        // 如果没有 <SpaceMarine>，检查是否是单个 <spaceMarine> 结构
-        spaceMarines = xmlDoc.getElementsByTagName('spaceMarine');
-    }
+    const spaceMarines = xmlDoc.getElementsByTagName('space_marine');
 
     // 构造表格行
     const rows = Array.from(spaceMarines).map((spaceMarine) => {
@@ -57,9 +53,9 @@ const SpaceMarineTable = ({ xmlData }) => {
         const x = spaceMarine.getElementsByTagName('coordinates')[0]?.getElementsByTagName('x')[0]?.textContent;
         const y = spaceMarine.getElementsByTagName('coordinates')[0]?.getElementsByTagName('y')[0]?.textContent;
         const health = spaceMarine.getElementsByTagName('health')[0]?.textContent;
-        const heartCount = spaceMarine.getElementsByTagName('heartCount')[0]?.textContent;
+        const heartCount = spaceMarine.getElementsByTagName('heart_count')[0]?.textContent;
         const height = spaceMarine.getElementsByTagName('height')[0]?.textContent;
-        const meleeWeapon = spaceMarine.getElementsByTagName('meleeWeapon')[0]?.textContent;
+        const meleeWeapon = spaceMarine.getElementsByTagName('melee_weapon')[0]?.textContent;
         const chapterName = spaceMarine.getElementsByTagName('chapter')[0]?.getElementsByTagName('name')[0]?.textContent;
         const chapterWorld = spaceMarine.getElementsByTagName('chapter')[0]?.getElementsByTagName('world')[0]?.textContent;
 
@@ -218,7 +214,7 @@ export function Service1() {
         e.preventDefault();
         let url = `${BASE_URL_S1}/v1/space-marine?&order=${encodeURIComponent(listParams.order)}&page=${encodeURIComponent(
             listParams.page
-        )}&pageSize=${encodeURIComponent(listParams.pageSize)}`;
+        )}&page_size=${encodeURIComponent(listParams.pageSize)}`;
 
         if (listParams.sort.trim() !== '') {
             listParams.sort.split(',').forEach((f) => {
@@ -264,21 +260,21 @@ export function Service1() {
     // 处理 POST 表单提交
     const handlePostSubmit = (e) => {
         e.preventDefault();
-        const xml = `<newSpaceMarine>
+        const xml = `<space_marine>
   <name>${postForm.name}</name>
   <coordinates>
     <x>${postForm.x}</x>
     <y>${postForm.y}</y>
   </coordinates>
   <health>${postForm.health}</health>
-  <heartCount>${postForm.heartCount}</heartCount>
+  <heart_count>${postForm.heartCount}</heart_count>
   <height>${postForm.height}</height>
-  <meleeWeapon>${postForm.meleeWeapon}</meleeWeapon>
+  <melee_weapon>${postForm.meleeWeapon}</melee_weapon>
   <chapter>
     <name>${postForm.chapterName}</name>
     <world>${postForm.chapterWorld}</world>
   </chapter>
-</newSpaceMarine>`;
+</space_marine>`;
         const url = `${BASE_URL_S1}/v1/space-marine`;
         fetch(url, {
             method: 'POST',
@@ -298,21 +294,21 @@ export function Service1() {
     // 处理PUT更新
     const handlePutSubmit = (e) => {
         e.preventDefault();
-        const xml = `<newSpaceMarine>
+        const xml = `<space_marine>
   <name>${postForm.name}</name>
   <coordinates>
     <x>${postForm.x}</x>
     <y>${postForm.y}</y>
   </coordinates>
   <health>${postForm.health}</health>
-  <heartCount>${postForm.heartCount}</heartCount>
+  <heart_count>${postForm.heartCount}</heart_count>
   <height>${postForm.height}</height>
-  <meleeWeapon>${postForm.meleeWeapon}</meleeWeapon>
+  <melee_weapon>${postForm.meleeWeapon}</melee_weapon>
   <chapter>
     <name>${postForm.chapterName}</name>
     <world>${postForm.chapterWorld}</world>
   </chapter>
-</newSpaceMarine>`;
+</space_marine>`;
         const url = `${BASE_URL_S1}/v1/space-marine/${encodeURIComponent(putId)}`;
         fetch(url, {
             method: 'PUT',
@@ -345,7 +341,7 @@ export function Service1() {
     // 处理DELETE by heartCount
     const handleDeleteHeartCountSubmit = (e) => {
         e.preventDefault();
-        const url = `${BASE_URL_S1}/v1/space-marine/by-heart-count/?heartCount=${encodeURIComponent(deleteHeartCount)}`;
+        const url = `${BASE_URL_S1}/v1/space-marine/by-heart-count/?heart_count=${encodeURIComponent(deleteHeartCount)}`;
         fetch(url, { method: 'DELETE' })
             .then(res => res.text())
             .then(data => {
@@ -359,7 +355,7 @@ export function Service1() {
     // 处理GET count
     const handleCountSubmit = (e) => {
         e.preventDefault();
-        const url = `${BASE_URL_S1}/v1/space-marine/count/by-melee-weapon/?meleeWeapon=${encodeURIComponent(meleeWeapon)}`;
+        const url = `${BASE_URL_S1}/v1/space-marine/count/by-melee-weapon/?melee_weapon=${encodeURIComponent(meleeWeapon)}`;
         fetch(url)
             .then(res => res.text())
             .then(data => {
@@ -373,7 +369,7 @@ export function Service1() {
     // 处理GET by name prefix
     const handleNamePrefixSubmit = (e) => {
         e.preventDefault();
-        const url = `${BASE_URL_S1}/v1/space-marine/by-name?prefix=${encodeURIComponent(namePrefix)}`;
+        const url = `${BASE_URL_S1}/v1/space-marine/by-name?name_prefix=${encodeURIComponent(namePrefix)}`;
         fetch(url)
             .then(res => res.text())
             .then(data => {
@@ -388,9 +384,9 @@ export function Service1() {
     // 处理Starship卸载操作
     const handleUnloadSubmit = (e) => {
         e.preventDefault();
-        const baseUrl = `${BASE_URL_S2}/v1/starship/${encodeURIComponent(unloadParams.starshipId)}/unload/space-marine-id/`;
+        const baseUrl = `${BASE_URL_S2}/v1/starship/${encodeURIComponent(unloadParams.starshipId)}/unload/space-marine-id`;
         const queryParams = unloadParams.spaceMarineIds.split(',')
-            .map(id => `spaceMarineId=${encodeURIComponent(id.trim())}`)
+            .map(id => `space_marine_id=${encodeURIComponent(id.trim())}`)
             .join('&');
 
         const url = `${baseUrl}${queryParams ? '?' + queryParams : ''}`;

@@ -16,11 +16,11 @@ public interface SpaceMarineWebService {
             @WebParam(name = "order") String order,
             @WebParam(name = "filter") List<String> filter,
             @WebParam(name = "page") int page,
-            @WebParam(name = "pageSize") int pageSize
+            @WebParam(name = "page_size") int pageSize
     );
 
     @WebMethod
-    SpaceMarine addSpaceMarine(@WebParam(name = "newSpaceMarine") NewSpaceMarine newSpaceMarine);
+    SpaceMarine addSpaceMarine(@WebParam(name = "space_marine") NewSpaceMarine newSpaceMarine);
 
     @WebMethod
     SpaceMarine getSpaceMarineById(@WebParam(name = "id") long id);
@@ -28,18 +28,18 @@ public interface SpaceMarineWebService {
     @WebMethod
     void updateSpaceMarineById(
             @WebParam(name = "id") long id, 
-            @WebParam(name = "newSpaceMarine") NewSpaceMarine newSpaceMarine
+            @WebParam(name = "space_marine") NewSpaceMarine newSpaceMarine
     );
 
     @WebMethod
     void deleteSpaceMarineById(@WebParam(name = "id") long id);
 
     @WebMethod
-    void deleteSpaceMarineByHeartCount(@WebParam(name = "heartCount") int heartCount);
+    void deleteSpaceMarineByHeartCount(@WebParam(name = "heart_count") int heartCount);
 
     @WebMethod
-    List<SpaceMarine> getSpaceMarineListByMeleeWeapon(@WebParam(name = "meleeWeapon") String meleeWeapon);
+    List<SpaceMarine> getSpaceMarineListByMeleeWeapon(@WebParam(name = "melee_weapon") String meleeWeapon);
 
     @WebMethod
-    List<SpaceMarine> getSpaceMarineListByName(@WebParam(name = "name") String name);
+    List<SpaceMarine> getSpaceMarineListByName(@WebParam(name = "name_prefix") String namePrefix);
 }
