@@ -1,8 +1,74 @@
 
-
 1. SOA Lab4 should be developped base on Lab2(Not based on Lab3!)
 2. Need 2-3 helios account of student on helios to deploy Lab4
 3. For each account deploy 1 instance of Service1 and Service2, make sure different service instance use different resources and different database on helios
 4. Change Service1 from Restful to SOAP, Service2 just keep on Restful
 5. Use Mule ESB to integrate 2 service together
-6. （在Mule上？）实现一个额外的 REST 层，以便在无需修改客户端应用程序服务的情况下对其进行访问。所开发的 REST 层除了 SOAP 服务调用之外，不应包含任何其他逻辑。
+6. Realize an additional Rest Layer(on Mule ESB, don't need to create another Rest API Service), so that I don't need to change the client (Service 2) to access to Service 1, the Rest Layer should not contain any logic besides calling SOAP Services 
+
+```mermaid
+flowchart TB
+ subgraph Client["Client"]
+        A["React Frontend"]
+  end
+ subgraph SpringBoot["SpringBoot"]
+        B["Service2<br>Spring Boot<br>REST API"]
+  end
+ subgraph Mule["Mule ESB"]
+        C["REST Layer<br>HTTP Listener"]
+        D["Translator<br>DataWeave"]
+        E["SOAP Layer<br>Web Service Consumer"]
+  end
+ subgraph WildFly["WildFly"]
+        F["Service1<br>SOAP Web Service"]
+  end
+    A -- REST / JSON --> B & C
+    B -- REST / JSON --> C & A
+    C --> D
+    D --> E & C
+    E -- SOAP / XML --> F
+    F -- SOAP / XML --> E
+    E --> D
+    C -- REST / JSON --> B & A
+```
+
+Now ther should be two way for React Frontend to call Service1 and Service2:
+
+1. React Frontend <-rest-> Service2 <-rest-> Mule <-soap-> Service1
+2. React Frontend <-rest-> Mule <-soap-> Service1
+
+```mermaid
+flowchart TB
+ subgraph Client["Client"]
+        A["React Frontend"]
+  end
+ subgraph HAProxy2["HAProxy Service2"]
+        A1["HAProxy LB"]
+  end
+ subgraph Service2["Service2 Instances"]
+        B1["Instance 1 on user 1"]
+        B2["Instance 2 on user 2"]
+  end
+ subgraph Mule["Mule ESB"]
+        C1["REST Layer"]
+        C2["Translator"]
+        C3["SOAP Layer"]
+  end
+ subgraph HAProxy1["HAProxy Service1"]
+        D1["HAProxy LB"]
+  end
+ subgraph Service1["Service1 Instances"]
+        F1["Instance 1 on user 1"]
+        F2["Instance 2 on user 2"]
+  end
+    A -- REST / JSON --> C1
+    A <-- REST / JSON --> A1
+    A1 <-- REST / JSON --> B1 & B2
+    B1 <-- REST / JSON --> C1
+    B2 <-- REST / JSON --> C1
+    C1 <--> C2
+    C1 -- REST / JSON --> A
+    C2 <--> C3
+    C3 <-- SOAP / XML --> D1
+    D1 <--> F1 & F2
+```
