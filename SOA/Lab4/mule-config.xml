@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+	http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+	http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+	http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+	http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+
+    <!-- Global Configuration -->
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config">
+		<http:listener-connection protocol="HTTPS" host="0.0.0.0" port="8081">
+			<tls:context >
+				<tls:key-store type="pkcs12" path="keystore.p12" keyPassword="changeit" password="changeit"/>
+			</tls:context>
+		</http:listener-connection>
+	</http:listener-config>
+
+	<wsc:config name="SpaceMarine_WSC_Config" doc:name="Web Service Consumer Config">
+		<wsc:connection wsdlLocation="http://localhost:8080/api/SpaceMarineService?wsdl" service="SpaceMarineService" port="SpaceMarineWebServiceImplPort" address="http://localhost:8080/api/SpaceMarineService">
+            <wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" />
+        </wsc:connection>
+	</wsc:config>
+
+    <wsc:config name="Starship_WSC_Config" doc:name="Web Service Consumer Config">
+		<wsc:connection wsdlLocation="http://localhost:8080/api/StarshipService?wsdl" service="StarshipService" port="StarshipWebServiceImplPort" address="http://localhost:8080/api/StarshipService">
+            <wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" />
+        </wsc:connection>
+	</wsc:config>
+
+    <!-- Flow: Get All SpaceMarines -->
+    <flow name="getAllSpaceMarines">
+        <http:listener doc:name="Listener" config-ref="HTTP_Listener_config" path="/api/v1/space-marine" allowedMethods="GET, OPTIONS">
+            <http:response>
+                <http:headers>
+                    <![CDATA[#[
+                        {
+                            "Access-Control-Allow-Origin": "*",
+                            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+                            "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With"
+                        }
+                    ]]]>
+                </http:headers>
+            </http:response>
+        </http:listener>
+        <choice doc:name="Choice">
+            <when expression="#[attributes.method == 'OPTIONS']">
+                <set-payload value="" doc:name="Set Payload"/>
+            </when>
+            <otherwise>
+                <ee:transform doc:name="Transform to SOAP Request">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://soap.ifmo.se/
+---
+{
+    ns0#getAllSpaceMarine: {
+        sort: if (isEmpty(attributes.queryParams.*sort)) "id" else attributes.queryParams.*sort,
+        order: attributes.queryParams.order default "ASC",
+        filter: attributes.queryParams.*filter,
+        page: attributes.queryParams.page as Number default 0,
+        page_size: attributes.queryParams.page_size as Number default 10
+    }
+}]]></ee:set-payload>
+                    </ee:message>
+                </ee:transform>
+                <wsc:consume doc:name="Consume getAllSpaceMarine" config-ref="SpaceMarine_WSC_Config" operation="getAllSpaceMarine"/>
+                <ee:transform doc:name="Transform to REST Response">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://soap.ifmo.se/
+---
+{
+    space_marine_list: {
+        (payload.body.ns0#getAllSpaceMarineResponse.*return map ( item , indexOfItem ) -> {
+            space_marine: item
+        })
+    }
+}]]></ee:set-payload>
+                    </ee:message>
+                </ee:transform>
+            </otherwise>
+        </choice>
+    </flow>
+
+    <!-- Flow: Create SpaceMarine -->
+    <flow name="createSpaceMarine">
+        <http:listener doc:name="Listener" config-ref="HTTP_Listener_config" path="/api/v1/space-marine" allowedMethods="POST, OPTIONS">
+            <http:response>
+                <http:headers>
+                    <![CDATA[#[
+                        {
+                            "Access-Control-Allow-Origin": "*",
+                            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+                            "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With"
+                        }
+                    ]]]>
+                </http:headers>
+            </http:response>
+        </http:listener>
+        <choice doc:name="Choice">
+            <when expression="#[attributes.method == 'OPTIONS']">
+                <set-payload value="" doc:name="Set Payload"/>
+            </when>
+            <otherwise>
+                <ee:transform doc:name="Transform to SOAP Request">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://soap.ifmo.se/
+---
+{
+    ns0#addSpaceMarine: {
+        space_marine: (payload as Object).space_marine
+    }
+}]]></ee:set-payload>
+                    </ee:message>
+                </ee:transform>
+                <wsc:consume doc:name="Consume addSpaceMarine" config-ref="SpaceMarine_WSC_Config" operation="addSpaceMarine"/>
+                <ee:transform doc:name="Transform to REST Response">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://soap.ifmo.se/
+---
+{
+    SpaceMarine: payload.body.ns0#addSpaceMarineResponse.return
+}]]></ee:set-payload>
+                    </ee:message>
+                </ee:transform>
+            </otherwise>
+        </choice>
+    </flow>
+
+    <!-- Flow: Get SpaceMarine By ID -->
+    <flow name="getSpaceMarineById">
+        <http:listener doc:name="Listener" config-ref="HTTP_Listener_config" path="/api/v1/space-marine/{id}" allowedMethods="GET, OPTIONS">
+            <http:response>
+                <http:headers>
+                    <![CDATA[#[
+                        {
+                            "Access-Control-Allow-Origin": "*",
+                            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+                            "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With"
+                        }
+                    ]]]>
+                </http:headers>
+            </http:response>
+        </http:listener>
+        <choice doc:name="Choice">
+            <when expression="#[attributes.method == 'OPTIONS']">
+                <set-payload value="" doc:name="Set Payload"/>
+            </when>
+            <otherwise>
+                <ee:transform doc:name="Transform to SOAP Request">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://soap.ifmo.se/
+---
+{
+    ns0#getSpaceMarineById: {
+        id: attributes.uriParams.id as Number
+    }
+}]]></ee:set-payload>
+                    </ee:message>
+                </ee:transform>
+                <wsc:consume doc:name="Consume getSpaceMarineById" config-ref="SpaceMarine_WSC_Config" operation="getSpaceMarineById"/>
+                <ee:transform doc:name="Transform to REST Response">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://soap.ifmo.se/
+---
+{
+    SpaceMarine: payload.body.ns0#getSpaceMarineByIdResponse.return
+}]]></ee:set-payload>
+                    </ee:message>
+                </ee:transform>
+            </otherwise>
+        </choice>
+    </flow>
+
+    <!-- Flow: Update SpaceMarine By ID -->
+    <flow name="updateSpaceMarineById">
+        <http:listener doc:name="Listener" config-ref="HTTP_Listener_config" path="/api/v1/space-marine/{id}" allowedMethods="PUT, OPTIONS">
+            <http:response>
+                <http:headers>
+                    <![CDATA[#[
+                        {
+                            "Access-Control-Allow-Origin": "*",
+                            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+                            "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With"
+                        }
+                    ]]]>
+                </http:headers>
+            </http:response>
+        </http:listener>
+        <choice doc:name="Choice">
+            <when expression="#[attributes.method == 'OPTIONS']">
+                <set-payload value="" doc:name="Set Payload"/>
+            </when>
+            <otherwise>
+                <ee:transform doc:name="Transform to SOAP Request">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://soap.ifmo.se/
+---
+{
+    ns0#updateSpaceMarineById: {
+        id: attributes.uriParams.id as Number,
+        space_marine: (payload as Object)
+    }
+}]]></ee:set-payload>
+                    </ee:message>
+                </ee:transform>
+                <wsc:consume doc:name="Consume updateSpaceMarineById" config-ref="SpaceMarine_WSC_Config" operation="updateSpaceMarineById"/>
+                <ee:transform doc:name="Transform to REST Response">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+---
+{
+    success: {
+        code: 200,
+        message: "SpaceMarine Updated",
+        time: now()
+    }
+}]]></ee:set-payload>
+                    </ee:message>
+                </ee:transform>
+            </otherwise>
+        </choice>
+    </flow>
+
+    <!-- Flow: Delete SpaceMarine By ID -->
+    <flow name="deleteSpaceMarineById">
+        <http:listener doc:name="Listener" config-ref="HTTP_Listener_config" path="/api/v1/space-marine/{id}" allowedMethods="DELETE, OPTIONS">
+            <http:response>
+                <http:headers>
+                    <![CDATA[#[
+                        {
+                            "Access-Control-Allow-Origin": "*",
+                            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+                            "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With"
+                        }
+                    ]]]>
+                </http:headers>
+            </http:response>
+        </http:listener>
+        <choice doc:name="Choice">
+            <when expression="#[attributes.method == 'OPTIONS']">
+                <set-payload value="" doc:name="Set Payload"/>
+            </when>
+            <otherwise>
+                <ee:transform doc:name="Transform to SOAP Request">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://soap.ifmo.se/
+---
+{
+    ns0#deleteSpaceMarineById: {
+        id: attributes.uriParams.id as Number
+    }
+}]]></ee:set-payload>
+                    </ee:message>
+                </ee:transform>
+                <wsc:consume doc:name="Consume deleteSpaceMarineById" config-ref="SpaceMarine_WSC_Config" operation="deleteSpaceMarineById"/>
+                <ee:transform doc:name="Transform to REST Response">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+---
+{
+    success: {
+        code: 200,
+        message: "SpaceMarine deleted",
+        time: now()
+    }
+}]]></ee:set-payload>
+                    </ee:message>
+                </ee:transform>
+            </otherwise>
+        </choice>
+    </flow>
+    
+    <!-- Flow: Unload SpaceMarine (Starship Service) -->
+    <flow name="unloadSpaceMarineById">
+        <http:listener doc:name="Listener" config-ref="HTTP_Listener_config" path="/api/v1/starship/{starship_id}/unload/space-marine-id" allowedMethods="GET, OPTIONS">
+            <http:response>
+                <http:headers>
+                    <![CDATA[#[
+                        {
+                            "Access-Control-Allow-Origin": "*",
+                            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+                            "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With"
+                        }
+                    ]]]>
+                </http:headers>
+            </http:response>
+        </http:listener>
+        <choice doc:name="Choice">
+            <when expression="#[attributes.method == 'OPTIONS']">
+                <set-payload value="" doc:name="Set Payload"/>
+            </when>
+            <otherwise>
+                <ee:transform doc:name="Transform to SOAP Request">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://soap.ifmo.se/
+---
+{
+    ns0#unloadSpaceMarineById: {
+        starship_id: attributes.uriParams.starship_id as Number,
+        space_marine_id: attributes.queryParams.space_marine_id as Number
+    }
+}]]></ee:set-payload>
+                    </ee:message>
+                </ee:transform>
+                <wsc:consume doc:name="Consume unloadSpaceMarineById" config-ref="Starship_WSC_Config" operation="unloadSpaceMarineById"/>
+                <ee:transform doc:name="Transform to REST Response">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+---
+{
+    success: {
+        code: 200,
+        message: "Selected SpaceMarine unloaded from given spaceship",
+        time: now()
+    }
+}]]></ee:set-payload>
+                    </ee:message>
+                </ee:transform>
+            </otherwise>
+        </choice>
+    </flow>
+
+    <!-- Flow: Unload All SpaceMarines (Starship Service) -->
+    <flow name="unloadAllSpaceMarines">
+        <http:listener doc:name="Listener" config-ref="HTTP_Listener_config" path="/api/v1/starship/{starship_id}/unload-all" allowedMethods="GET, OPTIONS">
+            <http:response>
+                <http:headers>
+                    <![CDATA[#[
+                        {
+                            "Access-Control-Allow-Origin": "*",
+                            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+                            "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With"
+                        }
+                    ]]]>
+                </http:headers>
+            </http:response>
+        </http:listener>
+        <choice doc:name="Choice">
+            <when expression="#[attributes.method == 'OPTIONS']">
+                <set-payload value="" doc:name="Set Payload"/>
+            </when>
+            <otherwise>
+                <ee:transform doc:name="Transform to SOAP Request">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://soap.ifmo.se/
+---
+{
+    ns0#unloadAllSpaceMarines: {
+        starship_id: attributes.uriParams.starship_id as Number
+    }
+}]]></ee:set-payload>
+                    </ee:message>
+                </ee:transform>
+                <wsc:consume doc:name="Consume unloadAllSpaceMarines" config-ref="Starship_WSC_Config" operation="unloadAllSpaceMarines"/>
+                <ee:transform doc:name="Transform to REST Response">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+---
+{
+    success: {
+        code: 200,
+        message: "All SpaceMarines unloaded from given spaceship",
+        time: now()
+    }
+}]]></ee:set-payload>
+                    </ee:message>
+                </ee:transform>
+            </otherwise>
+        </choice>
+    </flow>
+    
+</mule>
