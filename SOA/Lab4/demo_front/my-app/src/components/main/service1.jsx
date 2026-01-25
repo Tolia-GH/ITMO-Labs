@@ -498,7 +498,7 @@ export function Service1() {
                     <button type="submit">Send GET request</button>
                 </form>
                 <div style={{marginTop: '20px'}}>
-                    {listResponse && <SpaceMarineTable xmlData={byIdResponse}/>}
+                    {byIdResponse && <SpaceMarineTable xmlData={byIdResponse}/>}
                 </div>
             </section>
 
@@ -557,7 +557,7 @@ export function Service1() {
                     <button type="submit">Send POST request</button>
                 </form>
                 <div style={{marginTop: '20px'}}>
-                    {listResponse && <SpaceMarineTable xmlData={postResponse}/>}
+                    {postResponse && <SpaceMarineTable xmlData={postResponse}/>}
                 </div>
 
 
@@ -581,19 +581,17 @@ export function Service1() {
                     </label>
                     {/* 复用POST表单字段 */}
                     {Object.entries(postForm).map(([key, value]) => (
-                        key !== 'chapterName' && key !== 'chapterWorld' && (
-                            <label key={key} style={styles.label}>
-                                {key.charAt(0).toUpperCase() + key.slice(1)}:
-                                <input
-                                    type={key === 'height' ? 'number' : 'text'}
-                                    name={key}
-                                    value={value}
-                                    onChange={handlePostChange}
-                                    style={styles.input}
-                                    required={key !== 'meleeWeapon'}
-                                />
-                            </label>
-                        )
+                        <label key={key} style={styles.label}>
+                            {key.charAt(0).toUpperCase() + key.slice(1)}:
+                            <input
+                                type={key === 'height' ? 'number' : 'text'}
+                                name={key}
+                                value={value}
+                                onChange={handlePostChange}
+                                style={styles.input}
+                                required={key !== 'meleeWeapon' && key !== 'chapterName' && key !== 'chapterWorld'}
+                            />
+                        </label>
                     ))}
                     <button type="submit">Send PUT request</button>
                 </form>
@@ -694,8 +692,8 @@ export function Service1() {
                         <button type="submit">Search</button>
                     </form>
                     <div style={{marginTop: '20px'}}>
-                        {listResponse && <SpaceMarineTable xmlData={namePrefixResponse}/>}
-                    </div>
+                    {namePrefixResponse && <SpaceMarineTable xmlData={namePrefixResponse}/>}
+                </div>
                 </div>
             </section>
 
