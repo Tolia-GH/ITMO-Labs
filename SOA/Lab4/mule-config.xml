@@ -609,13 +609,13 @@ output application/xml
 ns ns0 http://soap.ifmo.se/
 ---
 {
-    ns0#unloadAllSpaceMarine: {
+    ns0#unloadAllSpaceMarines: {
         starship_id: attributes.uriParams.starship_id as Number
     }
 }]]></ee:set-payload>
                     </ee:message>
                 </ee:transform>
-                <wsc:consume doc:name="Consume unloadAllSpaceMarine" config-ref="Starship_WSC_Config" operation="unloadAllSpaceMarine"/>
+                <wsc:consume doc:name="Consume unloadAllSpaceMarines" config-ref="Starship_WSC_Config" operation="unloadAllSpaceMarines"/>
                 <ee:transform doc:name="Transform to REST Response">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0
