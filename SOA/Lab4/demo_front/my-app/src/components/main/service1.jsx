@@ -341,7 +341,7 @@ export function Service1() {
     // 处理DELETE by heartCount
     const handleDeleteHeartCountSubmit = (e) => {
         e.preventDefault();
-        const url = `${BASE_URL_S1}/v1/space-marine/by-heart-count/?heart_count=${encodeURIComponent(deleteHeartCount)}`;
+        const url = `${BASE_URL_S1}/v1/space-marine/by-heart-count?heart_count=${encodeURIComponent(deleteHeartCount)}`;
         fetch(url, { method: 'DELETE' })
             .then(res => res.text())
             .then(data => {
@@ -355,7 +355,7 @@ export function Service1() {
     // 处理GET count
     const handleCountSubmit = (e) => {
         e.preventDefault();
-        const url = `${BASE_URL_S1}/v1/space-marine/count/by-melee-weapon/?melee_weapon=${encodeURIComponent(meleeWeapon)}`;
+        const url = `${BASE_URL_S1}/v1/space-marine/count/by-melee-weapon?melee_weapon=${encodeURIComponent(meleeWeapon)}`;
         fetch(url)
             .then(res => res.text())
             .then(data => {
