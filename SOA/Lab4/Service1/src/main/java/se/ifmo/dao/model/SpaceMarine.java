@@ -19,7 +19,7 @@ import java.time.ZonedDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "space_marine", schema = "soa_lab2")
+@Table(name = "space_marine")
 @Entity
 @XmlRootElement(name = "space_marine")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -53,7 +53,7 @@ public class SpaceMarine {
     private Float height;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "melee_weapon", columnDefinition = "soa_lab2.melee_weapon")
+    @Column(name = "melee_weapon", columnDefinition = "melee_weapon")
     @XmlElement(name = "melee_weapon")
     private MeleeWeapon meleeWeapon;
 

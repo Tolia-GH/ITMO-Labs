@@ -25,7 +25,7 @@ public class NewSpaceMarine {
     private Integer heartCount;
     private Float height;
     @Enumerated(EnumType.STRING)
-    @Column(name = "melee_weapon", columnDefinition = "soa_lab2.melee_weapon")
+    @Column(name = "melee_weapon", columnDefinition = "melee_weapon")
     @XmlElement(name = "melee_weapon")
     private MeleeWeapon meleeWeapon;
     @XmlElement(name = "chapter")

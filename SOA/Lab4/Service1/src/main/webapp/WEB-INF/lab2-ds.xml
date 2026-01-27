@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasources xmlns="http://www.jboss.org/ironjacamar/schema"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.jboss.org/ironjacamar/schema http://docs.jboss.org/ironjacamar/schema/datasources_1_0.xsd">
+    <!-- 
+        应用级数据源配置
+        无需在 Wildfly/JBoss 控制台手动配置，随应用部署。
+        JNDI 名称: java:app/jdbc/Lab2DS
+    -->
+    <datasource jndi-name="java:jboss/datasources/Lab2DS" pool-name="Lab2DS" enabled="true" use-java-context="true">
+<!--        <connection-url>jdbc:postgresql://localhost:5432/studs?currentSchema=soa_lab2</connection-url>-->
+        <connection-url>jdbc:postgresql://localhost:5432/studs?currentSchema=s336184</connection-url>
+        <!-- 假设驱动已作为模块安装在服务器中，通常名为 postgresql -->
+        <!-- 如果驱动在 WAR 包的 WEB-INF/lib 中，请使用 <driver-class>org.postgresql.Driver</driver-class> -->
+        <driver>postgresql</driver>
+        <security>
+<!--            <user-name>postgres</user-name>-->
+<!--            <password>123456</password>-->
+            <user-name>s336184</user-name>
+            <password>Di2oaLyDd20js6Ox</password>
+        </security>
+        <validation>
+            <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"/>
+            <validate-on-match>true</validate-on-match>
+            <background-validation>false</background-validation>
+            <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"/>
+        </validation>
+    </datasource>
+</datasources>

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name = "chapter", schema = "soa_lab2")
+@Table(name = "chapter")
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlRootElement(name = "chapter")

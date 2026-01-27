@@ -220,7 +220,7 @@ public class SpaceMarineRepo {
 
     // 插入坐标表
     public int insertCoordinates(Connection conn, Coordinates coordinates) throws SQLException {
-        String sql = "INSERT INTO soa_lab2.coordinates (x, y) VALUES (?, ?) RETURNING id";
+        String sql = "INSERT INTO coordinates (x, y) VALUES (?, ?) RETURNING id";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, coordinates.getX());
             ps.setDouble(2, coordinates.getY());
@@ -236,7 +236,7 @@ public class SpaceMarineRepo {
     // 插入章节表（如果有章节信息）
     public Integer insertChapter(Connection conn, Chapter chapter) throws SQLException {
         if (chapter != null && chapter.getName() != null) {
-            String sql = "INSERT INTO soa_lab2.chapter (name, world) VALUES (?, ?) RETURNING id";
+            String sql = "INSERT INTO chapter (name, world) VALUES (?, ?) RETURNING id";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, chapter.getName());
                 ps.setString(2, chapter.getWorld());
@@ -251,7 +251,7 @@ public class SpaceMarineRepo {
 
     // 插入 SpaceMarine 表
     public SpaceMarine insertSpaceMarine(Connection conn, NewSpaceMarine newSM, int coordinateId, Integer chapterId) throws SQLException {
-        String sql = "INSERT INTO soa_lab2.space_marine (name, coordinate_id, health, heart_count, height, melee_weapon, chapter_id) " +
+        String sql = "INSERT INTO space_marine (name, coordinate_id, health, heart_count, height, melee_weapon, chapter_id) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id, creation_date";
         SpaceMarine sm = new SpaceMarine();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -282,7 +282,7 @@ public class SpaceMarineRepo {
 
     // 更新coordinates表
     public void updateCoordinates(Connection conn, Coordinates coordinates, Long id) throws SQLException {
-        String sql = "UPDATE soa_lab2.coordinates SET x = ?, y = ? WHERE id = ?";
+        String sql = "UPDATE coordinates SET x = ?, y = ? WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, coordinates.getX());
             ps.setDouble(2, coordinates.getY());
@@ -293,7 +293,7 @@ public class SpaceMarineRepo {
 
     // 更新chapter表
     public void updateChapter(Connection conn, Chapter chapter, Long id) throws SQLException {
-        String sql = "UPDATE soa_lab2.chapter SET name = ?, world = ? WHERE id = ?";
+        String sql = "UPDATE chapter SET name = ?, world = ? WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, chapter.getName());
             ps.setString(2, chapter.getWorld());
@@ -304,7 +304,7 @@ public class SpaceMarineRepo {
 
     // 更新space_marine表
     public void updateSpaceMarine(Connection conn, NewSpaceMarine updatedSM, long id) throws SQLException {
-        String sql = "UPDATE soa_lab2.space_marine SET name = ?, health = ?, heart_count = ?, height = ?, melee_weapon = ? WHERE id = ?";
+        String sql = "UPDATE space_marine SET name = ?, health = ?, heart_count = ?, height = ?, melee_weapon = ? WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, updatedSM.getName());
             ps.setInt(2, updatedSM.getHealth());
@@ -320,7 +320,7 @@ public class SpaceMarineRepo {
     }
 
     public void deleteSpaceMarineById(long id) throws SQLException {
-        String sql = "DELETE FROM soa_lab2.space_marine WHERE id = ?";
+        String sql = "DELETE FROM space_marine WHERE id = ?";
         try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -330,7 +330,7 @@ public class SpaceMarineRepo {
     }
 
     public void deleteSpaceMarineByHeartCount(int heartCount) throws SQLException {
-        String sql = "DELETE FROM soa_lab2.space_marine WHERE heart_count = ?";
+        String sql = "DELETE FROM space_marine WHERE heart_count = ?";
         try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -353,9 +353,9 @@ public class SpaceMarineRepo {
                 "sm.melee_weapon, " +
                 "c.id AS c_id, c.x, c.y, " +
                 "ch.id AS ch_id, ch.name AS ch_name, ch.world " +
-                "FROM soa_lab2.space_marine sm " +
-                "JOIN soa_lab2.coordinates c ON c.id = sm.coordinate_id " +
-                "JOIN soa_lab2.chapter ch ON ch.id = sm.chapter_id " +
+                "FROM space_marine sm " +
+                "JOIN coordinates c ON c.id = sm.coordinate_id " +
+                "JOIN chapter ch ON ch.id = sm.chapter_id " +
                 "WHERE CAST(sm.melee_weapon AS text) = ? " +
                 "ORDER BY sm.id ";
 
@@ -386,9 +386,9 @@ public class SpaceMarineRepo {
                 "sm.melee_weapon, " +
                 "c.id AS c_id, c.x, c.y, " +
                 "ch.id AS ch_id, ch.name AS ch_name, ch.world " +
-                "FROM soa_lab2.space_marine sm " +
-                "JOIN soa_lab2.coordinates c ON c.id = sm.coordinate_id " +
-                "JOIN soa_lab2.chapter ch ON ch.id = sm.chapter_id " +
+                "FROM space_marine sm " +
+                "JOIN coordinates c ON c.id = sm.coordinate_id " +
+                "JOIN chapter ch ON ch.id = sm.chapter_id " +
                 "WHERE sm.name LIKE ? " +
                 "ORDER BY sm.id ";
 

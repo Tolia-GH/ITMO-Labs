@@ -11,7 +11,7 @@
 	<groupId>se</groupId>
 	<artifactId>Service2</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>Service2</name>
 	<description>Service2</description>
 

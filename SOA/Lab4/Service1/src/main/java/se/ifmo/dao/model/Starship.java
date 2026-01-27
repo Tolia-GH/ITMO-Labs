@@ -14,7 +14,7 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "starship", schema = "soa_lab2")
+@Table(name = "starship")
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlRootElement(name = "starship")
