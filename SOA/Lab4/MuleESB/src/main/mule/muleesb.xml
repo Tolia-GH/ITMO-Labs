@@ -40,22 +40,32 @@ output application/xml
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config">
 		<http:listener-connection protocol="HTTPS" host="0.0.0.0" port="8081">
 			<tls:context >
-				<tls:key-store type="pkcs12" path="keystore.p12" keyPassword="changeit" password="changeit"/>
+				<tls:key-store type="pkcs12" path="keystore.p12" alias="s1as" keyPassword="changeit" password="changeit"/>
 			</tls:context>
 		</http:listener-connection>
 	</http:listener-config>
 
 	<wsc:config name="SpaceMarine_WSC_Config" doc:name="Web Service Consumer Config">
-		<wsc:connection wsdlLocation="http://localhost:18080/api/SpaceMarineService?wsdl" service="SpaceMarineService" port="SpaceMarineWebServiceImplPort" address="http://localhost:18080/api/SpaceMarineService">
+		<wsc:connection wsdlLocation="http://127.0.0.1:18080/api/SpaceMarineService?wsdl" service="SpaceMarineService" port="SpaceMarineWebServiceImplPort" address="http://127.0.0.1:18080/api/SpaceMarineService">
             <wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" />
         </wsc:connection>
 	</wsc:config>
 
     <wsc:config name="Starship_WSC_Config" doc:name="Web Service Consumer Config">
-		<wsc:connection wsdlLocation="http://localhost:18080/api/StarshipService?wsdl" service="StarshipService" port="StarshipWebServiceImplPort" address="http://localhost:18080/api/StarshipService">
+		<wsc:connection wsdlLocation="http://127.0.0.1:18080/api/StarshipService?wsdl" service="StarshipService" port="StarshipWebServiceImplPort" address="http://127.0.0.1:18080/api/StarshipService">
             <wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" />
         </wsc:connection>
 	</wsc:config>
+
+    <!-- Flow: Health Check -->
+    <flow name="healthCheck">
+        <http:listener doc:name="Listener" config-ref="HTTP_Listener_config" path="/api/ping" allowedMethods="GET">
+            <http:response statusCode="200">
+                <http:body><![CDATA[Pong]]></http:body>
+            </http:response>
+        </http:listener>
+        <set-payload value="Pong" doc:name="Set Payload"/>
+    </flow>
 
     <!-- Flow: Delete SpaceMarine By Heart Count -->
     <flow name="deleteSpaceMarineByHeartCount">
@@ -126,7 +136,7 @@ output application/xml
         </http:listener>
         <choice doc:name="Choice">
             <when expression="#[attributes.method == 'OPTIONS']">
-                <set-payload value="" doc:name="Set Payload"/>
+                <set-payload value="#[payload]" doc:name="Set Payload"/>
             </when>
             <otherwise>
                 <ee:transform doc:name="Transform to SOAP Request">

@@ -37,42 +37,6 @@ Now ther should be two way for React Frontend to call Service1 and Service2:
 1. React Frontend <-rest-> Service2 <-rest-> Mule <-soap-> Service1
 2. React Frontend <-rest-> Mule <-soap-> Service1
 
-```mermaid
-flowchart TB
- subgraph Client["Client"]
-        A["React Frontend"]
-  end
- subgraph HAProxy2["HAProxy Service2"]
-        A1["HAProxy LB"]
-  end
- subgraph Service2["Service2 Instances"]
-        B1["Instance 1 on user 1"]
-        B2["Instance 2 on user 2"]
-  end
- subgraph Mule["Mule ESB"]
-        C1["REST Layer"]
-        C2["Translator"]
-        C3["SOAP Layer"]
-  end
- subgraph HAProxy1["HAProxy Service1"]
-        D1["HAProxy LB"]
-  end
- subgraph Service1["Service1 Instances"]
-        F1["Instance 1 on user 1"]
-        F2["Instance 2 on user 2"]
-  end
-    A -- REST / XML --> C1
-    A <-- REST / XML --> A1
-    A1 <-- REST / XML --> B1 & B2
-    B1 <-- REST / XML --> C1
-    B2 <-- REST / XML --> C1
-    C1 <--> C2
-    C1 -- REST / XML --> A
-    C2 <--> C3
-    C3 <-- SOAP / XML --> D1
-    D1 <--> F1 & F2
-```
-
 ```xml
                 <datasource jndi-name="java:/jdbc/Lab2DS" pool-name="Lab2DS">
                     <connection-url>jdbc:postgresql://localhost:5432/studs</connection-url>
